@@ -80,22 +80,15 @@ class _AppFieldState extends State<AppField> {
         ],
         AnimatedContainer(
           duration: const Duration(milliseconds: 150),
-          height: 54,
+          height: 56,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
+            color: AppColors.glass,
+            borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: _focused ? AppColors.primary : AppColors.line,
-              width: 1.0,
+              color: _focused ? AppColors.primaryBorder : AppColors.glassLine,
+              width: 1.1,
             ),
-            boxShadow: _focused
-                ? [
-                    BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.1),
-                        blurRadius: 0,
-                        spreadRadius: 4)
-                  ]
-                : [],
+            boxShadow: _focused ? AppColors.shadowSoft : const [],
           ),
           child: Row(
             children: [
@@ -103,7 +96,7 @@ class _AppFieldState extends State<AppField> {
                 const SizedBox(width: 14),
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    _focused ? AppColors.primary : AppColors.slate400,
+                    _focused ? AppColors.primary : AppColors.slate500,
                     BlendMode.srcIn,
                   ),
                   child: widget.prefixIcon!,

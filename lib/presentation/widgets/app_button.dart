@@ -38,9 +38,9 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (height, fontSize, radius, px) = switch (size) {
-      AppButtonSize.lg => (54.0, 16.0, 16.0, 20.0),
-      AppButtonSize.md => (46.0, 15.0, 14.0, 16.0),
-      AppButtonSize.sm => (38.0, 13.5, 11.0, 13.0),
+      AppButtonSize.lg => (54.0, 16.0, 18.0, 20.0),
+      AppButtonSize.md => (46.0, 15.0, 16.0, 16.0),
+      AppButtonSize.sm => (38.0, 13.5, 14.0, 13.0),
     };
 
     final (bg, fg, shadow, border) = _resolveStyle();
@@ -57,7 +57,7 @@ class AppButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: px),
           decoration: BoxDecoration(
             gradient: variant == AppButtonVariant.primary
-                ? AppColors.primaryGradient
+                ? AppColors.accentGradient
                 : null,
             color: variant != AppButtonVariant.primary ? bg : null,
             borderRadius: BorderRadius.circular(radius),
@@ -107,12 +107,12 @@ class AppButton extends StatelessWidget {
           AppColors.shadowPrimary,
           null,
         ),
-      AppButtonVariant.dark => (AppColors.ink, Colors.white, [], null),
+      AppButtonVariant.dark => (AppColors.ink, Colors.white, AppColors.shadowSoft, null),
       AppButtonVariant.soft => (
           AppColors.primarySurface,
           AppColors.primary,
           [],
-          null
+          Border.all(color: AppColors.primaryBorder, width: 1),
         ),
       AppButtonVariant.ghost => (
           Colors.transparent,
@@ -121,10 +121,10 @@ class AppButton extends StatelessWidget {
           null
         ),
       AppButtonVariant.outline => (
-          Colors.white,
+          AppColors.glass,
           AppColors.ink,
-          [],
-          Border.all(color: AppColors.line, width: 1.5),
+          AppColors.shadowSoft,
+          Border.all(color: AppColors.glassLine, width: 1.2),
         ),
       AppButtonVariant.outlineWhite => (
           Colors.transparent,
