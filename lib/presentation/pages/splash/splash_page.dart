@@ -6,6 +6,7 @@ import '../../../core/services/deeplink_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_button.dart';
+import '../../widgets/glass_background.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/glass_card.dart';
 
@@ -37,8 +38,7 @@ class _SplashPageState extends State<SplashPage> {
         }
       },
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
+        body: GlassBackground(
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 26),

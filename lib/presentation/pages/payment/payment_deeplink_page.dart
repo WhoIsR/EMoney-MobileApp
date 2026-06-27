@@ -7,6 +7,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
 import '../../widgets/glass_card.dart';
 
 /// Halaman konfirmasi pembayaran yang dibuka dari deeplink merchant
@@ -51,9 +52,7 @@ class PaymentDeeplinkPage extends StatelessWidget {
         },
         child: Scaffold(
           backgroundColor: AppColors.bg,
-          body: Container(
-            decoration:
-                const BoxDecoration(gradient: AppColors.primaryGradient),
+          body: GlassBackground(
             child: Column(
               children: [
                 Container(

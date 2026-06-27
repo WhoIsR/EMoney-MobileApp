@@ -10,6 +10,7 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
 import '../../widgets/glass_card.dart';
 import '../../widgets/transaction_row.dart';
 
@@ -39,9 +40,7 @@ class _HomePageState extends State<HomePage> {
 
         return Scaffold(
           backgroundColor: AppColors.bg,
-          body: Container(
-            decoration:
-                const BoxDecoration(gradient: AppColors.primaryGradient),
+          body: GlassBackground(
             child: BlocBuilder<AccountBloc, AccountState>(
               builder: (context, accountState) {
                 final balance = accountState is AccountLoaded
