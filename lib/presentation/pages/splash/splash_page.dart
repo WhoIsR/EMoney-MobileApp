@@ -35,6 +35,8 @@ class _SplashPageState extends State<SplashPage> {
           } else {
             context.go('/home');
           }
+        } else if (state is AuthNeedsVerification) {
+          context.go('/2fa/smtp');
         }
       },
       child: Scaffold(
