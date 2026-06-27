@@ -10,6 +10,7 @@ import '../../widgets/app_button.dart';
 import '../../widgets/app_field.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_card.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -112,173 +113,212 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
-                  onPressed: () => context.go('/'),
+        backgroundColor: AppColors.bg,
+        body: Container(
+          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                    onPressed: () => context.go('/'),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(26, 10, 26, 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AppLogo(size: 50),
-                      const SizedBox(height: 22),
-                      const Text('Masuk',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 27,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink,
-                            letterSpacing: -0.4,
-                          )),
-                      const SizedBox(height: 6),
-                      const Text('Selamat datang kembali',
-                          style: TextStyle(
-                              fontSize: 14.5, color: AppColors.slate500)),
-                      const SizedBox(height: 24),
-                      // Google sign in
-                      BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) {
-                          final loading = state is AuthLoading || _gLoading;
-                          return GestureDetector(
-                            onTap: loading ? null : _loginWithGoogle,
-                            child: Container(
-                              height: 54,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                    color: AppColors.line, width: 1.5),
-                                boxShadow: AppColors.shadowSoft,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: loading
-                                    ? const [
-                                        SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2.4,
-                                            valueColor: AlwaysStoppedAnimation(
-                                                AppColors.primary),
-                                          ),
-                                        ),
-                                        SizedBox(width: 11),
-                                        Text('Menghubungkan…',
-                                            style: TextStyle(
-                                              fontFamily: 'PlusJakartaSans',
-                                              fontSize: 15.5,
-                                              fontWeight: FontWeight.w700,
-                                            )),
-                                      ]
-                                    : const [
-                                        _GoogleIcon(),
-                                        SizedBox(width: 11),
-                                        Text('Lanjut dengan Google',
-                                            style: TextStyle(
-                                              fontFamily: 'PlusJakartaSans',
-                                              fontSize: 15.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.ink,
-                                            )),
-                                      ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 22),
-                      Row(children: [
-                        const Expanded(child: Divider(color: AppColors.line)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: const Text('atau email',
-                              style: TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 12.5,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.slate400,
-                              )),
-                        ),
-                        const Expanded(child: Divider(color: AppColors.line)),
-                      ]),
-                      const SizedBox(height: 22),
-                      AppField(
-                        label: 'Email',
-                        value: _email,
-                        onChanged: (v) => setState(() => _email = v),
-                        placeholder: 'nama@email.com',
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: const Icon(DkgIcons.mail, size: 20),
-                      ),
-                      const SizedBox(height: 14),
-                      AppField(
-                        label: 'Kata sandi',
-                        value: _pw,
-                        onChanged: (v) => setState(() => _pw = v),
-                        obscureText: !_showPw,
-                        placeholder: '••••••••',
-                        prefixIcon: const Icon(DkgIcons.lock, size: 20),
-                        suffixIcon: IconButton(
-                          icon: Icon(_showPw ? DkgIcons.eyeOff : DkgIcons.eye,
-                              size: 20, color: AppColors.slate400),
-                          onPressed: () => setState(() => _showPw = !_showPw),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text('Lupa kata sandi?',
-                              style: TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 13.5,
-                              )),
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) => AppButton(
-                          label: 'Masuk',
-                          onPressed: _valid ? _loginWithEmail : null,
-                          isLoading: state is AuthLoading,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(26, 10, 26, 24),
+                    child: GlassCard(
+                      radius: 30,
+                      padding: const EdgeInsets.fromLTRB(22, 24, 22, 22),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Belum punya akun? ',
+                          Row(
+                            children: [
+                              const AppLogo(size: 50),
+                              const Spacer(),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 7),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.64),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border:
+                                      Border.all(color: AppColors.glassLine),
+                                ),
+                                child: const Text(
+                                  'Secure Wallet',
+                                  style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 22),
+                          const Text('Masuk',
                               style: TextStyle(
-                                  fontSize: 14, color: AppColors.slate500)),
-                          GestureDetector(
-                            onTap: () => context.go('/register'),
-                            child: const Text('Daftar',
-                                style: TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                )),
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 27,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.ink,
+                                letterSpacing: -0.4,
+                              )),
+                          const SizedBox(height: 6),
+                          const Text('Selamat datang kembali',
+                              style: TextStyle(
+                                  fontSize: 14.5, color: AppColors.slate500)),
+                          const SizedBox(height: 24),
+                          // Google sign in
+                          BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, state) {
+                              final loading = state is AuthLoading || _gLoading;
+                              return GestureDetector(
+                                onTap: loading ? null : _loginWithGoogle,
+                                child: GlassCard(
+                                  radius: 18,
+                                  padding: EdgeInsets.zero,
+                                  child: SizedBox(
+                                    height: 54,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: loading
+                                          ? const [
+                                              SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2.4,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation(
+                                                          AppColors.primary),
+                                                ),
+                                              ),
+                                              SizedBox(width: 11),
+                                              Text('Menghubungkan…',
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        'PlusJakartaSans',
+                                                    fontSize: 15.5,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                            ]
+                                          : const [
+                                              _GoogleIcon(),
+                                              SizedBox(width: 11),
+                                              Text('Lanjut dengan Google',
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        'PlusJakartaSans',
+                                                    fontSize: 15.5,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.ink,
+                                                  )),
+                                            ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 22),
+                          Row(children: [
+                            const Expanded(
+                                child: Divider(color: AppColors.line)),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: const Text('atau email',
+                                  style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontSize: 12.5,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.slate400,
+                                  )),
+                            ),
+                            const Expanded(
+                                child: Divider(color: AppColors.line)),
+                          ]),
+                          const SizedBox(height: 22),
+                          AppField(
+                            label: 'Email',
+                            value: _email,
+                            onChanged: (v) => setState(() => _email = v),
+                            placeholder: 'nama@email.com',
+                            keyboardType: TextInputType.emailAddress,
+                            prefixIcon: const Icon(DkgIcons.mail, size: 20),
+                          ),
+                          const SizedBox(height: 14),
+                          AppField(
+                            label: 'Kata sandi',
+                            value: _pw,
+                            onChanged: (v) => setState(() => _pw = v),
+                            obscureText: !_showPw,
+                            placeholder: '••••••••',
+                            prefixIcon: const Icon(DkgIcons.lock, size: 20),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                  _showPw ? DkgIcons.eyeOff : DkgIcons.eye,
+                                  size: 20,
+                                  color: AppColors.slate400),
+                              onPressed: () =>
+                                  setState(() => _showPw = !_showPw),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {},
+                              child: const Text('Lupa kata sandi?',
+                                  style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 13.5,
+                                  )),
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, state) => AppButton(
+                              label: 'Masuk',
+                              onPressed: _valid ? _loginWithEmail : null,
+                              isLoading: state is AuthLoading,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Belum punya akun? ',
+                                  style: TextStyle(
+                                      fontSize: 14, color: AppColors.slate500)),
+                              GestureDetector(
+                                onTap: () => context.go('/register'),
+                                child: const Text('Daftar',
+                                    style: TextStyle(
+                                      fontFamily: 'PlusJakartaSans',
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    )),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
