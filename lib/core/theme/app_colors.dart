@@ -29,8 +29,9 @@ class AppColors {
   static const Color bg = Color(0xFFF7F8F4);
   static const Color mist = Color(0xFFEFF8F6);
   static const Color champagne = Color(0xFFFFF4DF);
-  static const Color glass = Color(0xCCFFFFFF);
-  static const Color glassLine = Color(0xB3FFFFFF);
+  static const Color glass = Color(0x99FFFFFF);
+  static const Color glassStrong = Color(0xCCFFFFFF);
+  static const Color glassLine = Color(0xE6FFFFFF);
   static const Color white = Color(0xFFFFFFFF);
 
   // Gradient
@@ -54,6 +55,20 @@ class AppColors {
       blurRadius: 28,
       spreadRadius: 0,
       offset: Offset(0, 4),
+    ),
+  ];
+  static List<BoxShadow> shadowGlass = [
+    BoxShadow(
+      color: Color(0x1F607C76),
+      blurRadius: 42,
+      spreadRadius: -8,
+      offset: Offset(0, 22),
+    ),
+    BoxShadow(
+      color: Color(0x14FFFFFF),
+      blurRadius: 2,
+      spreadRadius: 1,
+      offset: Offset(0, -1),
     ),
   ];
   static List<BoxShadow> shadowSoft = [

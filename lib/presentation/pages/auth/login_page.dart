@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -8,6 +9,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_field.dart';
+import '../../widgets/glass_background.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/feature_icon.dart';
 import '../../widgets/glass_card.dart';
@@ -68,8 +70,13 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e, st) {
       debugPrint('[Auth] Google sign-in ERROR: $e\n$st');
       if (mounted) {
+        final message = e is PlatformException &&
+                e.code == 'sign_in_failed' &&
+                (e.message ?? '').contains('ApiException: 10')
+            ? 'Login Google belum terhubung. Periksa Firebase Android app, SHA-1, dan google-services.json.'
+            : 'Login Google gagal: $e';
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login Google gagal: $e')),
+          SnackBar(content: Text(message)),
         );
       }
     } finally {
@@ -114,8 +121,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       child: Scaffold(
         backgroundColor: AppColors.bg,
-        body: Container(
-          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
+        body: GlassBackground(
           child: SafeArea(
             child: Column(
               children: [
@@ -130,7 +136,12 @@ class _LoginPageState extends State<LoginPage> {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.fromLTRB(26, 10, 26, 24),
                     child: GlassCard(
-                      radius: 30,
+                      radius: 34,
+                      color: Colors.white.withValues(alpha: 0.56),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        width: 1.2,
+                      ),
                       padding: const EdgeInsets.fromLTRB(22, 24, 22, 22),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 7),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.64),
+                                  color: Colors.white.withValues(alpha: 0.46),
                                   borderRadius: BorderRadius.circular(20),
                                   border:
                                       Border.all(color: AppColors.glassLine),
@@ -182,6 +193,11 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: loading ? null : _loginWithGoogle,
                                 child: GlassCard(
                                   radius: 18,
+                                  color: Colors.white.withValues(alpha: 0.48),
+                                  border: Border.all(
+                                    color: Colors.white.withValues(alpha: 0.86),
+                                    width: 1.1,
+                                  ),
                                   padding: EdgeInsets.zero,
                                   child: SizedBox(
                                     height: 54,
