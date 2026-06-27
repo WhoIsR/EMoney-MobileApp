@@ -29,7 +29,7 @@ class AppColors {
   static const Color bg = Color(0xFFF7F8F4);
   static const Color mist = Color(0xFFEFF8F6);
   static const Color champagne = Color(0xFFFFF4DF);
-  static const Color glass = Color(0x99FFFFFF);
+  static const Color glass = Color(0x73FFFFFF);
   static const Color glassStrong = Color(0xCCFFFFFF);
   static const Color glassLine = Color(0xE6FFFFFF);
   static const Color white = Color(0xFFFFFFFF);
@@ -39,7 +39,7 @@ class AppColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     stops: [0.0, 0.6, 1.0],
-    colors: [Color(0xFFFFFFFF), Color(0xFFE8F7F4), Color(0xFFFFF2DB)],
+    colors: [Color(0xFFFFFFFF), Color(0xFFDFF5F1), Color(0xFFFFEBC4)],
   );
 
   static const LinearGradient accentGradient = LinearGradient(

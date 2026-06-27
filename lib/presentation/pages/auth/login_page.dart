@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.fromLTRB(26, 10, 26, 24),
                     child: GlassCard(
                       radius: 34,
-                      color: Colors.white.withValues(alpha: 0.56),
+                      color: Colors.white.withValues(alpha: 0.40),
                       border: Border.all(
                         color: Colors.white.withValues(alpha: 0.9),
                         width: 1.2,
@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 7),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.46),
+                                  color: Colors.white.withValues(alpha: 0.34),
                                   borderRadius: BorderRadius.circular(20),
                                   border:
                                       Border.all(color: AppColors.glassLine),
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: loading ? null : _loginWithGoogle,
                                 child: GlassCard(
                                   radius: 18,
-                                  color: Colors.white.withValues(alpha: 0.48),
+                                  color: Colors.white.withValues(alpha: 0.34),
                                   border: Border.all(
                                     color: Colors.white.withValues(alpha: 0.86),
                                     width: 1.1,

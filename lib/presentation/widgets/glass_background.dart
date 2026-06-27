@@ -21,7 +21,7 @@ class GlassBackground extends StatelessWidget {
             right: -100,
             child: _AmbientWash(
               size: 310,
-              color: AppColors.primaryLight.withValues(alpha: 0.45),
+              color: AppColors.primaryLight.withValues(alpha: 0.62),
             ),
           ),
           Positioned(
@@ -29,7 +29,7 @@ class GlassBackground extends StatelessWidget {
             bottom: 120,
             child: _AmbientWash(
               size: 280,
-              color: AppColors.champagne.withValues(alpha: 0.72),
+              color: AppColors.champagne.withValues(alpha: 0.92),
             ),
           ),
           Positioned(
@@ -37,7 +37,7 @@ class GlassBackground extends StatelessWidget {
             bottom: 40,
             child: _AmbientWash(
               size: 180,
-              color: AppColors.mist.withValues(alpha: 0.86),
+              color: AppColors.mist.withValues(alpha: 0.96),
             ),
           ),
           child,
