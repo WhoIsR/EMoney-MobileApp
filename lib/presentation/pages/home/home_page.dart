@@ -10,6 +10,7 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_card.dart';
 import '../../widgets/transaction_row.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,131 +39,137 @@ class _HomePageState extends State<HomePage> {
 
         return Scaffold(
           backgroundColor: AppColors.bg,
-          body: BlocBuilder<AccountBloc, AccountState>(
-            builder: (context, accountState) {
-              final balance = accountState is AccountLoaded
-                  ? accountState.account.balance
-                  : 0.0;
-              final txns = accountState is AccountLoaded
-                  ? accountState.transactions
-                  : <TransactionEntity>[];
-              final loading = accountState is AccountLoading;
+          body: Container(
+            decoration:
+                const BoxDecoration(gradient: AppColors.primaryGradient),
+            child: BlocBuilder<AccountBloc, AccountState>(
+              builder: (context, accountState) {
+                final balance = accountState is AccountLoaded
+                    ? accountState.account.balance
+                    : 0.0;
+                final txns = accountState is AccountLoaded
+                    ? accountState.transactions
+                    : <TransactionEntity>[];
+                final loading = accountState is AccountLoading;
 
-              return RefreshIndicator(
-                onRefresh: () async =>
-                    context.read<AccountBloc>().add(AccountRefreshRequested()),
-                color: AppColors.primary,
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    children: [
-                      // Gradient header
-                      Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          gradient: AppColors.primaryGradient,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(28),
-                            bottomRight: Radius.circular(28),
-                          ),
-                        ),
-                        padding: EdgeInsets.fromLTRB(20,
-                            MediaQuery.of(context).padding.top + 12, 20, 94),
-                        child: Row(
-                          children: [
-                            AppAvatar(
-                                name: fullName,
-                                size: 44,
-                                bg: Colors.white.withValues(alpha: 0.25)),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Selamat siang,',
-                                      style: TextStyle(
-                                        fontFamily: 'PlusJakartaSans',
-                                        fontSize: 13,
-                                        color: Colors.white70,
-                                      )),
-                                  Text('$firstName ',
-                                      style: const TextStyle(
-                                        fontFamily: 'PlusJakartaSans',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.white,
-                                        letterSpacing: -0.2,
-                                      )),
-                                ],
-                              ),
+                return RefreshIndicator(
+                  onRefresh: () async => context
+                      .read<AccountBloc>()
+                      .add(AccountRefreshRequested()),
+                  color: AppColors.primary,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(28),
+                              bottomRight: Radius.circular(28),
                             ),
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 42,
-                                  height: 42,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.18),
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                  child: const Icon(
-                                      Icons.notifications_outlined,
-                                      size: 21,
-                                      color: Colors.white),
+                          ),
+                          padding: EdgeInsets.fromLTRB(20,
+                              MediaQuery.of(context).padding.top + 12, 20, 94),
+                          child: Row(
+                            children: [
+                              AppAvatar(
+                                  name: fullName,
+                                  size: 44,
+                                  bg: Colors.white.withValues(alpha: 0.62)),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Selamat siang,',
+                                        style: TextStyle(
+                                          fontFamily: 'PlusJakartaSans',
+                                          fontSize: 13,
+                                          color: AppColors.slate500,
+                                        )),
+                                    Text('$firstName ',
+                                        style: const TextStyle(
+                                          fontFamily: 'PlusJakartaSans',
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w800,
+                                          color: AppColors.ink,
+                                          letterSpacing: -0.2,
+                                        )),
+                                  ],
                                 ),
-                                Positioned(
-                                  top: 10,
-                                  right: 11,
-                                  child: Container(
-                                    width: 8,
-                                    height: 8,
+                              ),
+                              Stack(
+                                children: [
+                                  Container(
+                                    width: 42,
+                                    height: 42,
                                     decoration: BoxDecoration(
-                                      color: AppColors.amber,
-                                      shape: BoxShape.circle,
+                                      color: AppColors.glass,
+                                      borderRadius: BorderRadius.circular(14),
                                       border: Border.all(
-                                          color: Colors.white, width: 2),
+                                          color: AppColors.glassLine),
+                                    ),
+                                    child: const Icon(
+                                        Icons.notifications_outlined,
+                                        size: 21,
+                                        color: AppColors.primary),
+                                  ),
+                                  Positioned(
+                                    top: 10,
+                                    right: 11,
+                                    child: Container(
+                                      width: 8,
+                                      height: 8,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.amber,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: AppColors.white, width: 2),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      // Balance Card (overlaps the header's bottom edge)
-                      Transform.translate(
-                        offset: const Offset(0, -46),
-                        child: Padding(
+                        // Balance Card (overlaps the header's bottom edge)
+                        Transform.translate(
+                          offset: const Offset(0, -46),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: _buildBalanceCard(balance, loading),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: _buildBalanceCard(balance, loading),
+                          child: _buildPointsRow(),
                         ),
-                      ),
-                      const SizedBox(height: 14),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildPointsRow(),
-                      ),
-                      const SizedBox(height: 18),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildFeatureGrid(),
-                      ),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildDeeplinkBanner(),
-                      ),
-                      const SizedBox(height: 22),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildTransactions(txns),
-                      ),
-                      const SizedBox(height: 24),
-                    ],
+                        const SizedBox(height: 18),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: _buildFeatureGrid(),
+                        ),
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: _buildDeeplinkBanner(),
+                        ),
+                        const SizedBox(height: 22),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: _buildTransactions(txns),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
       },
@@ -197,12 +204,8 @@ class _HomePageState extends State<HomePage> {
       },
     ];
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: AppColors.shadowCard,
-      ),
+    return GlassCard(
+      radius: 26,
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
       child: Column(
         children: [
@@ -228,8 +231,9 @@ class _HomePageState extends State<HomePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.primarySurface,
+                    color: Colors.white.withValues(alpha: 0.62),
                     borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.primaryBorder),
                   ),
                   child: const Row(
                     children: [
@@ -280,8 +284,10 @@ class _HomePageState extends State<HomePage> {
           ),
           Container(
             margin: const EdgeInsets.only(top: 16),
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.line2)),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: AppColors.line.withValues(alpha: 0.7)),
+              ),
             ),
             child: Row(
               children: actions.map((a) {
@@ -323,13 +329,9 @@ class _HomePageState extends State<HomePage> {
     return Row(
       children: [
         Expanded(
-          child: Container(
+          child: GlassCard(
+            radius: 18,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: AppColors.shadowSoft,
-            ),
             child: Row(
               children: [
                 const FeatureIcon(
@@ -361,13 +363,9 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: Container(
+          child: GlassCard(
+            radius: 18,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: AppColors.shadowSoft,
-            ),
             child: Row(
               children: [
                 const FeatureIcon(
@@ -416,12 +414,8 @@ class _HomePageState extends State<HomePage> {
       },
       {'icon': Icons.more_horiz_rounded, 'label': 'Lainnya', 'tone': 'slate'},
     ];
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: AppColors.shadowSoft,
-      ),
+    return GlassCard(
+      radius: 24,
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
       child: GridView.count(
         crossAxisCount: 4,
@@ -459,70 +453,80 @@ class _HomePageState extends State<HomePage> {
   Widget _buildDeeplinkBanner() {
     return GestureDetector(
       onTap: () => context.go('/merchant'),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0E1726), Color(0xFF21314D)],
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned(
-              right: -30,
-              top: -40,
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF5B9BFF).withValues(alpha: 0.18),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(Icons.link_rounded,
-                      size: 24, color: Color(0xFF5B9BFF)),
-                ),
-                const SizedBox(width: 13),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Coba bayar dari toko online',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          )),
-                      SizedBox(height: 2),
-                      Text('Simulasi checkout e-commerce → bayar via DKG',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 12.5,
-                            color: Colors.white70,
-                          )),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right_rounded,
-                    size: 20, color: Colors.white60),
+      child: GlassCard(
+        radius: 22,
+        padding: EdgeInsets.zero,
+        color: Colors.white.withValues(alpha: 0.72),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white.withValues(alpha: 0.84),
+                AppColors.mist.withValues(alpha: 0.82),
+                AppColors.champagne.withValues(alpha: 0.64),
               ],
             ),
-          ],
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                right: -30,
+                top: -40,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.primaryLight.withValues(alpha: 0.22),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: 46,
+                    height: 46,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.72),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: AppColors.glassLine),
+                    ),
+                    child: const Icon(Icons.link_rounded,
+                        size: 24, color: AppColors.primary),
+                  ),
+                  const SizedBox(width: 13),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Coba bayar dari toko online',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 14.5,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.ink,
+                            )),
+                        SizedBox(height: 2),
+                        Text('Simulasi checkout e-commerce → bayar via DKG',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 12.5,
+                              color: AppColors.slate500,
+                            )),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right_rounded,
+                      size: 20, color: AppColors.slate500),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -554,12 +558,9 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         const SizedBox(height: 13),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: AppColors.shadowSoft,
-          ),
+        GlassCard(
+          radius: 22,
+          padding: EdgeInsets.zero,
           child: txns.isEmpty
               ? const Padding(
                   padding: EdgeInsets.all(20),
