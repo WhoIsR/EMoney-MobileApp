@@ -14,7 +14,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.glass,
       elevation: 0,
       scrolledUnderElevation: 0,
       leading: onBack != null
@@ -37,7 +37,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Container(height: 1, color: AppColors.line2),
+        child: Container(height: 1, color: AppColors.glassLine),
       ),
     );
   }
