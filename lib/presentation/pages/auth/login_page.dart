@@ -22,6 +22,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const _webClientId =
+      '744293814908-ur086paso7ukabh6miepeva1bsqojsop.apps.googleusercontent.com';
+
   String _email = '';
   String _pw = '';
   bool _showPw = false;
@@ -33,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _gLoading = true);
     try {
       debugPrint('[Auth] Google sign-in: memulai...');
-      final googleSignIn = GoogleSignIn();
+      final googleSignIn = GoogleSignIn(serverClientId: _webClientId);
       // Keluar dari sesi Google yang ter-cache agar dialog pilih akun selalu muncul
       await googleSignIn.signOut();
       final googleUser = await googleSignIn.signIn();
