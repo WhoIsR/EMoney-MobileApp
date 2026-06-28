@@ -59,8 +59,8 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: GlassBackground(
+      body: GlassBackground(
+        child: SafeArea(
           child: Column(
           children: [
             Align(

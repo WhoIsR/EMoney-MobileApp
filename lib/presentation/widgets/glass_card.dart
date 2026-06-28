@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 
-/// A refined glassmorphism card with frosted glass effect and inner glow.
+/// A refined glassmorphism card with strong frosted glass effect.
 /// Layers: backdrop blur → translucent fill → subtle inner highlight → border.
+/// Fill is 42% opaque so coloured background washes easily show through.
 class GlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -23,11 +24,11 @@ class GlassCard extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.all(16),
     this.radius = 22,
-    this.color = AppColors.glass,
+    this.color = AppColors.glassFill,
     this.border,
     this.boxShadow,
     this.margin,
-    this.blur = 28,
+    this.blur = 40,
     this.elevated = false,
     this.onTap,
   });
@@ -46,109 +47,23 @@ class GlassCard extends StatelessWidget {
               color: color,
               borderRadius: BorderRadius.circular(radius),
               border:
-                  border ?? Border.all(color: AppColors.glassLine, width: 1.0),
+                  border ?? Border.all(color: AppColors.glassStroke, width: 1.0),
               boxShadow: boxShadow ??
                   (elevated ? AppColors.shadowPrimary : AppColors.shadowGlass),
             ),
-            child: _InnerGlow(radius: radius, child: child),
+            child: child,
           ),
         ),
       ),
     );
 
     if (onTap != null) {
-      card = _HoverLift(onTap: onTap!, child: card);
+      card = GestureDetector(
+        onTap: onTap,
+        child: card,
+      );
     }
 
     return card;
-  }
-}
-
-/// Subtle white inner glow at the top edge for depth.
-class _InnerGlow extends StatelessWidget {
-  final Widget child;
-  final double radius;
-  const _InnerGlow({required this.child, required this.radius});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        child,
-        // Thin highlight line at top
-        Positioned(
-          top: 0,
-          left: radius * 0.5,
-          right: radius * 0.5,
-          child: Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Colors.transparent,
-                  Colors.white.withValues(alpha: 0.62),
-                  Colors.transparent,
-                ],
-                stops: const [0.0, 0.5, 1.0],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Subtle scale + shadow lift on press (like Apple Music cards).
-class _HoverLift extends StatefulWidget {
-  final Widget child;
-  final VoidCallback onTap;
-  const _HoverLift({required this.child, required this.onTap});
-
-  @override
-  State<_HoverLift> createState() => _HoverLiftState();
-}
-
-class _HoverLiftState extends State<_HoverLift>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
-  late Animation<double> _scale;
-
-  @override
-  void initState() {
-    super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 150),
-    );
-    _scale = Tween<double>(begin: 1.0, end: 0.97).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic),
-    );
-  }
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onTap,
-      onTapDown: (_) => _ctrl.forward(),
-      onTapUp: (_) => _ctrl.reverse(),
-      onTapCancel: () => _ctrl.reverse(),
-      child: AnimatedBuilder(
-        animation: _scale,
-        builder: (context, child) => Transform.scale(
-          scale: _scale.value,
-          child: child,
-        ),
-        child: widget.child,
-      ),
-    );
   }
 }

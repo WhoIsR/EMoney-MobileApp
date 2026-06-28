@@ -57,7 +57,7 @@ class _SplashPageState extends State<SplashPage> {
                         AppLogo(size: 86),
                         SizedBox(height: 24),
                         Text(
-                          'Dompet Kampus',
+                          'Kashi',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 30,
@@ -68,7 +68,7 @@ class _SplashPageState extends State<SplashPage> {
                         ),
                         SizedBox(height: 2),
                         Text(
-                          'GLOBAL',
+                          'e-money',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 18,
@@ -79,7 +79,7 @@ class _SplashPageState extends State<SplashPage> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'Bayar, transfer, dan kelola uang kuliah\ndalam satu aplikasi yang aman.',
+                          'Bayar, transfer, dan kelola uang\ndalam satu aplikasi yang aman.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',

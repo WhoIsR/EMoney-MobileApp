@@ -148,7 +148,7 @@ class TransferConfirmPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Saldo DKG',
+                              Text('Saldo Kashi',
                                   style: TextStyle(
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 13.5,

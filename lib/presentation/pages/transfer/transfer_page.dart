@@ -44,7 +44,7 @@ class _TransferPageState extends State<TransferPage> {
               children: [
                 Row(
                   children: [
-                    ['dkg', 'Sesama DKG'],
+                    ['dkg', 'Sesama Kashi'],
                     ['bank', 'Ke Bank']
                   ].map((t) {
                     final active = _tab == t[0];

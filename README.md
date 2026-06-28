@@ -1,16 +1,13 @@
-# Dompet Kampus Global
+# Kashi
 
-Aplikasi E-Money Flutter untuk proyek UAS Aplikasi Mobile Lanjutan. Aplikasi
-ini menerima permintaan pembayaran dari FindYourFit melalui Deep Link,
-memverifikasi transaksi menggunakan PIN dan Two-Factor Authentication, lalu
-mengirim hasil pembayaran kembali ke aplikasi merchant.
+Aplikasi E-Money Flutter — bayar, transfer, dan kelola uang dalam satu aplikasi yang aman.
 
 ## Fitur
 
 - Login dan registrasi menggunakan Firebase Authentication.
 - Informasi saldo dan riwayat transaksi.
 - Top up, transfer, dan pembayaran.
-- Penerimaan Deep Link `dompetkampus://pay`.
+- Penerimaan Deep Link `kashi://pay`.
 - Konfirmasi detail pembayaran merchant.
 - Verifikasi PIN dan 2FA menggunakan SMTP OTP, TOTP, atau notifikasi.
 - Callback pembayaran ke `findyourfit://payment-callback`.

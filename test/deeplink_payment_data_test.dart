@@ -5,7 +5,7 @@ void main() {
   group('DeeplinkPaymentData', () {
     test('membaca data pembayaran dari deeplink merchant', () {
       final uri = Uri.parse(
-        'dompetkampus://pay'
+        'kashi://pay'
         '?merchant_id=MCH_FINDYOURFIT'
         '&merchant_name=FindYourFit'
         '&amount=150000'
@@ -26,7 +26,7 @@ void main() {
 
     test('menolak nominal pembayaran yang tidak positif', () {
       final uri = Uri.parse(
-        'dompetkampus://pay'
+        'kashi://pay'
         '?merchant_id=MCH_FINDYOURFIT'
         '&merchant_name=FindYourFit'
         '&amount=0',

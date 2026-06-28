@@ -4,6 +4,8 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_logo.dart';
+import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 const _orange = Color(0xFFFF6A2B);
 
@@ -23,7 +25,8 @@ class MerchantCheckoutPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: Column(
+      body: GlassBackground(
+        child: Column(
         children: [
           // TokoBelanja header (different brand!)
           Container(
@@ -77,14 +80,8 @@ class MerchantCheckoutPage extends StatelessWidget {
               child: Column(
                 children: [
                   // Order items
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: AppColors.shadowSoft,
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  GlassCard(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -182,15 +179,10 @@ class MerchantCheckoutPage extends StatelessWidget {
                           )),
                     ),
                   ),
-                  Container(
+                  GlassCard(
                     padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: AppColors.shadowSoft,
-                      border:
-                          Border.all(color: AppColors.primaryLight, width: 1.8),
-                    ),
+                    radius: 16,
+                    border: Border.all(color: AppColors.primaryLight, width: 1.8),
                     child: Row(
                       children: [
                         const AppLogo(size: 40),
@@ -199,7 +191,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Dompet Kampus Global',
+                              Text('Kashi',
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 14.5,
@@ -220,14 +212,9 @@ class MerchantCheckoutPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 14),
                   // Totals
-                  Container(
+                  GlassCard(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: AppColors.shadowSoft,
-                    ),
                     child: Column(
                       children: [
                         _TotalLine(
@@ -282,6 +269,7 @@ class MerchantCheckoutPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

@@ -32,16 +32,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, authState) {
-        final user = authState is AuthAuthenticated ? authState.user : null;
-        final firstName = user?.firstName ?? 'Kamu';
-        final fullName = user?.name ?? 'User';
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: GlassBackground(
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            final user = authState is AuthAuthenticated ? authState.user : null;
+            final firstName = user?.firstName ?? 'Kamu';
+            final fullName = user?.name ?? 'User';
 
-        return Scaffold(
-          backgroundColor: AppColors.bg,
-          body: GlassBackground(
-            child: BlocBuilder<AccountBloc, AccountState>(
+            return BlocBuilder<AccountBloc, AccountState>(
               builder: (context, accountState) {
                 final balance = accountState is AccountLoaded
                     ? accountState.account.balance
@@ -60,55 +60,55 @@ class _HomePageState extends State<HomePage> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
+                        SizedBox(height: MediaQuery.of(context).padding.top + 10),
                         // ── Header ──
                         _buildHeader(firstName, fullName),
-                        // ── Balance Card (overlaps header) ──
-                        Transform.translate(
-                          offset: const Offset(0, -32),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: _buildBalanceCard(balance, loading),
-                          ),
+                        // ── Balance Card ──
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: _buildBalanceCard(balance, loading),
                         ),
-                        const SizedBox(height: 26),
+                        const SizedBox(height: 22),
+                        // ── Points row ──
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildPointsRow(),
                         ),
                         const SizedBox(height: 20),
+                        // ── Feature grid ──
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildFeatureGrid(),
                         ),
                         const SizedBox(height: 20),
+                        // ── Deeplink banner ──
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildDeeplinkBanner(),
                         ),
                         const SizedBox(height: 24),
+                        // ── Transactions ──
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildTransactions(txns),
                         ),
-                        const SizedBox(height: 28),
+                        const SizedBox(height: 120), // room for floating navbar
                       ],
                     ),
                   ),
                 );
               },
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 
   // ── Header ──
   Widget _buildHeader(String firstName, String fullName) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(
-          20, MediaQuery.of(context).padding.top + 14, 20, 80),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 4, 20, 50),
       child: Row(
         children: [
           // Avatar
@@ -117,16 +117,17 @@ class _HomePageState extends State<HomePage> {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-      color: AppColors.primary.withValues(alpha: 0.12),
+                  color: AppColors.primary.withValues(alpha: 0.12),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: AppAvatar(
-                name: fullName,
-                size: 44,
-                bg: Colors.white.withValues(alpha: 0.84)),
+              name: fullName,
+              size: 44,
+              bg: Colors.white.withValues(alpha: 0.84),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -157,9 +158,9 @@ class _HomePageState extends State<HomePage> {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: AppColors.glass,
+                  color: AppColors.glassFill,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.glassLine),
+                  border: Border.all(color: AppColors.glassStroke),
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primary.withValues(alpha: 0.06),
@@ -180,8 +181,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     color: AppColors.amber,
                     shape: BoxShape.circle,
-                    border:
-                        Border.all(color: AppColors.white, width: 2),
+                    border: Border.all(color: AppColors.white, width: 2),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.amber.withValues(alpha: 0.4),
@@ -199,230 +199,249 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ── Balance Card (gradient hero card) ──
+  // ── Balance Card (iOS Wallet double-bezel style) ──
   Widget _buildBalanceCard(double balance, bool loading) {
     final actions = [
-      {'icon': Icons.north_rounded, 'label': 'Top Up', 'tone': 'blue', 'route': '/topup'},
-      {'icon': Icons.send_rounded, 'label': 'Transfer', 'tone': 'green', 'route': '/transfer'},
-      {'icon': Icons.qr_code_rounded, 'label': 'Bayar', 'tone': 'violet', 'route': '/payment'},
-      {'icon': Icons.south_rounded, 'label': 'Tarik', 'tone': 'amber', 'route': '/topup'},
+      {'icon': Icons.north_rounded, 'label': 'Top Up', 'route': '/topup'},
+      {'icon': Icons.send_rounded, 'label': 'Transfer', 'route': '/transfer'},
+      {'icon': Icons.qr_code_rounded, 'label': 'Bayar', 'route': '/payment'},
+      {'icon': Icons.south_rounded, 'label': 'Tarik', 'route': '/topup'},
     ];
 
     return Container(
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        gradient: AppColors.walletGradient,
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.86)),
+        color: Colors.white.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.25),
+          width: 1.1,
+        ),
         boxShadow: AppColors.shadowGlass,
       ),
-      child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
-            child: Column(
-              children: [
-                // ── Label row ──
-                Row(
-                  children: [
-                    Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.72),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const AppLogo(size: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: AppColors.walletGradient,
+          borderRadius: BorderRadius.circular(26),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.16),
+            width: 1.0,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 18, 16, 6),
+          child: Column(
+            children: [
+              // ── Label row ──
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    const SizedBox(width: 8),
-                    const Text('Saldo Kashi',
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.slate500,
-                        )),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () => context.go('/topup'),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: AppColors.primarySurface.withValues(alpha: 0.86),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                              color: AppColors.primaryBorder.withValues(alpha: 0.80)),
-                        ),
-                        child: const Row(
-                          children: [
-                            Icon(Icons.add_rounded,
-                                size: 14, color: AppColors.primaryDark),
-                            SizedBox(width: 4),
-                            Text('Isi Saldo',
-                                style: TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  color: AppColors.primaryDark,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12.5,
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                // ── Amount ──
-                Row(
-                  children: [
-                    Text(
-                      _hideBalance
-                          ? CurrencyFormatter.maskBalance()
-                          : CurrencyFormatter.format(balance),
-                      style: const TextStyle(
+                    child: const AppLogo(size: 20),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text('Saldo Kashi',
+                      style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontSize: 30,
+                        fontSize: 13,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.ink,
-                        letterSpacing: -0.5,
+                        color: Colors.white70,
+                      )),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () => context.go('/topup'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.95)),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    IconButton(
-                      icon: Icon(
-                          _hideBalance
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          size: 20,
-                          color: AppColors.slate500),
-                      onPressed: () =>
-                          setState(() => _hideBalance = !_hideBalance),
-                      padding: const EdgeInsets.all(4),
-                      constraints: const BoxConstraints(),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 18),
-                // ── Action buttons ──
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                          color: AppColors.line.withValues(alpha: 0.75)),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.add_rounded,
+                              size: 14, color: AppColors.primary),
+                          SizedBox(width: 4),
+                          Text('Isi Saldo',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 12.0,
+                              )),
+                        ],
+                      ),
                     ),
                   ),
-                  child: Row(
-                    children: actions.map((a) {
-                      return Expanded(
-                        child: GestureDetector(
-                          onTap: () => context.go(a['route'] as String),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 10),
-                            child: Column(
-                              children: [
-                                FeatureIcon(
-                                  icon: a['icon'] as IconData,
-                                  tone: a['tone'] as String,
-                                  size: 44,
-                                  iconSize: 20,
-                                ),
-                                const SizedBox(height: 6),
-                                Text(a['label'] as String,
-                                    style: const TextStyle(
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontSize: 11.5,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.slate600,
-                                    )),
-                              ],
-                            ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              // ── Amount ──
+              Row(
+                children: [
+                  Text(
+                    _hideBalance
+                        ? CurrencyFormatter.maskBalance()
+                        : CurrencyFormatter.format(balance),
+                    style: const TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 30,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      letterSpacing: -0.8,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  IconButton(
+                    icon: Icon(
+                        _hideBalance
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        size: 20,
+                        color: Colors.white60),
+                    onPressed: () =>
+                        setState(() => _hideBalance = !_hideBalance),
+                    padding: const EdgeInsets.all(4),
+                    constraints: const BoxConstraints(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              // ── Action buttons ──
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                        color: Colors.white.withValues(alpha: 0.12)),
+                  ),
+                ),
+                child: Row(
+                  children: actions.map((a) {
+                    return Expanded(
+                      child: GestureDetector(
+                        onTap: () => context.go(a['route'] as String),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            children: [
+                              FeatureIcon(
+                                icon: a['icon'] as IconData,
+                                tone: 'glass',
+                                size: 44,
+                                iconSize: 20,
+                              ),
+                              const SizedBox(height: 6),
+                              Text(a['label'] as String,
+                                  style: const TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white70,
+                                  )),
+                            ],
                           ),
                         ),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
         ),
+      ),
     );
   }
 
   // ── Points row ──
   Widget _buildPointsRow() {
-    return Row(
-      children: [
-        Expanded(
-          child: GlassCard(
-            radius: 18,
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            child: Row(
-              children: [
-                const FeatureIcon(
-                    icon: Icons.star_outline_rounded,
-                    tone: 'amber',
-                    size: 38,
-                    iconSize: 19),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Reward Poin',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 11.5,
-                            color: AppColors.slate500,
-                            fontWeight: FontWeight.w600)),
-                    Text('1.250',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink)),
-                  ],
-                ),
-              ],
+    return SizedBox(
+      height: 64,
+      child: Row(
+        children: [
+          Expanded(
+            child: GlassCard(
+              radius: 18,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
+              child: Row(
+                children: [
+                  const FeatureIcon(
+                      icon: Icons.star_outline_rounded,
+                      tone: 'amber',
+                      size: 38,
+                      iconSize: 19),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('Reward Poin',
+                          style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 11.5,
+                              color: AppColors.slate500,
+                              fontWeight: FontWeight.w600)),
+                      Text('1.250',
+                          style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.ink)),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: GlassCard(
-            radius: 18,
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            child: Row(
-              children: [
-                const FeatureIcon(
-                    icon: Icons.qr_code_rounded,
-                    tone: 'green',
-                    size: 38,
-                    iconSize: 19),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('QR Instan',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 11.5,
-                            color: AppColors.slate500,
-                            fontWeight: FontWeight.w600)),
-                    Text('Aktif',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink)),
-                  ],
-                ),
-              ],
+          const SizedBox(width: 10),
+          Expanded(
+            child: GlassCard(
+              radius: 18,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
+              child: Row(
+                children: [
+                  const FeatureIcon(
+                      icon: Icons.qr_code_rounded,
+                      tone: 'green',
+                      size: 38,
+                      iconSize: 19),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('QR Instan',
+                          style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 11.5,
+                              color: AppColors.slate500,
+                              fontWeight: FontWeight.w600)),
+                      Text('Aktif',
+                          style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.ink)),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  // ── Feature grid ──
+  // ── Feature grid (4 columns, perfectly centered) ──
   Widget _buildFeatureGrid() {
     final features = [
       {'icon': Icons.smartphone_outlined, 'label': 'Pulsa', 'tone': 'blue'},
@@ -434,12 +453,17 @@ class _HomePageState extends State<HomePage> {
       {'icon': Icons.favorite_outline_rounded, 'label': 'Donasi', 'tone': 'amber'},
       {'icon': Icons.more_horiz_rounded, 'label': 'Lainnya', 'tone': 'slate'},
     ];
+    final screenWidth = MediaQuery.of(context).size.width;
+    final availableWidth = screenWidth - 32; // 16px padding each side
+    // 4 columns: 3 gaps of 10px each
+    final itemWidth = (availableWidth - 30) / 4;
+
     return Wrap(
       spacing: 10,
       runSpacing: 10,
       children: features.map((f) {
         return SizedBox(
-          width: (MediaQuery.of(context).size.width - 42) / 4,
+          width: itemWidth,
           child: GlassCard(
             radius: 20,
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 0),
@@ -483,8 +507,8 @@ class _HomePageState extends State<HomePage> {
               end: Alignment.bottomRight,
               colors: [
                 Colors.white.withValues(alpha: 0.84),
-                AppColors.mist.withValues(alpha: 0.82),
-                AppColors.champagne.withValues(alpha: 0.64),
+                AppColors.washLavender.withValues(alpha: 0.32),
+                AppColors.washPeach.withValues(alpha: 0.24),
               ],
             ),
             borderRadius: BorderRadius.circular(20),
@@ -513,7 +537,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.72),
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.glassLine),
+                      border: Border.all(color: AppColors.glassStroke),
                     ),
                     child: const Icon(Icons.link_rounded,
                         size: 24, color: AppColors.primary),
@@ -620,7 +644,7 @@ class _HomePageState extends State<HomePage> {
     final hour = DateTime.now().hour;
     if (hour < 11) return 'Selamat pagi,';
     if (hour < 15) return 'Selamat siang,';
-    if (hour < 19) return 'Selamat sore,';
+    if (hour < 18) return 'Selamat sore,';
     return 'Selamat malam,';
   }
 }

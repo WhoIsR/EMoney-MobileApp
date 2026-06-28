@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 
-/// A rich ambient glassmorphism background with layered gradient washes
-/// that create depth and flow behind frosted glass elements.
-/// Updated with more vibrant, defined washes so glass effects pop.
+/// A warm, premium ambient background with vivid pastel-coloured washes
+/// that give real depth behind frosted glass elements.
+/// The gradient is deliberately colourful so BackdropFilter in GlassCard
+/// has visible content to blur — creating a true frosted look.
 class GlassBackground extends StatelessWidget {
   final Widget child;
   final bool animate;
@@ -22,57 +23,62 @@ class GlassBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final s = MediaQuery.of(context).size;
+
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: dark ? AppColors.darkHeroGradient : AppColors.primaryGradient,
+        gradient: dark ? AppColors.walletGradient : AppColors.primaryGradient,
       ),
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // ── Large vibrant ambient wash (top-right) ──
-          _buildWash(
-            top: size.height * -0.08,
-            right: size.width * -0.12,
-            size: min(size.width * 1.3, 420),
-            color: AppColors.primaryLight.withValues(alpha: 0.22),
-            animate: animate,
+          // ── Lavender blob (top-right) ──
+          _wash(
+            top: s.height * -0.06,
+            right: s.width * -0.08,
+            size: min(s.width * 1.2, 400),
+            color: AppColors.washLavender,
+            opacity: 0.55,
           ),
-          // ── Deep navy wash (mid-left) ──
-          _buildWash(
-            left: size.width * -0.15,
-            top: size.height * 0.22,
-            size: min(size.width * 1.0, 340),
-            color: AppColors.champagne.withValues(alpha: 0.42),
-            animate: animate,
+          // ── Peach blob (mid-left) ──
+          _wash(
+            left: s.width * -0.12,
+            top: s.height * 0.20,
+            size: min(s.width * 1.0, 340),
+            color: AppColors.washPeach,
+            opacity: 0.55,
           ),
-          // ── Bright purple accent (bottom-right) ──
-          _buildWash(
-            right: size.width * -0.10,
-            bottom: size.height * -0.06,
-            size: min(size.width * 0.9, 300),
-            color: AppColors.accentSurface.withValues(alpha: 0.32),
+          // ── Teal blob (bottom-right) ──
+          _wash(
+            right: s.width * -0.06,
+            bottom: s.height * -0.04,
+            size: min(s.width * 0.9, 300),
+            color: AppColors.washTeal,
+            opacity: 0.50,
           ),
-          // ── Warm amber glow (top-left) ──
-          _buildWash(
-            left: size.width * -0.05,
-            top: size.height * 0.08,
-            size: 180,
-            color: AppColors.white.withValues(alpha: 0.48),
+          // ── Amber blob (top-left small) ──
+          _wash(
+            left: s.width * -0.02,
+            top: s.height * 0.06,
+            size: 160,
+            color: AppColors.washAmber,
+            opacity: 0.45,
           ),
-          // ── Small bright accent (mid-right) ──
-          _buildWash(
-            right: size.width * 0.08,
-            top: size.height * 0.42,
-            size: 130,
-            color: AppColors.greenSurface.withValues(alpha: 0.36),
+          // ── Rose blob (mid-right) ──
+          _wash(
+            right: s.width * 0.06,
+            top: s.height * 0.40,
+            size: 140,
+            color: AppColors.washRose,
+            opacity: 0.45,
           ),
-          // ── Soft mist (bottom-center) ──
-          _buildWash(
-            left: size.width * 0.25,
-            bottom: size.height * 0.08,
-            size: 150,
-            color: AppColors.mist.withValues(alpha: 0.46),
+          // ── Soft blue wash (bottom-center) ──
+          _wash(
+            left: s.width * 0.22,
+            bottom: s.height * 0.06,
+            size: 160,
+            color: AppColors.washBlue,
+            opacity: 0.45,
           ),
           child,
         ],
@@ -80,23 +86,23 @@ class GlassBackground extends StatelessWidget {
     );
   }
 
-  Widget _buildWash({
+  Widget _wash({
     double? left,
     double? top,
     double? right,
     double? bottom,
     required double size,
     required Color color,
-    bool animate = false,
+    double opacity = 0.35,
+    bool anim = true,
   }) {
     return Positioned(
       left: left,
       top: top,
       right: right,
       bottom: bottom,
-      child: animate
-          ? _AnimatedWash(size: size, color: color)
-          : _StaticWash(size: size, color: color),
+      child: anim ? _AnimatedWash(size: size, color: color, opacity: opacity)
+          : _StaticWash(size: size, color: color, opacity: opacity),
     );
   }
 }
@@ -104,17 +110,18 @@ class GlassBackground extends StatelessWidget {
 class _StaticWash extends StatelessWidget {
   final double size;
   final Color color;
-  const _StaticWash({required this.size, required this.color});
+  final double opacity;
+  const _StaticWash({required this.size, required this.color, required this.opacity});
 
   @override
   Widget build(BuildContext context) {
     return ImageFiltered(
-      imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+      imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
       child: Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: color,
+          color: color.withValues(alpha: opacity),
           shape: BoxShape.circle,
         ),
       ),
@@ -122,12 +129,11 @@ class _StaticWash extends StatelessWidget {
   }
 }
 
-/// A subtle floating animation that drifts the blob slowly
-/// for a living-background feel.
 class _AnimatedWash extends StatefulWidget {
   final double size;
   final Color color;
-  const _AnimatedWash({required this.size, required this.color});
+  final double opacity;
+  const _AnimatedWash({required this.size, required this.color, required this.opacity});
 
   @override
   State<_AnimatedWash> createState() => _AnimatedWashState();
@@ -146,17 +152,15 @@ class _AnimatedWashState extends State<_AnimatedWash>
     final seed = widget.size;
     _ctrl = AnimationController(
       vsync: this,
-      duration: Duration(
-        milliseconds: (6000 + (seed % 4000)).toInt(),
-      ),
+      duration: Duration(milliseconds: (6000 + (seed % 4000)).toInt()),
     );
-    _dx = Tween<double>(begin: 0, end: 8 + (seed % 10)).animate(
+    _dx = Tween<double>(begin: 0, end: 10 + (seed % 10)).animate(
       CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine),
     );
-    _dy = Tween<double>(begin: 0, end: 6 + (seed % 8)).animate(
+    _dy = Tween<double>(begin: 0, end: 8 + (seed % 8)).animate(
       CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine),
     );
-    _scale = Tween<double>(begin: 1.0, end: 1.06).animate(
+    _scale = Tween<double>(begin: 1.0, end: 1.08).animate(
       CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine),
     );
     _ctrl.repeat(reverse: true);
@@ -174,12 +178,9 @@ class _AnimatedWashState extends State<_AnimatedWash>
       animation: _ctrl,
       builder: (context, child) => Transform.translate(
         offset: Offset(_dx.value, _dy.value),
-        child: Transform.scale(
-          scale: _scale.value,
-          child: child,
-        ),
+        child: Transform.scale(scale: _scale.value, child: child),
       ),
-      child: _StaticWash(size: widget.size, color: widget.color),
+      child: _StaticWash(size: widget.size, color: widget.color, opacity: widget.opacity),
     );
   }
 }

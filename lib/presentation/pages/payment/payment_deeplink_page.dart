@@ -11,7 +11,7 @@ import '../../widgets/glass_background.dart';
 import '../../widgets/glass_card.dart';
 
 /// Halaman konfirmasi pembayaran yang dibuka dari deeplink merchant
-/// (`dompetkampus://pay?...` atau `https://dompetkampus.app/pay?...`).
+/// (`kashi://pay?...` atau `https://kashi.app/pay?...`).
 ///
 /// `data` bisa berupa:
 ///  - [DeeplinkPaymentData] → tampilkan ringkasan & tombol bayar
@@ -184,7 +184,7 @@ class PaymentDeeplinkPage extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Dompet Kampus Global',
+                                    Text('Kashi',
                                         style: TextStyle(
                                           fontFamily: 'PlusJakartaSans',
                                           fontSize: 14.5,

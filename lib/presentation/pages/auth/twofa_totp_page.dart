@@ -8,6 +8,7 @@ import '../../blocs/auth/otp_bloc.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/code_input.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
 
 class TwoFATotpPage extends StatefulWidget {
   final String mode;
@@ -79,40 +80,41 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
-                  onPressed: () {
-                    if (_step == 'code' && widget.mode == 'setup') {
-                      setState(() => _step = 'scan');
-                    } else {
-                      context
-                          .go(widget.mode == 'setup' ? '/setup-2fa' : '/login');
-                    }
-                  },
+        body: GlassBackground(
+          child: SafeArea(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                    onPressed: () {
+                      if (_step == 'code' && widget.mode == 'setup') {
+                        setState(() => _step = 'scan');
+                      } else {
+                        context
+                            .go(widget.mode == 'setup' ? '/setup-2fa' : '/login');
+                      }
+                    },
+                  ),
                 ),
-              ),
-              Expanded(
-                child: BlocBuilder<OtpBloc, OtpState>(
-                  builder: (context, state) {
-                    if (state is OtpLoading && _step == 'loading') {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: AppColors.primary));
-                    }
-                    if (_step == 'scan' && state is OtpTotpSetup) {
-                      return _buildScanStep(state, context);
-                    }
-                    return _buildCodeStep(context);
-                  },
+                Expanded(
+                  child: BlocBuilder<OtpBloc, OtpState>(
+                    builder: (context, state) {
+                      if (state is OtpLoading && _step == 'loading') {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                                color: AppColors.primary));
+                      }
+                      if (_step == 'scan' && state is OtpTotpSetup) {
+                        return _buildScanStep(state, context);
+                      }
+                      return _buildCodeStep(context);
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

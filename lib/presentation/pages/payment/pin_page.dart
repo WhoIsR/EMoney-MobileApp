@@ -14,6 +14,7 @@ import '../../widgets/code_input.dart';
 import '../../widgets/feature_icon.dart';
 import '../../widgets/pin_pad.dart';
 import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 enum _Step { pin, otp }
 
@@ -182,7 +183,7 @@ class _PinPageState extends State<PinPage> {
                     'Saldo setelah',
                     CurrencyFormatter.format(result.balanceAfter)
                   ],
-                  ['Ref', 'DKG${result.transactionId}'],
+                  ['Ref', 'KSH${result.transactionId}'],
                 ],
               });
             } else if (state is PaymentTopupSuccess) {
@@ -255,8 +256,8 @@ class _PinPageState extends State<PinPage> {
       ],
       child: Scaffold(
         backgroundColor: AppColors.bg,
-        body: SafeArea(
-          child: GlassBackground(
+        body: GlassBackground(
+          child: SafeArea(
             child: Column(
             children: [
               Align(
@@ -412,12 +413,10 @@ class _PinPageState extends State<PinPage> {
                 )),
           ],
           const SizedBox(height: 18),
-          Container(
+          GlassCard(
             padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-            decoration: BoxDecoration(
-              color: AppColors.primarySurface,
-              borderRadius: BorderRadius.circular(12),
-            ),
+            radius: 12,
+            boxShadow: [],
             child: Row(
               children: [
                 const Icon(DkgIcons.shieldCheck,
