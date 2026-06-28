@@ -6,6 +6,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../widgets/app_badge.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_card.dart';
 
 class PaymentQrPage extends StatefulWidget {
   const PaymentQrPage({super.key});
@@ -225,12 +226,8 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
       right: 0,
       child: GestureDetector(
         onTap: () {},
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(26), topRight: Radius.circular(26)),
-          ),
+        child: GlassCard(
+          radius: 26,
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 26),
           child: Column(
             children: [

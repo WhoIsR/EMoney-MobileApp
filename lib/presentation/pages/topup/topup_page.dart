@@ -7,6 +7,8 @@ import '../../blocs/payment/payment_bloc.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_top_bar.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 class TopUpPage extends StatefulWidget {
   const TopUpPage({super.key});
@@ -65,11 +67,12 @@ class _TopUpPageState extends State<TopUpPage> {
         backgroundColor: AppColors.bg,
         appBar:
             AppTopBar(title: 'Isi Saldo', onBack: () => context.go('/home')),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+        body: GlassBackground(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -134,12 +137,9 @@ class _TopUpPageState extends State<TopUpPage> {
                             color: AppColors.slate400,
                           )),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: AppColors.shadowSoft,
-                      ),
+                    GlassCard(
+                      radius: 18,
+                      padding: EdgeInsets.zero,
                       child: Column(
                         children: _methods.asMap().entries.map((entry) {
                           final i = entry.key;
@@ -235,6 +235,7 @@ class _TopUpPageState extends State<TopUpPage> {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

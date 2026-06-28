@@ -576,9 +576,19 @@ class _HomePageState extends State<HomePage> {
                       .toList()
                       .asMap()
                       .entries
-                      .map((e) =>
-                          TransactionRow(txn: e.value, divider: e.key > 0))
-                      .toList(),
+                       .map((e) => TransactionRow(
+                             icon: e.value.isCredit ? 'topup' : 'send',
+                             tone: e.value.isCredit ? 'green' : 'blue',
+                             title: e.value.description.isEmpty
+                                 ? (e.value.isCredit ? 'Top Up' : 'Transaksi')
+                                 : e.value.description,
+                             subtitle:
+                                 '${e.value.createdAt.day}/${e.value.createdAt.month}/${e.value.createdAt.year}',
+                             amount: CurrencyFormatter.format(e.value.amount),
+                             isCredit: e.value.isCredit,
+                             divider: e.key > 0,
+                           ))
+                       .toList(),
                 ),
         ),
       ],

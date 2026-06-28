@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/transaction_entity.dart';
 import '../../blocs/account/account_bloc.dart';
 import '../../widgets/transaction_row.dart';
+import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -24,16 +27,18 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.fromLTRB(
-                20, MediaQuery.of(context).padding.top + 12, 20, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Riwayat',
+      body: GlassBackground(
+        child: Column(
+          children: [
+            GlassCard(
+              radius: 0,
+              color: AppColors.glass,
+              padding: EdgeInsets.fromLTRB(
+                  20, MediaQuery.of(context).padding.top + 12, 20, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Riwayat',
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 22,
@@ -130,18 +135,32 @@ class _HistoryPageState extends State<HistoryPage> {
                                         color: AppColors.slate400,
                                       )),
                                 ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: AppColors.shadowSoft,
-                                  ),
+                                GlassCard(
+                                  padding: EdgeInsets.zero,
+                                  radius: 20,
                                   child: Column(
                                     children: txns
                                         .asMap()
                                         .entries
                                         .map((e) => TransactionRow(
-                                            txn: e.value, divider: e.key > 0))
+                                              icon: e.value.isCredit
+                                                  ? 'topup'
+                                                  : 'send',
+                                              tone: e.value.isCredit
+                                                  ? 'green'
+                                                  : 'blue',
+                                              title: e.value.description.isEmpty
+                                                  ? (e.value.isCredit
+                                                      ? 'Top Up'
+                                                      : 'Transaksi')
+                                                  : e.value.description,
+                                              subtitle:
+                                                  '${e.value.createdAt.day}/${e.value.createdAt.month}/${e.value.createdAt.year}',
+                                              amount: CurrencyFormatter.format(
+                                                  e.value.amount),
+                                              isCredit: e.value.isCredit,
+                                              divider: e.key > 0,
+                                            ))
                                         .toList(),
                                   ),
                                 ),
@@ -156,6 +175,7 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
           ),
         ],
+        ),
       ),
     );
   }

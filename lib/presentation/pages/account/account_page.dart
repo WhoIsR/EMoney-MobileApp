@@ -6,6 +6,8 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
 import '../../widgets/app_badge.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -23,7 +25,8 @@ class AccountPage extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppColors.bg,
-          body: SingleChildScrollView(
+          body: GlassBackground(
+            child: SingleChildScrollView(
             child: Column(
               children: [
                 // Header
@@ -107,12 +110,9 @@ class AccountPage extends StatelessWidget {
                               color: AppColors.slate400,
                             )),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: AppColors.shadowSoft,
-                        ),
+                      GlassCard(
+                        padding: EdgeInsets.zero,
+                        radius: 18,
                         child: Column(
                           children: [
                             _Row(
@@ -157,12 +157,9 @@ class AccountPage extends StatelessWidget {
                               color: AppColors.slate400,
                             )),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: AppColors.shadowSoft,
-                        ),
+                      GlassCard(
+                        padding: EdgeInsets.zero,
+                        radius: 18,
                         child: Column(
                           children: [
                             _Row(
@@ -191,14 +188,9 @@ class AccountPage extends StatelessWidget {
                       GestureDetector(
                         onTap: () =>
                             context.read<AuthBloc>().add(AuthLogoutRequested()),
-                        child: Container(
-                          width: double.infinity,
+                        child: GlassCard(
                           padding: const EdgeInsets.symmetric(vertical: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: AppColors.shadowSoft,
-                          ),
+                          radius: 16,
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -231,6 +223,7 @@ class AccountPage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
           ),
         );
       },

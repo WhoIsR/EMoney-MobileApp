@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -50,13 +52,23 @@ class _SuccessCheckState extends State<SuccessCheck>
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Pulse ring
-            Container(
-              width: widget.size,
-              height: widget.size,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: bgColor,
+            // Glass frosted ring
+            ClipRRect(
+              borderRadius: BorderRadius.circular(widget.size / 2),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                child: Container(
+                  width: widget.size,
+                  height: widget.size,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: bgColor.withValues(alpha: 0.7),
+                    border: Border.all(
+                      color: color.withValues(alpha: 0.15),
+                      width: 0.5,
+                    ),
+                  ),
+                ),
               ),
             ),
             // Inner circle with check
@@ -64,8 +76,22 @@ class _SuccessCheckState extends State<SuccessCheck>
               width: widget.size * 0.66,
               height: widget.size * 0.66,
               decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    color,
+                    color.withValues(alpha: 0.85),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 shape: BoxShape.circle,
-                color: color,
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withValues(alpha: 0.35),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: Center(
                 child: AnimatedBuilder(

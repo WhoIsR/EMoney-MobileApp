@@ -16,28 +16,40 @@ class GlassBackground extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
+          // Top-right warm ambient wash
           Positioned(
-            top: -90,
-            right: -100,
+            top: -80,
+            right: -60,
             child: _AmbientWash(
-              size: 310,
-              color: AppColors.primaryLight.withValues(alpha: 0.62),
+              size: 320,
+              color: AppColors.accentLight.withValues(alpha: 0.35),
             ),
           ),
+          // Center-left cool ambient wash
           Positioned(
-            left: -120,
-            bottom: 120,
+            left: -100,
+            top: 200,
             child: _AmbientWash(
-              size: 280,
-              color: AppColors.champagne.withValues(alpha: 0.92),
+              size: 260,
+              color: AppColors.primaryLight.withValues(alpha: 0.20),
             ),
           ),
+          // Bottom-right soft glow
           Positioned(
-            right: 28,
-            bottom: 40,
+            right: -40,
+            bottom: -60,
             child: _AmbientWash(
-              size: 180,
-              color: AppColors.mist.withValues(alpha: 0.96),
+              size: 240,
+              color: AppColors.champagne.withValues(alpha: 0.70),
+            ),
+          ),
+          // Small accent blip top-left
+          Positioned(
+            left: 40,
+            top: 100,
+            child: _AmbientWash(
+              size: 120,
+              color: AppColors.primarySurface.withValues(alpha: 0.50),
             ),
           ),
           child,
@@ -56,7 +68,7 @@ class _AmbientWash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ImageFiltered(
-      imageFilter: ImageFilter.blur(sigmaX: 44, sigmaY: 44),
+      imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
       child: Container(
         width: size,
         height: size,

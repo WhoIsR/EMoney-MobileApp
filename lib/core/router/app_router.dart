@@ -11,7 +11,6 @@ import '../../presentation/pages/auth/login_page.dart';
 import '../../presentation/pages/auth/register_page.dart';
 import '../../presentation/pages/auth/setup_2fa_page.dart';
 import '../../presentation/pages/auth/twofa_notif_page.dart';
-import '../../presentation/pages/auth/twofa_smtp_page.dart';
 import '../../presentation/pages/auth/twofa_totp_page.dart';
 import '../../presentation/pages/auth/verify_email_page.dart';
 import '../../presentation/pages/history/history_page.dart';
@@ -63,7 +62,7 @@ class AppRouter {
         builder: (_, state) {
           final extra = state.extra as Map<String, dynamic>?;
           return _withOtp(
-              TwoFASmtpPage(mode: extra?['mode'] as String? ?? 'login'));
+              TwoFATotpPage(mode: extra?['mode'] as String? ?? 'setup'));
         },
       ),
       GoRoute(

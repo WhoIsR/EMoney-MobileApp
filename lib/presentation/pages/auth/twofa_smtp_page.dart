@@ -8,6 +8,7 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/otp_bloc.dart';
 import '../../widgets/code_input.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
 
 class TwoFASmtpPage extends StatefulWidget {
   final String mode; // 'login' or 'setup'
@@ -90,9 +91,10 @@ class _TwoFASmtpPageState extends State<TwoFASmtpPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         body: SafeArea(
-          child: Column(
+          child: GlassBackground(
+            child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
@@ -202,6 +204,7 @@ class _TwoFASmtpPageState extends State<TwoFASmtpPage> {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

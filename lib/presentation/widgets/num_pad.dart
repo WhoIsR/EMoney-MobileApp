@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -9,18 +11,10 @@ class NumPad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final keys = [
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '000',
-      '0',
-      'del'
+      '1', '2', '3',
+      '4', '5', '6',
+      '7', '8', '9',
+      '000', '0', 'del'
     ];
     return GridView.count(
       crossAxisCount: 3,
@@ -46,12 +40,22 @@ class NumPad extends StatelessWidget {
         return GestureDetector(
           onTap: () => onKey(k),
           behavior: HitTestBehavior.opaque,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(14),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.glass.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.15),
+                    width: 0.5,
+                  ),
+                ),
+                child: Center(child: child),
+              ),
             ),
-            child: Center(child: child),
           ),
         );
       }).toList(),

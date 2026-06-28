@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -13,11 +15,34 @@ class AppLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     const fontFamily = 'PlusJakartaSans';
 
-    Widget icon = Image.asset(
-      'assets/images/logo-dompet.png',
-      width: size,
-      height: size,
-      fit: BoxFit.contain,
+    // Wrap icon in glass effect
+    Widget icon = ClipRRect(
+      borderRadius: BorderRadius.circular(size * 0.28),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: light
+                ? Colors.white.withValues(alpha: 0.12)
+                : AppColors.glass.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(size * 0.28),
+            border: Border.all(
+              color: light
+                  ? Colors.white.withValues(alpha: 0.20)
+                  : AppColors.glassLine,
+              width: 0.5,
+            ),
+          ),
+          child: Image.asset(
+            'assets/images/logo-dompet.png',
+            width: size * 0.7,
+            height: size * 0.7,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
     );
 
     if (!withText) return icon;

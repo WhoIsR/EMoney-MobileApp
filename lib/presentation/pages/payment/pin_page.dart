@@ -13,6 +13,7 @@ import '../../blocs/payment/payment_bloc.dart';
 import '../../widgets/code_input.dart';
 import '../../widgets/feature_icon.dart';
 import '../../widgets/pin_pad.dart';
+import '../../widgets/glass_background.dart';
 
 enum _Step { pin, otp }
 
@@ -253,9 +254,10 @@ class _PinPageState extends State<PinPage> {
         ),
       ],
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bg,
         body: SafeArea(
-          child: Column(
+          child: GlassBackground(
+            child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
@@ -307,6 +309,7 @@ class _PinPageState extends State<PinPage> {
               ],
             ],
           ),
+        ),
         ),
       ),
     );

@@ -4,16 +4,10 @@ import '../../../core/theme/app_colors.dart';
 import '../../widgets/app_badge.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 const _twoFaMethods = [
-  _TwoFaMethod(
-    key: 'smtp',
-    icon: DkgIcons.mail,
-    tone: 'blue',
-    title: 'Email OTP (SMTP)',
-    desc: 'Kode 6 digit dikirim ke email kamu setiap kali masuk.',
-    route: '/2fa/smtp',
-  ),
   _TwoFaMethod(
     key: 'totp',
     icon: DkgIcons.smartphone,
@@ -64,9 +58,10 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       body: SafeArea(
-        child: Column(
+        child: GlassBackground(
+          child: Column(
           children: [
             Align(
               alignment: Alignment.topLeft,
@@ -81,14 +76,10 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: AppColors.primarySurface,
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: const Center(
+                  GlassCard(
+                    padding: const EdgeInsets.all(15),
+                    radius: 18,
+                    child: Center(
                       child: Icon(DkgIcons.shieldCheck,
                           size: 30, color: AppColors.primary),
                     ),
@@ -127,20 +118,14 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                       margin: const EdgeInsets.only(bottom: 13),
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: on ? AppColors.primarySurface : Colors.white,
+                        color: on ? AppColors.glass.withValues(alpha: 0.35) : AppColors.glass.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(
-                          color: on ? AppColors.primaryLight : AppColors.line,
+                          color: on ? AppColors.primaryLight : AppColors.glassLine,
                           width: 1.8,
                         ),
                         boxShadow: on
-                            ? [
-                                BoxShadow(
-                                    color: AppColors.primary
-                                        .withValues(alpha: 0.08),
-                                    blurRadius: 0,
-                                    spreadRadius: 4)
-                              ]
+                            ? AppColors.shadowGlass
                             : [],
                       ),
                       child: Row(
@@ -187,9 +172,9 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                             height: 22,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: on ? AppColors.primary : Colors.white,
+                              color: on ? AppColors.primary : Colors.transparent,
                               border: Border.all(
-                                color: on ? AppColors.primary : AppColors.line,
+                                color: on ? AppColors.primary : AppColors.glassLine,
                                 width: 2,
                               ),
                             ),
@@ -224,6 +209,7 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

@@ -125,7 +125,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.bg,
         body: GlassBackground(
           child: SafeArea(
             child: Column(

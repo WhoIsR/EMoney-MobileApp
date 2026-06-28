@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../widgets/app_badge.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 class PromoPage extends StatelessWidget {
   const PromoPage({super.key});
@@ -37,28 +39,30 @@ class PromoPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.fromLTRB(
-                20, MediaQuery.of(context).padding.top + 12, 20, 18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Promo & Reward',
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.ink,
-                      letterSpacing: -0.3,
-                    )),
-                Divider(height: 18, color: AppColors.line2),
-              ],
+      body: GlassBackground(
+        child: Column(
+          children: [
+            GlassCard(
+              radius: 0,
+              color: AppColors.glass,
+              padding: EdgeInsets.fromLTRB(
+                  20, MediaQuery.of(context).padding.top + 12, 20, 18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('Promo & Reward',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.ink,
+                        letterSpacing: -0.3,
+                      )),
+                  Divider(height: 18, color: AppColors.line2),
+                ],
+              ),
             ),
-          ),
-          Expanded(
+            Expanded(
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
@@ -110,13 +114,9 @@ class PromoPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 18),
-                ...promos.map((p) => Container(
+                ...promos.map((p) => GlassCard(
                       margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: AppColors.shadowSoft,
-                      ),
+                      radius: 18,
                       padding: const EdgeInsets.all(14),
                       child: Row(
                         children: [
@@ -155,6 +155,7 @@ class PromoPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

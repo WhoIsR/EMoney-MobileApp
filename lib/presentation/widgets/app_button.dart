@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -46,7 +48,7 @@ class AppButton extends StatelessWidget {
     final (bg, fg, shadow, border) = _resolveStyle();
     final disabled = onPressed == null;
 
-    return Opacity(
+    Widget button = Opacity(
       opacity: disabled ? 0.5 : 1.0,
       child: GestureDetector(
         onTap: disabled || isLoading ? null : onPressed,
@@ -57,7 +59,7 @@ class AppButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: px),
           decoration: BoxDecoration(
             gradient: variant == AppButtonVariant.primary
-                ? AppColors.accentGradient
+                ? AppColors.navyGradient
                 : null,
             color: variant != AppButtonVariant.primary ? bg : null,
             borderRadius: BorderRadius.circular(radius),
@@ -97,12 +99,25 @@ class AppButton extends StatelessWidget {
         ),
       ),
     );
+
+    // Wrap primary variant with glass effect
+    if (variant == AppButtonVariant.primary) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(radius),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: button,
+        ),
+      );
+    }
+
+    return button;
   }
 
-  (Color, Color, List<BoxShadow>, Border?) _resolveStyle() {
+  (Color?, Color, List<BoxShadow>?, Border?) _resolveStyle() {
     return switch (variant) {
       AppButtonVariant.primary => (
-          AppColors.primary,
+          null, // handled by gradient
           Colors.white,
           AppColors.shadowPrimary,
           null,
@@ -124,7 +139,7 @@ class AppButton extends StatelessWidget {
           AppColors.glass,
           AppColors.ink,
           AppColors.shadowSoft,
-          Border.all(color: AppColors.glassLine, width: 1.2),
+          Border.all(color: AppColors.glassLine, width: 1.0),
         ),
       AppButtonVariant.outlineWhite => (
           Colors.transparent,
@@ -137,7 +152,7 @@ class AppButton extends StatelessWidget {
           AppColors.primary,
           [
             BoxShadow(
-                color: Colors.black.withValues(alpha: 0.14),
+                color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 20,
                 offset: const Offset(0, 8))
           ],

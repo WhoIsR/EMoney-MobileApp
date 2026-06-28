@@ -12,14 +12,16 @@ class AppTheme {
         seedColor: AppColors.primary,
         primary: AppColors.primary,
         onPrimary: Colors.white,
-        secondary: AppColors.green,
-        surface: AppColors.glass,
+        secondary: AppColors.accent,
+        surface: AppColors.surface,
         error: AppColors.red,
       ),
       scaffoldBackgroundColor: AppColors.bg,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
@@ -31,6 +33,10 @@ class AppTheme {
           fontWeight: FontWeight.w700,
           color: AppColors.ink,
         ),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -46,6 +52,7 @@ class AppTheme {
             fontWeight: FontWeight.w700,
             letterSpacing: 0.1,
           ),
+          elevation: 0,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -55,21 +62,36 @@ class AppTheme {
             const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.glassLine, width: 1.2),
+          borderSide: const BorderSide(color: AppColors.glassLine, width: 1.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.glassLine, width: 1.2),
+          borderSide: const BorderSide(color: AppColors.glassLine, width: 1.0),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.4),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.2),
         ),
       ),
       dividerColor: AppColors.line2,
       dividerTheme: const DividerThemeData(
         color: AppColors.line2,
         thickness: 1,
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: AppColors.glass,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: AppColors.glass,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
       ),
     );
   }

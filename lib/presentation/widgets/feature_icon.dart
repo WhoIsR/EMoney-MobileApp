@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -18,16 +20,25 @@ class FeatureIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.tone(tone);
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: colors[0].withValues(alpha: 0.82),
-        borderRadius: BorderRadius.circular(size * 0.34),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.8)),
-      ),
-      child: Center(
-        child: Icon(icon, color: colors[1], size: iconSize),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(size * 0.34),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: colors[0].withValues(alpha: 0.80),
+            borderRadius: BorderRadius.circular(size * 0.34),
+            border: Border.all(
+              color: colors[1].withValues(alpha: 0.10),
+              width: 0.5,
+            ),
+          ),
+          child: Center(
+            child: Icon(icon, color: colors[1], size: iconSize),
+          ),
+        ),
       ),
     );
   }

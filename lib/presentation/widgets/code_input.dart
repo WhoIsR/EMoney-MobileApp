@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
@@ -63,8 +65,6 @@ class _CodeInputState extends State<CodeInput> {
     return GestureDetector(
       onTap: () {
         if (_focusNode.hasFocus) {
-          // FocusNode masih fokus walau keyboard sudah ditutup user,
-          // requestFocus() jadi no-op → paksa tampilkan keyboard lagi.
           SystemChannels.textInput.invokeMethod('TextInput.show');
         } else {
           _focusNode.requestFocus();
@@ -72,6 +72,17 @@ class _CodeInputState extends State<CodeInput> {
       },
       child: Stack(
         children: [
+          Opacity(
+            opacity: 0,
+            child: const SizedBox(
+              width: 1,
+              height: 1,
+              child: TextField(
+                decoration: InputDecoration(border: InputBorder.none),
+              ),
+            ),
+          ),
+          // Hidden real text field
           Opacity(
             opacity: 0,
             child: SizedBox(
@@ -106,50 +117,61 @@ class _CodeInputState extends State<CodeInput> {
                     height: boxSize > 40 ? 56 : boxSize + 10,
                     margin: const EdgeInsets.symmetric(
                         horizontal: horizontalMargin),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(13),
-                      border: Border.all(
-                        color: widget.hasError
-                            ? AppColors.red
-                            : active
-                                ? AppColors.primary
-                                : filled
-                                    ? AppColors.primaryBorder
-                                    : AppColors.line,
-                        width: 1.6,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: widget.hasError
+                                ? AppColors.redSurface.withValues(alpha: 0.6)
+                                : AppColors.glass,
+                            borderRadius: BorderRadius.circular(13),
+                            border: Border.all(
+                              color: widget.hasError
+                                  ? AppColors.red
+                                  : active
+                                      ? AppColors.primary
+                                      : filled
+                                          ? AppColors.primaryBorder
+                                          : AppColors.line,
+                              width: 1.2,
+                            ),
+                            boxShadow: active
+                                ? [
+                                    BoxShadow(
+                                        color: AppColors.primary
+                                            .withValues(alpha: 0.1),
+                                        blurRadius: 0,
+                                        spreadRadius: 4)
+                                  ]
+                                : [],
+                          ),
+                          child: Center(
+                            child: filled
+                                ? Text(
+                                    widget.value[i],
+                                    style: const TextStyle(
+                                      fontFamily: 'PlusJakartaSans',
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.ink,
+                                    ),
+                                  )
+                                : active
+                                    ? Container(
+                                        width: 2,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primary,
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                      )
+                                    : null,
+                          ),
+                        ),
                       ),
-                      boxShadow: active
-                          ? [
-                              BoxShadow(
-                                  color:
-                                      AppColors.primary.withValues(alpha: 0.1),
-                                  blurRadius: 0,
-                                  spreadRadius: 4)
-                            ]
-                          : [],
-                    ),
-                    child: Center(
-                      child: filled
-                          ? Text(
-                              widget.value[i],
-                              style: const TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.ink,
-                              ),
-                            )
-                          : active
-                              ? Container(
-                                  width: 2,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                )
-                              : null,
                     ),
                   );
                 }),

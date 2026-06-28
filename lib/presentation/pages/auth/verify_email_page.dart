@@ -9,6 +9,8 @@ import '../../../domain/usecases/auth/verify_email_otp_usecase.dart';
 import '../../../injection/injection_container.dart';
 import '../../widgets/code_input.dart';
 import '../../widgets/feature_icon.dart';
+import '../../widgets/glass_background.dart';
+import '../../widgets/glass_card.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});
@@ -125,54 +127,50 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final email = FirebaseAuth.instance.currentUser?.email ?? 'email kamu';
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
-                onPressed: () => context.go('/register'),
+      body: GlassBackground(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                  onPressed: () => context.go('/register'),
+                ),
               ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(28, 14, 28, 28),
-                child: Column(
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(28, 14, 28, 28),
+                  child: GlassCard(
+                    radius: 34,
+                    padding: const EdgeInsets.fromLTRB(22, 24, 22, 22),
+                    child: Column(
                       children: [
-                        Container(
-                          width: 78,
-                          height: 78,
-                          decoration: BoxDecoration(
-                            color: AppColors.primarySurface,
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: const Center(
-                            child: Icon(DkgIcons.mail,
-                                size: 36, color: AppColors.primary),
-                          ),
-                        ),
-                        Positioned(
-                          top: -4,
-                          right: -4,
-                          child: Container(
-                            width: 26,
-                            height: 26,
-                            decoration: BoxDecoration(
-                              color: AppColors.green,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 3),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            const FeatureIcon(
+                              icon: DkgIcons.mail,
+                              size: 78,
+                              iconSize: 36,
                             ),
-                            child: const Icon(DkgIcons.check,
-                                size: 13, color: Colors.white),
-                          ),
+                            Positioned(
+                              top: -4,
+                              right: -4,
+                              child: Container(
+                                width: 26,
+                                height: 26,
+                                decoration: BoxDecoration(
+                                  color: AppColors.green,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.white, width: 3),
+                                ),
+                                child: const Icon(DkgIcons.check,
+                                    size: 13, color: Colors.white),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
                     const SizedBox(height: 20),
                     const Text(
                       'Verifikasi email',
@@ -269,7 +267,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 ),
               ),
             ),
+            ),
           ],
+        ),
         ),
       ),
     );

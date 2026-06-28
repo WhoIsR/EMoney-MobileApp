@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
@@ -78,73 +80,79 @@ class _AppFieldState extends State<AppField> {
           ),
           const SizedBox(height: 8),
         ],
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          height: 56,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.36),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: _focused
-                  ? AppColors.primaryBorder
-                  : Colors.white.withValues(alpha: 0.82),
-              width: 1.1,
-            ),
-            boxShadow: _focused ? AppColors.shadowSoft : const [],
-          ),
-          child: Row(
-            children: [
-              if (widget.prefixIcon != null) ...[
-                const SizedBox(width: 14),
-                ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    _focused ? AppColors.primary : AppColors.slate500,
-                    BlendMode.srcIn,
-                  ),
-                  child: widget.prefixIcon!,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              height: 56,
+              decoration: BoxDecoration(
+                color: AppColors.glass,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                  color: _focused
+                      ? AppColors.primaryBorder
+                      : AppColors.glassLine,
+                  width: 1.0,
                 ),
-                const SizedBox(width: 10),
-              ] else
-                const SizedBox(width: 14),
-              Expanded(
-                child: Focus(
-                  onFocusChange: (f) => setState(() => _focused = f),
-                  child: TextField(
-                    controller: _ctrl,
-                    onChanged: widget.onChanged,
-                    keyboardType: widget.keyboardType,
-                    obscureText: widget.obscureText,
-                    autofocus: widget.autoFocus,
-                    maxLength: widget.maxLength,
-                    textInputAction: widget.textInputAction,
-                    onEditingComplete: widget.onEditingComplete,
-                    style: const TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 15.5,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.ink,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: widget.placeholder,
-                      hintStyle: const TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 15.5,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.slate300,
-                      ),
-                      border: InputBorder.none,
-                      isDense: true,
-                      counterText: '',
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                ),
+                boxShadow: _focused ? AppColors.shadowSoft : null,
               ),
-              if (widget.suffixIcon != null) ...[
-                widget.suffixIcon!,
-                const SizedBox(width: 4),
-              ],
-            ],
+              child: Row(
+                children: [
+                  if (widget.prefixIcon != null) ...[
+                    const SizedBox(width: 14),
+                    ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        _focused ? AppColors.primary : AppColors.slate500,
+                        BlendMode.srcIn,
+                      ),
+                      child: widget.prefixIcon!,
+                    ),
+                    const SizedBox(width: 10),
+                  ] else
+                    const SizedBox(width: 14),
+                  Expanded(
+                    child: Focus(
+                      onFocusChange: (f) => setState(() => _focused = f),
+                      child: TextField(
+                        controller: _ctrl,
+                        onChanged: widget.onChanged,
+                        keyboardType: widget.keyboardType,
+                        obscureText: widget.obscureText,
+                        autofocus: widget.autoFocus,
+                        maxLength: widget.maxLength,
+                        textInputAction: widget.textInputAction,
+                        onEditingComplete: widget.onEditingComplete,
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.ink,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: widget.placeholder,
+                          hintStyle: const TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 15.5,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.slate300,
+                          ),
+                          border: InputBorder.none,
+                          isDense: true,
+                          counterText: '',
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (widget.suffixIcon != null) ...[
+                    widget.suffixIcon!,
+                    const SizedBox(width: 4),
+                  ],
+                ],
+              ),
+            ),
           ),
         ),
       ],

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -33,18 +35,10 @@ class PinPad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final keys = [
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      'bio',
-      '0',
-      'del'
+      '1', '2', '3',
+      '4', '5', '6',
+      '7', '8', '9',
+      'bio', '0', 'del'
     ];
 
     return Column(
@@ -122,14 +116,24 @@ class _KeyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        height: 62,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: AppColors.shadowSoft,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            height: 62,
+            decoration: BoxDecoration(
+              color: AppColors.glass.withValues(alpha: 0.7),
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.15),
+                width: 0.5,
+              ),
+              boxShadow: AppColors.shadowSoft,
+            ),
+            child: Center(child: child),
+          ),
         ),
-        child: Center(child: child),
       ),
     );
   }

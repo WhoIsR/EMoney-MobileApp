@@ -6,6 +6,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../blocs/account/account_bloc.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/success_check.dart';
+import '../../widgets/glass_background.dart';
 
 class SuccessPage extends StatefulWidget {
   final String title;
@@ -36,9 +37,10 @@ class _SuccessPageState extends State<SuccessPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       body: SafeArea(
-        child: Column(
+        child: GlassBackground(
+          child: Column(
           children: [
             Expanded(
               child: Padding(
@@ -150,6 +152,7 @@ class _SuccessPageState extends State<SuccessPage> {
               ),
             ),
           ],
+        ),
         ),
       ),
     );
