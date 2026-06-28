@@ -2,9 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
-import 'feature_icon.dart';
 
-class AppTabBar extends StatelessWidget {
+/// Apple-style floating glass tab bar with a raised scan button.
+/// Detached from bottom edge — sits as a floating pill with premium glass.
+class AppTabBar extends StatefulWidget {
   final String active;
   final ValueChanged<String> onTab;
   final VoidCallback? onScan;
@@ -17,68 +18,196 @@ class AppTabBar extends StatelessWidget {
   });
 
   @override
+  State<AppTabBar> createState() => _AppTabBarState();
+}
+
+class _AppTabBarState extends State<AppTabBar>
+    with SingleTickerProviderStateMixin {
+  final List<_TabDef> _tabs = const [
+    _TabDef(
+        icon: Icons.home_rounded,
+        iconFilled: Icons.home_rounded,
+        label: 'Home',
+        tabKey: 'home'),
+    _TabDef(
+        icon: Icons.history_rounded,
+        iconFilled: Icons.history_rounded,
+        label: 'Riwayat',
+        tabKey: 'history'),
+    _TabDef(
+        icon: Icons.card_giftcard_rounded,
+        iconFilled: Icons.card_giftcard_rounded,
+        label: 'Promo',
+        tabKey: 'promo'),
+    _TabDef(
+        icon: Icons.person_outline_rounded,
+        iconFilled: Icons.person_rounded,
+        label: 'Akun',
+        tabKey: 'akun'),
+  ];
+
+  int get _activeIndex =>
+      _tabs.indexWhere((t) => t.tabKey == widget.active).clamp(0, 3);
+
+  @override
   Widget build(BuildContext context) {
     final bottomPad = MediaQuery.of(context).padding.bottom;
-    return ClipRRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-        child: Container(
-          height: 64 + bottomPad,
-          decoration: BoxDecoration(
-            color: AppColors.glass,
-            border: Border(
-              top: BorderSide(color: AppColors.glassLine, width: 0.5),
-            ),
-          ),
-          child: SafeArea(
-            top: false,
-            child: Row(
-              children: [
-                _TabItem(
-                    icon: DkgIcons.home,
-                    label: 'Home',
-                    tabKey: 'home',
-                    active: active,
-                    onTap: onTab),
-                _TabItem(
-                    icon: DkgIcons.history,
-                    label: 'Riwayat',
-                    tabKey: 'history',
-                    active: active,
-                    onTap: onTab),
-                // Center scan button
-                Expanded(
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: onScan,
-                      child: Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          gradient: AppColors.navyGradient,
-                          shape: BoxShape.circle,
-                          boxShadow: AppColors.shadowPrimary,
+    final activeIdx = _activeIndex;
+
+    return Container(
+      height: 74 + bottomPad,
+      padding: EdgeInsets.only(bottom: bottomPad > 0 ? 0 : 6),
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.topCenter,
+        children: [
+          // ── Floating glass pill ──
+          ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 36, sigmaY: 36),
+              child: Container(
+                height: 64,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: AppColors.glassStrong.withValues(alpha: 0.86),
+                  borderRadius: BorderRadius.circular(32),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.86),
+                    width: 1.1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.10),
+                      blurRadius: 30,
+                      offset: const Offset(0, 12),
+                    ),
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.38),
+                      blurRadius: 12,
+                      offset: const Offset(0, -2),
+                    ),
+                    // Subtle inner light from top
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.30),
+                      blurRadius: 8,
+                      offset: const Offset(0, -1),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    // Left tabs (home, history)
+                    ..._tabs.sublist(0, 2).map(
+                          (tab) => _buildTabItem(tab, activeIdx),
                         ),
-                        child: const Icon(DkgIcons.scan,
-                            color: Colors.white, size: 26),
+                    // ── Center scan button ──
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: widget.onScan,
+                        child: Transform.translate(
+                          offset: const Offset(0, -14),
+                          child: Container(
+                            width: 52,
+                            height: 52,
+                            decoration: BoxDecoration(
+                              gradient: AppColors.liquidGradient,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.25),
+                                width: 2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withValues(alpha: 0.28),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 6),
+                                ),
+                                BoxShadow(
+                                  color: AppColors.primary.withValues(alpha: 0.14),
+                                  blurRadius: 28,
+                                  offset: const Offset(0, 0),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.qr_code_scanner_rounded,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    // Right tabs (promo, akun)
+                    ..._tabs.sublist(2).map(
+                          (tab) => _buildTabItem(tab, activeIdx),
+                        ),
+                  ],
                 ),
-                _TabItem(
-                    icon: DkgIcons.gift,
-                    label: 'Promo',
-                    tabKey: 'promo',
-                    active: active,
-                    onTap: onTab),
-                _TabItem(
-                    icon: DkgIcons.user,
-                    label: 'Akun',
-                    tabKey: 'akun',
-                    active: active,
-                    onTap: onTab),
-              ],
+              ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTabItem(_TabDef tab, int activeIdx) {
+    final idx = _tabs.indexOf(tab);
+    final isActive = idx == activeIdx;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => widget.onTab(tab.tabKey),
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutCubic,
+          padding: const EdgeInsets.only(top: 2),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // ── Icon + active pill background ──
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 350),
+                curve: Curves.easeOutCubic,
+                width: isActive ? 42 : 28,
+                height: isActive ? 42 : 28,
+                decoration: BoxDecoration(
+                  gradient: isActive ? AppColors.liquidGradient : null,
+                  color: isActive ? null : Colors.transparent,
+                  borderRadius: BorderRadius.circular(isActive ? 13 : 8),
+                  boxShadow: isActive
+                      ? [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.18),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Icon(
+                  isActive ? tab.iconFilled : tab.icon,
+                  size: 18,
+                  color: isActive ? Colors.white : AppColors.slate500,
+                ),
+              ),
+              const SizedBox(height: 3),
+              // ── Label ──
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 300),
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 9.5,
+                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                  color: isActive ? AppColors.primaryDark : AppColors.slate500,
+                  letterSpacing: isActive ? 0.1 : 0,
+                ),
+                child: Text(tab.label),
+              ),
+            ],
           ),
         ),
       ),
@@ -86,49 +215,16 @@ class AppTabBar extends StatelessWidget {
   }
 }
 
-class _TabItem extends StatelessWidget {
+class _TabDef {
   final IconData icon;
+  final IconData iconFilled;
   final String label;
   final String tabKey;
-  final String active;
-  final ValueChanged<String> onTap;
 
-  const _TabItem({
+  const _TabDef({
     required this.icon,
+    required this.iconFilled,
     required this.label,
     required this.tabKey,
-    required this.active,
-    required this.onTap,
   });
-
-  @override
-  Widget build(BuildContext context) {
-    final isActive = active == tabKey;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => onTap(tabKey),
-        behavior: HitTestBehavior.opaque,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 24,
-              color: isActive ? AppColors.primary : AppColors.slate400,
-            ),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 11,
-                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                color: isActive ? AppColors.primary : AppColors.slate400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

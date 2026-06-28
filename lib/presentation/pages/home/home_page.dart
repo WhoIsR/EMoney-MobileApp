@@ -55,114 +55,42 @@ class _HomePageState extends State<HomePage> {
                   onRefresh: () async => context
                       .read<AccountBloc>()
                       .add(AccountRefreshRequested()),
-                  color: AppColors.primary,
+                  color: AppColors.accent,
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        Container(
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(28),
-                              bottomRight: Radius.circular(28),
-                            ),
-                          ),
-                          padding: EdgeInsets.fromLTRB(20,
-                              MediaQuery.of(context).padding.top + 12, 20, 94),
-                          child: Row(
-                            children: [
-                              AppAvatar(
-                                  name: fullName,
-                                  size: 44,
-                                  bg: Colors.white.withValues(alpha: 0.62)),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Selamat siang,',
-                                        style: TextStyle(
-                                          fontFamily: 'PlusJakartaSans',
-                                          fontSize: 13,
-                                          color: AppColors.slate500,
-                                        )),
-                                    Text('$firstName ',
-                                        style: const TextStyle(
-                                          fontFamily: 'PlusJakartaSans',
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w800,
-                                          color: AppColors.ink,
-                                          letterSpacing: -0.2,
-                                        )),
-                                  ],
-                                ),
-                              ),
-                              Stack(
-                                children: [
-                                  Container(
-                                    width: 42,
-                                    height: 42,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.glass,
-                                      borderRadius: BorderRadius.circular(14),
-                                      border: Border.all(
-                                          color: AppColors.glassLine),
-                                    ),
-                                    child: const Icon(
-                                        Icons.notifications_outlined,
-                                        size: 21,
-                                        color: AppColors.primary),
-                                  ),
-                                  Positioned(
-                                    top: 10,
-                                    right: 11,
-                                    child: Container(
-                                      width: 8,
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.amber,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: AppColors.white, width: 2),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Balance Card (overlaps the header's bottom edge)
+                        // ── Header ──
+                        _buildHeader(firstName, fullName),
+                        // ── Balance Card (overlaps header) ──
                         Transform.translate(
-                          offset: const Offset(0, -46),
+                          offset: const Offset(0, -32),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: _buildBalanceCard(balance, loading),
                           ),
                         ),
-                        const SizedBox(height: 14),
+                        const SizedBox(height: 26),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildPointsRow(),
                         ),
-                        const SizedBox(height: 18),
+                        const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildFeatureGrid(),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildDeeplinkBanner(),
                         ),
-                        const SizedBox(height: 22),
+                        const SizedBox(height: 24),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _buildTransactions(txns),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 28),
                       ],
                     ),
                   ),
@@ -175,155 +103,251 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBalanceCard(double balance, bool loading) {
-    final actions = [
-      {
-        'icon': Icons.north_rounded,
-        'label': 'Top Up',
-        'tone': 'blue',
-        'route': '/topup'
-      },
-      {
-        'icon': Icons.send_rounded,
-        'label': 'Transfer',
-        'tone': 'green',
-        'route': '/transfer'
-      },
-      {
-        'icon': Icons.qr_code_rounded,
-        'label': 'Bayar',
-        'tone': 'violet',
-        'route': '/payment'
-      },
-      {
-        'icon': Icons.south_rounded,
-        'label': 'Tarik',
-        'tone': 'amber',
-        'route': '/topup'
-      },
-    ];
-
-    return GlassCard(
-      radius: 26,
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
-      child: Column(
+  // ── Header ──
+  Widget _buildHeader(String firstName, String fullName) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(
+          20, MediaQuery.of(context).padding.top + 14, 20, 80),
+      child: Row(
         children: [
-          Row(
+          // Avatar
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+      color: AppColors.primary.withValues(alpha: 0.12),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: AppAvatar(
+                name: fullName,
+                size: 44,
+                bg: Colors.white.withValues(alpha: 0.84)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_timeGreeting(),
+                    style: const TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 12.5,
+                      color: AppColors.slate500,
+                    )),
+                Text(firstName,
+                    style: const TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.ink,
+                      letterSpacing: -0.2,
+                    )),
+              ],
+            ),
+          ),
+          // Notification bell
+          Stack(
             children: [
-              Row(
-                children: [
-                  const AppLogo(size: 26),
-                  const SizedBox(width: 7),
-                  const Text('Saldo DKG',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.slate500,
-                      )),
-                ],
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: AppColors.glass,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppColors.glassLine),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.06),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: const Icon(Icons.notifications_outlined,
+                    size: 20, color: AppColors.primaryDark),
               ),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => context.go('/topup'),
+              Positioned(
+                top: 10,
+                right: 11,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  width: 8,
+                  height: 8,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.62),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: AppColors.primaryBorder),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.add_rounded,
-                          size: 15, color: AppColors.primary),
-                      SizedBox(width: 5),
-                      Text('Isi Saldo',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13,
-                          )),
+                    color: AppColors.amber,
+                    shape: BoxShape.circle,
+                    border:
+                        Border.all(color: AppColors.white, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.amber.withValues(alpha: 0.4),
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
+                      ),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Text(
-                _hideBalance
-                    ? CurrencyFormatter.maskBalance()
-                    : CurrencyFormatter.format(balance),
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.ink,
-                  letterSpacing: -0.5,
-                ),
-              ),
-              const SizedBox(width: 10),
-              IconButton(
-                icon: Icon(
-                    _hideBalance
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
-                    size: 20,
-                    color: AppColors.slate400),
-                onPressed: () => setState(() => _hideBalance = !_hideBalance),
-                padding: const EdgeInsets.all(4),
-                constraints: const BoxConstraints(),
-              ),
-            ],
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 16),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: AppColors.line.withValues(alpha: 0.7)),
-              ),
-            ),
-            child: Row(
-              children: actions.map((a) {
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () => context.go(a['route'] as String),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        children: [
-                          FeatureIcon(
-                            icon: a['icon'] as IconData,
-                            tone: a['tone'] as String,
-                            size: 46,
-                            iconSize: 22,
-                          ),
-                          const SizedBox(height: 7),
-                          Text(a['label'] as String,
-                              style: const TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.slate600,
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
         ],
       ),
     );
   }
 
+  // ── Balance Card (gradient hero card) ──
+  Widget _buildBalanceCard(double balance, bool loading) {
+    final actions = [
+      {'icon': Icons.north_rounded, 'label': 'Top Up', 'tone': 'blue', 'route': '/topup'},
+      {'icon': Icons.send_rounded, 'label': 'Transfer', 'tone': 'green', 'route': '/transfer'},
+      {'icon': Icons.qr_code_rounded, 'label': 'Bayar', 'tone': 'violet', 'route': '/payment'},
+      {'icon': Icons.south_rounded, 'label': 'Tarik', 'tone': 'amber', 'route': '/topup'},
+    ];
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: AppColors.walletGradient,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.86)),
+        boxShadow: AppColors.shadowGlass,
+      ),
+      child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+            child: Column(
+              children: [
+                // ── Label row ──
+                Row(
+                  children: [
+                    Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.72),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const AppLogo(size: 20),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('Saldo Kashi',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.slate500,
+                        )),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () => context.go('/topup'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppColors.primarySurface.withValues(alpha: 0.86),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              color: AppColors.primaryBorder.withValues(alpha: 0.80)),
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(Icons.add_rounded,
+                                size: 14, color: AppColors.primaryDark),
+                            SizedBox(width: 4),
+                            Text('Isi Saldo',
+                                style: TextStyle(
+                                  fontFamily: 'PlusJakartaSans',
+                                  color: AppColors.primaryDark,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12.5,
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                // ── Amount ──
+                Row(
+                  children: [
+                    Text(
+                      _hideBalance
+                          ? CurrencyFormatter.maskBalance()
+                          : CurrencyFormatter.format(balance),
+                      style: const TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.ink,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    IconButton(
+                      icon: Icon(
+                          _hideBalance
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          size: 20,
+                          color: AppColors.slate500),
+                      onPressed: () =>
+                          setState(() => _hideBalance = !_hideBalance),
+                      padding: const EdgeInsets.all(4),
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
+                // ── Action buttons ──
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                          color: AppColors.line.withValues(alpha: 0.75)),
+                    ),
+                  ),
+                  child: Row(
+                    children: actions.map((a) {
+                      return Expanded(
+                        child: GestureDetector(
+                          onTap: () => context.go(a['route'] as String),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 10),
+                            child: Column(
+                              children: [
+                                FeatureIcon(
+                                  icon: a['icon'] as IconData,
+                                  tone: a['tone'] as String,
+                                  size: 44,
+                                  iconSize: 20,
+                                ),
+                                const SizedBox(height: 6),
+                                Text(a['label'] as String,
+                                    style: const TextStyle(
+                                      fontFamily: 'PlusJakartaSans',
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.slate600,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+        ),
+    );
+  }
+
+  // ── Points row ──
   Widget _buildPointsRow() {
     return Row(
       children: [
@@ -342,7 +366,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('Poin Kampus',
+                    Text('Reward Poin',
                         style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 11.5,
@@ -376,7 +400,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('KTM Digital',
+                    Text('QR Instan',
                         style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 11.5,
@@ -398,32 +422,27 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // ── Feature grid ──
   Widget _buildFeatureGrid() {
     final features = [
       {'icon': Icons.smartphone_outlined, 'label': 'Pulsa', 'tone': 'blue'},
       {'icon': Icons.bolt_outlined, 'label': 'PLN', 'tone': 'amber'},
-      {'icon': Icons.restaurant_outlined, 'label': 'Kantin', 'tone': 'red'},
-      {'icon': Icons.receipt_long_outlined, 'label': 'UKT', 'tone': 'violet'},
+      {'icon': Icons.restaurant_outlined, 'label': 'Makanan', 'tone': 'red'},
+      {'icon': Icons.receipt_long_outlined, 'label': 'Tagihan', 'tone': 'violet'},
       {'icon': Icons.wifi_rounded, 'label': 'Paket Data', 'tone': 'green'},
       {'icon': Icons.card_giftcard_rounded, 'label': 'Voucher', 'tone': 'red'},
-      {
-        'icon': Icons.favorite_outline_rounded,
-        'label': 'Donasi',
-        'tone': 'amber'
-      },
+      {'icon': Icons.favorite_outline_rounded, 'label': 'Donasi', 'tone': 'amber'},
       {'icon': Icons.more_horiz_rounded, 'label': 'Lainnya', 'tone': 'slate'},
     ];
-    return GlassCard(
-      radius: 24,
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-      child: GridView.count(
-        crossAxisCount: 4,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        mainAxisSpacing: 18,
-        crossAxisSpacing: 0,
-        children: features.map((f) {
-          return GestureDetector(
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: features.map((f) {
+        return SizedBox(
+          width: (MediaQuery.of(context).size.width - 42) / 4,
+          child: GlassCard(
+            radius: 20,
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 0),
             onTap: () {},
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -431,24 +450,25 @@ class _HomePageState extends State<HomePage> {
                 FeatureIcon(
                     icon: f['icon'] as IconData,
                     tone: f['tone'] as String,
-                    size: 50,
-                    iconSize: 24),
-                const SizedBox(height: 8),
+                    size: 44,
+                    iconSize: 22),
+                const SizedBox(height: 7),
                 Text(f['label'] as String,
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
-                      fontSize: 11.8,
+                      fontSize: 11.5,
                       fontWeight: FontWeight.w600,
                       color: AppColors.slate600,
                     )),
               ],
             ),
-          );
-        }).toList(),
-      ),
+          ),
+        );
+      }).toList(),
     );
   }
 
+  // ── Deeplink banner ──
   Widget _buildDeeplinkBanner() {
     return GestureDetector(
       onTap: () => context.go('/merchant'),
@@ -511,7 +531,7 @@ class _HomePageState extends State<HomePage> {
                               color: AppColors.ink,
                             )),
                         SizedBox(height: 2),
-                        Text('Simulasi checkout e-commerce → bayar via DKG',
+                        Text('Simulasi checkout e-commerce → bayar via Kashi',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 12.5,
@@ -531,6 +551,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // ── Transaction list ──
   Widget _buildTransactions(List<TransactionEntity> txns) {
     return Column(
       children: [
@@ -549,7 +570,7 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Lihat semua',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
-                    color: AppColors.primary,
+                    color: AppColors.accent,
                     fontWeight: FontWeight.w700,
                     fontSize: 13.5,
                   )),
@@ -576,22 +597,30 @@ class _HomePageState extends State<HomePage> {
                       .toList()
                       .asMap()
                       .entries
-                       .map((e) => TransactionRow(
-                             icon: e.value.isCredit ? 'topup' : 'send',
-                             tone: e.value.isCredit ? 'green' : 'blue',
-                             title: e.value.description.isEmpty
-                                 ? (e.value.isCredit ? 'Top Up' : 'Transaksi')
-                                 : e.value.description,
-                             subtitle:
-                                 '${e.value.createdAt.day}/${e.value.createdAt.month}/${e.value.createdAt.year}',
-                             amount: CurrencyFormatter.format(e.value.amount),
-                             isCredit: e.value.isCredit,
-                             divider: e.key > 0,
-                           ))
-                       .toList(),
+                      .map((e) => TransactionRow(
+                            icon: e.value.isCredit ? 'topup' : 'send',
+                            tone: e.value.isCredit ? 'green' : 'blue',
+                            title: e.value.description.isEmpty
+                                ? (e.value.isCredit ? 'Top Up' : 'Transaksi')
+                                : e.value.description,
+                            subtitle:
+                                '${e.value.createdAt.day}/${e.value.createdAt.month}/${e.value.createdAt.year}',
+                            amount: CurrencyFormatter.format(e.value.amount),
+                            isCredit: e.value.isCredit,
+                            divider: e.key > 0,
+                          ))
+                      .toList(),
                 ),
         ),
       ],
     );
+  }
+
+  String _timeGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 11) return 'Selamat pagi,';
+    if (hour < 15) return 'Selamat siang,';
+    if (hour < 19) return 'Selamat sore,';
+    return 'Selamat malam,';
   }
 }
