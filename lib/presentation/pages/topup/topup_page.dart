@@ -102,14 +102,17 @@ class _TopUpPageState extends State<TopUpPage> {
                             decoration: BoxDecoration(
                               color: selected
                                   ? AppColors.primarySurface
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                                  : Colors.white.withValues(alpha: 0.72),
+                              borderRadius: BorderRadius.circular(18),
                               border: Border.all(
                                 color: selected
-                                    ? AppColors.primaryLight
-                                    : AppColors.line,
-                                width: 1.8,
+                                    ? AppColors.primaryBorder
+                                    : Colors.white.withValues(alpha: 0.86),
+                                width: 1.2,
                               ),
+                              boxShadow: selected
+                                  ? AppColors.shadowSoft
+                                  : const [],
                             ),
                             child: Center(
                               child: Text(CurrencyFormatter.format(c),
@@ -118,7 +121,7 @@ class _TopUpPageState extends State<TopUpPage> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w800,
                                     color: selected
-                                        ? AppColors.primary
+                                        ? AppColors.primaryDark
                                         : AppColors.ink,
                                   )),
                             ),
@@ -220,7 +223,7 @@ class _TopUpPageState extends State<TopUpPage> {
               ),
             ),
             Container(
-              color: AppColors.bg,
+              color: AppColors.bg.withValues(alpha: 0.78),
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
               child: BlocBuilder<PaymentBloc, PaymentState>(
                 builder: (context, state) => AppButton(

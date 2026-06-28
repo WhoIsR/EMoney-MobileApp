@@ -85,8 +85,12 @@ class _SuccessPageState extends State<SuccessPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.bg,
-                          borderRadius: BorderRadius.circular(18),
+                          color: AppColors.glassStrong.withValues(alpha: 0.82),
+                          borderRadius: BorderRadius.circular(22),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                          boxShadow: AppColors.shadowSoft,
                         ),
                         child: Column(
                           children: widget.lines.asMap().entries.map((e) {

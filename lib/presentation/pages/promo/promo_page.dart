@@ -12,8 +12,8 @@ class PromoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final promos = [
       {
-        't': 'Cashback 30% di Kantin Kampus',
-        'd': 'Maks. Rp10.000 · s.d. 30 Jun',
+        't': 'Cashback 10% di merchant favorit',
+        'd': 'Maks. Rp15.000 · s.d. 15 Jul',
         'tone': 'red',
         'icon': Icons.restaurant_outlined
       },
@@ -24,8 +24,8 @@ class PromoPage extends StatelessWidget {
         'icon': Icons.send_rounded
       },
       {
-        't': 'Diskon UKT 0% cicilan 6 bulan',
-        'd': 'Khusus pengguna baru',
+        't': 'Cicilan 0% 6 bulan minimal belanja',
+        'd': 'Syarat & ketentuan berlaku',
         'tone': 'violet',
         'icon': Icons.receipt_long_outlined
       },
@@ -44,7 +44,7 @@ class PromoPage extends StatelessWidget {
           children: [
             GlassCard(
               radius: 0,
-              color: AppColors.glass,
+              color: AppColors.glassStrong.withValues(alpha: 0.86),
               padding: EdgeInsets.fromLTRB(
                   20, MediaQuery.of(context).padding.top + 12, 20, 18),
               child: Column(
@@ -69,8 +69,12 @@ class PromoPage extends StatelessWidget {
                 // Hero card
                 Container(
                   decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(22),
+                    gradient: AppColors.walletGradient,
+                    borderRadius: BorderRadius.circular(26),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.9),
+                    ),
+                    boxShadow: AppColors.shadowGlass,
                   ),
                   padding: const EdgeInsets.all(20),
                   child: Stack(
@@ -84,29 +88,29 @@ class PromoPage extends StatelessWidget {
                           height: 140,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.1),
+                            color: AppColors.primaryLight.withValues(alpha: 0.16),
                           ),
                         ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          AppBadge(label: 'SPESIAL MAHASISWA', tone: 'amber'),
+                          AppBadge(label: 'PROMO SPESIAL', tone: 'amber'),
                           SizedBox(height: 12),
-                          Text('Bayar kuliah,\ndapat cashback 💸',
+                          Text('Belanja serba\ndapat cashback',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 22,
                                 fontWeight: FontWeight.w800,
-                                color: Colors.white,
+                                color: AppColors.ink,
                                 height: 1.2,
                               )),
                           SizedBox(height: 8),
-                          Text('Kumpulkan poin tiap transaksi.',
+                          Text('Kumpulkan cashback tiap transaksi.',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 13.5,
-                                color: Colors.white70,
+                                color: AppColors.slate500,
                               )),
                         ],
                       ),
