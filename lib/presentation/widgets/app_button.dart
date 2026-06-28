@@ -58,9 +58,8 @@ class AppButton extends StatelessWidget {
           width: fullWidth ? double.infinity : null,
           padding: EdgeInsets.symmetric(horizontal: px),
           decoration: BoxDecoration(
-            gradient: variant == AppButtonVariant.primary
-                ? AppColors.navyGradient
-                : null,
+            gradient:
+                variant == AppButtonVariant.primary ? AppColors.liquidGradient : null,
             color: variant != AppButtonVariant.primary ? bg : null,
             borderRadius: BorderRadius.circular(radius),
             boxShadow: shadow,
@@ -122,7 +121,8 @@ class AppButton extends StatelessWidget {
           AppColors.shadowPrimary,
           null,
         ),
-      AppButtonVariant.dark => (AppColors.ink, Colors.white, AppColors.shadowSoft, null),
+      AppButtonVariant.dark =>
+        (AppColors.primaryDark, Colors.white, AppColors.shadowSoft, null),
       AppButtonVariant.soft => (
           AppColors.primarySurface,
           AppColors.primary,

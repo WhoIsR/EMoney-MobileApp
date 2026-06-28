@@ -28,12 +28,13 @@ class FeatureIcon extends StatelessWidget {
           width: size,
           height: size,
           decoration: BoxDecoration(
-            color: colors[0].withValues(alpha: 0.80),
+            color: colors[0].withValues(alpha: 0.72),
             borderRadius: BorderRadius.circular(size * 0.34),
             border: Border.all(
-              color: colors[1].withValues(alpha: 0.10),
-              width: 0.5,
+              color: Colors.white.withValues(alpha: 0.72),
+              width: 1,
             ),
+            boxShadow: AppColors.shadowSoft,
           ),
           child: Center(
             child: Icon(icon, color: colors[1], size: iconSize),
