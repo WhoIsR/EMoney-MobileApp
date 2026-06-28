@@ -112,7 +112,9 @@ class _LoginPageState extends State<LoginPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthNeedsVerification) {
-          context.go('/2fa/smtp');
+          context.go('/2fa/totp', extra: {
+            'mode': state.user.totpEnabled ? 'login' : 'setup',
+          });
         } else if (state is AuthAuthenticated) {
           context.go('/home');
         } else if (state is AuthError) {

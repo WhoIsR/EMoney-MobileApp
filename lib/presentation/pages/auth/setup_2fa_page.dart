@@ -59,7 +59,7 @@ class Setup2FAPage extends StatefulWidget {
 }
 
 class _Setup2FAPageState extends State<Setup2FAPage> {
-  String _selected = 'smtp';
+  String _selected = 'totp';
 
   @override
   Widget build(BuildContext context) {

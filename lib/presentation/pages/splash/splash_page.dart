@@ -36,7 +36,9 @@ class _SplashPageState extends State<SplashPage> {
             context.go('/home');
           }
         } else if (state is AuthNeedsVerification) {
-          context.go('/2fa/smtp');
+          context.go('/2fa/totp', extra: {
+            'mode': state.user.totpEnabled ? 'login' : 'setup',
+          });
         }
       },
       child: Scaffold(
