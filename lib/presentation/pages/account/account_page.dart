@@ -31,12 +31,16 @@ class AccountPage extends StatelessWidget {
               children: [
                 // Header
                 Container(
-                  decoration: const BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(28),
-                      bottomRight: Radius.circular(28),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.walletGradient,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(32),
+                      bottomRight: Radius.circular(32),
                     ),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.9),
+                    ),
+                    boxShadow: AppColors.shadowGlass,
                   ),
                   padding: EdgeInsets.fromLTRB(
                       20, MediaQuery.of(context).padding.top + 12, 20, 24),
@@ -45,7 +49,7 @@ class AccountPage extends StatelessWidget {
                       AppAvatar(
                           name: user?.name ?? 'User',
                           size: 60,
-                          bg: Colors.white.withValues(alpha: 0.25)),
+                          bg: Colors.white.withValues(alpha: 0.72)),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
@@ -56,14 +60,14 @@ class AccountPage extends StatelessWidget {
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 19,
                                   fontWeight: FontWeight.w800,
-                                  color: Colors.white,
+                                  color: AppColors.ink,
                                 )),
                             Text(user?.email ?? '',
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 13,
-                                  color: Colors.white70,
+                                  color: AppColors.slate500,
                                 )),
                           ],
                         ),
@@ -72,20 +76,21 @@ class AccountPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.18),
+                          color: AppColors.primarySurface.withValues(alpha: 0.84),
                           borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.primaryBorder),
                         ),
                         child: const Row(
                           children: [
                             Icon(Icons.verified_user_outlined,
-                                size: 14, color: Colors.white),
+                                size: 14, color: AppColors.primaryDark),
                             SizedBox(width: 5),
                             Text('Terverifikasi',
                                 style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 11.5,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: AppColors.primaryDark,
                                 )),
                           ],
                         ),
@@ -119,7 +124,7 @@ class AccountPage extends StatelessWidget {
                               icon: Icons.verified_user_outlined,
                               tone: 'green',
                               title: 'Verifikasi 2 langkah (2FA)',
-                              subtitle: 'Aktif · Email OTP',
+                              subtitle: 'Aktif - Authenticator',
                               onTap: () => context.go('/setup-2fa'),
                               right:
                                   const AppBadge(label: 'Aktif', tone: 'green'),
@@ -210,7 +215,7 @@ class AccountPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       const Center(
-                        child: Text('Dompet Kampus Global · v1.0.0',
+                        child: Text('Kashi · v1.0.0',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 12,
