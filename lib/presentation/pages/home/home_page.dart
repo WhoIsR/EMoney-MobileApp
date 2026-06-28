@@ -13,6 +13,7 @@ import '../../widgets/feature_icon.dart';
 import '../../widgets/glass_background.dart';
 import '../../widgets/glass_card.dart';
 import '../../widgets/transaction_row.dart';
+import '../../../core/services/notification_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -152,47 +153,67 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           // Notification bell
-          Stack(
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: AppColors.glassFill,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.glassStroke),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.06),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
+          ValueListenableBuilder<int>(
+            valueListenable: NotificationService.instance.unreadCount,
+            builder: (context, unread, _) {
+              return GestureDetector(
+                onTap: () {
+                  NotificationService.instance.clearUnread();
+                  _showNotificationHistoryBottomSheet(context);
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      width: 42,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        color: AppColors.glassFill,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: AppColors.glassStroke),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.06),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(Icons.notifications_outlined,
+                          size: 20, color: AppColors.primaryDark),
                     ),
+                    if (unread > 0)
+                      Positioned(
+                        top: -2,
+                        right: -2,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.amber,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.white, width: 1.5),
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 16,
+                            minHeight: 16,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '$unread',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
-                child: const Icon(Icons.notifications_outlined,
-                    size: 20, color: AppColors.primaryDark),
-              ),
-              Positioned(
-                top: 10,
-                right: 11,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: AppColors.amber,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.white, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.amber.withValues(alpha: 0.4),
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ],
       ),
@@ -202,29 +223,37 @@ class _HomePageState extends State<HomePage> {
   // ── Balance Card (iOS Wallet double-bezel style) ──
   Widget _buildBalanceCard(double balance, bool loading) {
     final actions = [
-      {'icon': Icons.north_rounded, 'label': 'Top Up', 'route': '/topup'},
-      {'icon': Icons.send_rounded, 'label': 'Transfer', 'route': '/transfer'},
-      {'icon': Icons.qr_code_rounded, 'label': 'Bayar', 'route': '/payment'},
-      {'icon': Icons.south_rounded, 'label': 'Tarik', 'route': '/topup'},
+      {'icon': Icons.north_rounded, 'label': 'Top Up', 'tone': 'blue', 'route': '/topup'},
+      {'icon': Icons.send_rounded, 'label': 'Transfer', 'tone': 'green', 'route': '/transfer'},
+      {'icon': Icons.qr_code_rounded, 'label': 'Bayar', 'tone': 'violet', 'route': '/payment'},
+      {'icon': Icons.south_rounded, 'label': 'Tarik', 'tone': 'amber', 'route': '/topup'},
     ];
 
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.12),
+        color: Colors.white.withValues(alpha: 0.20),
         borderRadius: BorderRadius.circular(32),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.25),
+          color: Colors.white.withValues(alpha: 0.35),
           width: 1.1,
         ),
         boxShadow: AppColors.shadowGlass,
       ),
       child: Container(
         decoration: BoxDecoration(
-          gradient: AppColors.walletGradient,
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFFEFEFE),
+              Color(0xFFF5F0FF),
+              Color(0xFFF0F5FF),
+            ],
+          ),
           borderRadius: BorderRadius.circular(26),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.16),
+            color: Colors.white.withValues(alpha: 0.50),
             width: 1.0,
           ),
         ),
@@ -250,7 +279,7 @@ class _HomePageState extends State<HomePage> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 13,
                         fontWeight: FontWeight.w800,
-                        color: Colors.white70,
+                        color: AppColors.inkSecondary,
                       )),
                   const Spacer(),
                   GestureDetector(
@@ -294,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 30,
                       fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                      color: AppColors.ink,
                       letterSpacing: -0.8,
                     ),
                   ),
@@ -305,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                             ? Icons.visibility_off_outlined
                             : Icons.visibility_outlined,
                         size: 20,
-                        color: Colors.white60),
+                        color: AppColors.slate400),
                     onPressed: () =>
                         setState(() => _hideBalance = !_hideBalance),
                     padding: const EdgeInsets.all(4),
@@ -319,7 +348,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.12)),
+                        color: AppColors.line2.withValues(alpha: 0.5)),
                   ),
                 ),
                 child: Row(
@@ -334,7 +363,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               FeatureIcon(
                                 icon: a['icon'] as IconData,
-                                tone: 'glass',
+                                tone: a['tone'] as String,
                                 size: 44,
                                 iconSize: 20,
                               ),
@@ -344,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w800,
-                                    color: Colors.white70,
+                                    color: AppColors.inkSecondary,
                                   )),
                             ],
                           ),
@@ -370,6 +399,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: GlassCard(
               radius: 18,
+              blur: 0,
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
               child: Row(
                 children: [
@@ -405,6 +435,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: GlassCard(
               radius: 18,
+              blur: 0,
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
               child: Row(
                 children: [
@@ -466,6 +497,7 @@ class _HomePageState extends State<HomePage> {
           width: itemWidth,
           child: GlassCard(
             radius: 20,
+            blur: 0,
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 0),
             onTap: () {},
             child: Column(
@@ -646,5 +678,183 @@ class _HomePageState extends State<HomePage> {
     if (hour < 15) return 'Selamat siang,';
     if (hour < 18) return 'Selamat sore,';
     return 'Selamat malam,';
+  }
+
+  void _showNotificationHistoryBottomSheet(BuildContext context) {
+    final history = NotificationService.instance.history;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      barrierColor: Colors.black.withOpacity(0.4),
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.75,
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.96),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.9),
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            children: [
+              // iOS Top drag handle indicator
+              const SizedBox(height: 10),
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: AppColors.line2,
+                    borderRadius: BorderRadius.circular(2.5),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              
+              // Header Row
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Pusat Notifikasi',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.ink,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        backgroundColor: AppColors.bg,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        'Selesai',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          color: AppColors.primaryDark,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 13.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              
+              // Notification List or Empty State
+              Expanded(
+                child: history.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: AppColors.bg,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.notifications_none_rounded,
+                                size: 36,
+                                color: AppColors.slate400,
+                              ),
+                            ),
+                            const SizedBox(height: 18),
+                            const Text(
+                              'Belum Ada Notifikasi',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.ink,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Notifikasi transaksi Anda akan muncul di sini.',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 13,
+                                color: AppColors.slate500,
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                          ],
+                        ),
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
+                        itemCount: history.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 10),
+                        itemBuilder: (context, index) {
+                          final item = history[index];
+                          final isTopup = item.title.toLowerCase().contains('top up');
+                          return GlassCard(
+                            radius: 18,
+                            padding: const EdgeInsets.all(14),
+                            blur: 0,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FeatureIcon(
+                                  icon: isTopup
+                                      ? Icons.north_rounded
+                                      : Icons.send_rounded,
+                                  tone: isTopup ? 'blue' : 'green',
+                                  size: 40,
+                                  iconSize: 18,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                          fontFamily: 'PlusJakartaSans',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w800,
+                                          color: AppColors.ink,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        item.body,
+                                        style: const TextStyle(
+                                          fontFamily: 'PlusJakartaSans',
+                                          fontSize: 12.5,
+                                          color: AppColors.slate600,
+                                          height: 1.35,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

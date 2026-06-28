@@ -29,12 +29,12 @@ import '../../presentation/pages/transfer/transfer_page.dart';
 import '../../presentation/widgets/app_tab_bar.dart';
 
 class AppRouter {
-  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final rootNavigatorKey = GlobalKey<NavigatorState>();
 
   // static final (bukan getter) agar GoRouter dibuat sekali saja —
   // instance yang sama dipakai oleh MaterialApp.router dan DeeplinkService.
   static final GoRouter router = GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     routes: [
       GoRoute(
@@ -94,12 +94,10 @@ class AppRouter {
                       : 'home';
 
           return _withAccount(Scaffold(
+            backgroundColor: Colors.transparent,
             body: Stack(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom + 90,
-                  ),
+                Positioned.fill(
                   child: child,
                 ),
                 Positioned(
