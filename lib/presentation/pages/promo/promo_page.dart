@@ -44,7 +44,7 @@ class PromoPage extends StatelessWidget {
           children: [
             GlassCard(
               radius: 0,
-              color: AppColors.glassStrong.withValues(alpha: 0.86),
+              color: AppColors.glassStrong,
               padding: EdgeInsets.fromLTRB(
                   20, MediaQuery.of(context).padding.top + 12, 20, 18),
               child: Column(
@@ -121,6 +121,7 @@ class PromoPage extends StatelessWidget {
                 ...promos.map((p) => GlassCard(
                       margin: const EdgeInsets.only(bottom: 12),
                       radius: 18,
+                      blur: 0,
                       padding: const EdgeInsets.all(14),
                       child: Row(
                         children: [
@@ -155,6 +156,7 @@ class PromoPage extends StatelessWidget {
                         ],
                       ),
                     )),
+                const SizedBox(height: 100),
               ],
             ),
           ),

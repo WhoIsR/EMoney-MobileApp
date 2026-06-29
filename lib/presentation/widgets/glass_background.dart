@@ -111,18 +111,25 @@ class _StaticWash extends StatelessWidget {
   final double size;
   final Color color;
   final double opacity;
-  const _StaticWash({required this.size, required this.color, required this.opacity});
+  const _StaticWash({
+    required this.size,
+    required this.color,
+    required this.opacity,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ImageFiltered(
-      imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: opacity),
-          shape: BoxShape.circle,
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [
+            color.withOpacity(opacity),
+            color.withOpacity(0.0),
+          ],
+          stops: const [0.0, 1.0],
         ),
       ),
     );

@@ -20,26 +20,20 @@ class FeatureIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.tone(tone);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size * 0.34),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: colors[0].withValues(alpha: 0.72),
-            borderRadius: BorderRadius.circular(size * 0.34),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.72),
-              width: 1,
-            ),
-            boxShadow: AppColors.shadowSoft,
-          ),
-          child: Center(
-            child: Icon(icon, color: colors[1], size: iconSize),
-          ),
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: colors[0].withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(size * 0.34),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.72),
+          width: 1,
         ),
+        boxShadow: AppColors.shadowSoft,
+      ),
+      child: Center(
+        child: Icon(icon, color: colors[1], size: iconSize),
       ),
     );
   }

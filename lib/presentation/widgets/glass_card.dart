@@ -6,7 +6,7 @@ import '../../core/theme/app_colors.dart';
 
 /// A refined glassmorphism card with strong frosted glass effect.
 /// Layers: backdrop blur → translucent fill → subtle inner highlight → border.
-/// Fill is 42% opaque so coloured background washes easily show through.
+/// Fill is ~82% opaque — bright enough for readable text while retaining glass feel.
 class GlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -35,26 +35,30 @@ class GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget innerContainer = Container(
+      padding: padding,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(radius),
+        border:
+            border ?? Border.all(color: AppColors.glassStroke, width: 1.0),
+        boxShadow: boxShadow ??
+            (elevated ? AppColors.shadowPrimary : AppColors.shadowGlass),
+      ),
+      child: child,
+    );
+
     Widget card = Container(
       margin: margin,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(radius),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-          child: Container(
-            padding: padding,
-            decoration: BoxDecoration(
-              color: color,
+      child: blur > 0
+          ? ClipRRect(
               borderRadius: BorderRadius.circular(radius),
-              border:
-                  border ?? Border.all(color: AppColors.glassStroke, width: 1.0),
-              boxShadow: boxShadow ??
-                  (elevated ? AppColors.shadowPrimary : AppColors.shadowGlass),
-            ),
-            child: child,
-          ),
-        ),
-      ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+                child: innerContainer,
+              ),
+            )
+          : innerContainer,
     );
 
     if (onTap != null) {

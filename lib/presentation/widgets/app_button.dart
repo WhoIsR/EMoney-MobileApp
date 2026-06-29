@@ -101,13 +101,7 @@ class AppButton extends StatelessWidget {
 
     // Wrap primary variant with glass effect
     if (variant == AppButtonVariant.primary) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(radius),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-          child: button,
-        ),
-      );
+      return button;
     }
 
     return button;

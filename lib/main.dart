@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +11,7 @@ import 'core/theme/app_theme.dart';
 import 'core/utils/app_bloc_observer.dart';
 import 'firebase_options.dart';
 import 'injection/injection_container.dart' as di;
+import 'presentation/widgets/top_notification.dart';
 
 // Top-level variable — mencegah DeeplinkService di-garbage collect selama
 // proses berjalan sehingga uriLinkStream tetap aktif untuk in-app deeplinks.
@@ -48,8 +51,32 @@ void main() async {
   runApp(const KashiApp());
 }
 
-class KashiApp extends StatelessWidget {
+class KashiApp extends StatefulWidget {
   const KashiApp({super.key});
+
+  @override
+  State<KashiApp> createState() => _KashiAppState();
+}
+
+class _KashiAppState extends State<KashiApp> {
+  StreamSubscription<TransactionNotificationData>? _notifSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _notifSub = NotificationService.instance.messages.listen((data) {
+      final navState = AppRouter.rootNavigatorKey.currentState;
+      if (navState != null) {
+        TopNotification.show(navState, title: data.title, body: data.body);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _notifSub?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

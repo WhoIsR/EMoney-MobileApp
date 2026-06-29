@@ -118,6 +118,7 @@ class AccountPage extends StatelessWidget {
                       GlassCard(
                         padding: EdgeInsets.zero,
                         radius: 18,
+                        blur: 0,
                         child: Column(
                           children: [
                             _Row(
@@ -165,6 +166,7 @@ class AccountPage extends StatelessWidget {
                       GlassCard(
                         padding: EdgeInsets.zero,
                         radius: 18,
+                        blur: 0,
                         child: Column(
                           children: [
                             _Row(
@@ -196,6 +198,7 @@ class AccountPage extends StatelessWidget {
                         child: GlassCard(
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           radius: 16,
+                          blur: 0,
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -222,7 +225,7 @@ class AccountPage extends StatelessWidget {
                               color: AppColors.slate400,
                             )),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 110),
                     ],
                   ),
                 ),

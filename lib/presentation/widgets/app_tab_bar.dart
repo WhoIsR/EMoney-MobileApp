@@ -62,22 +62,17 @@ class _AppTabBarState extends State<AppTabBar>
                   filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xC8F5F3FA), // ~78% translucent
+                      color: Colors.white.withValues(alpha: 0.55), // Translucent glass
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.85),
+                        color: Colors.white.withValues(alpha: 0.50),
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.10),
-                          blurRadius: 30,
-                          offset: const Offset(0, 12),
-                        ),
-                        BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.04),
-                          blurRadius: 50,
-                          offset: const Offset(0, 20),
+                          color: Colors.black.withValues(alpha: 0.08),
+                          blurRadius: 24,
+                          offset: const Offset(0, 10),
                         ),
                       ],
                     ),
@@ -99,11 +94,7 @@ class _AppTabBarState extends State<AppTabBar>
                     width: 52,
                     height: 52,
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFF6B6FFF), Color(0xFF3B3DFF)],
-                      ),
+                      color: AppColors.primary, // iOS primary blue
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: Colors.white,
@@ -111,9 +102,9 @@ class _AppTabBarState extends State<AppTabBar>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.35),
-                          blurRadius: 14,
-                          offset: const Offset(0, 6),
+                          color: Colors.black.withValues(alpha: 0.18),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),

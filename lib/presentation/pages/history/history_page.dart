@@ -125,7 +125,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     );
                   }
                   return ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 110),
                     itemCount: 1,
                     itemBuilder: (_, __) {
                       return GlassCard(

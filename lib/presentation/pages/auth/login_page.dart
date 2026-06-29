@@ -11,6 +11,7 @@ import '../../widgets/glass_background.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/feature_icon.dart';
 import '../../widgets/glass_card.dart';
+import '../../widgets/app_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -291,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(height: 24),
 
                             // ── Fields ──
-                            _buildField(
+                            AppField(
                               label: 'Email',
                               value: _email,
                               onChanged: (v) => setState(() => _email = v),
@@ -300,7 +301,7 @@ class _LoginPageState extends State<LoginPage> {
                                   const Icon(DkgIcons.mail, size: 18),
                             ),
                             const SizedBox(height: 14),
-                            _buildField(
+                            AppField(
                               label: 'Kata sandi',
                               value: _pw,
                               onChanged: (v) => setState(() => _pw = v),
@@ -408,95 +409,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildField({
-    required String label,
-    required String value,
-    required ValueChanged<String> onChanged,
-    String? placeholder,
-    bool obscureText = false,
-    Widget? prefixIcon,
-    Widget? suffixIcon,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 12.5,
-            fontWeight: FontWeight.w600,
-            color: AppColors.slate500,
-          ),
-        ),
-        const SizedBox(height: 6),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(14),
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.72),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.9),
-                width: 1,
-              ),
-              boxShadow: AppColors.shadowSoft,
-            ),
-            child: Row(
-              children: [
-                if (prefixIcon != null) ...[
-                  const SizedBox(width: 12),
-                  ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      AppColors.slate400,
-                      BlendMode.srcIn,
-                    ),
-                    child: prefixIcon,
-                  ),
-                  const SizedBox(width: 8),
-                ] else
-                  const SizedBox(width: 14),
-                Expanded(
-                  child: TextField(
-                    controller: TextEditingController(text: value)
-                      ..selection = TextSelection.collapsed(
-                          offset: value.length),
-                    onChanged: onChanged,
-                    obscureText: obscureText,
-                    style: const TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.ink,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: placeholder,
-                      hintStyle: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.slate300,
-                      ),
-                      border: InputBorder.none,
-                      isDense: true,
-                      counterText: '',
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                ),
-                if (suffixIcon != null) ...[
-                  suffixIcon,
-                  const SizedBox(width: 4),
-                ],
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+
 }
 
 class _GoogleIcon extends StatelessWidget {

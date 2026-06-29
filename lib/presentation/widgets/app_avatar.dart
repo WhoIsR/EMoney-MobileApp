@@ -35,39 +35,33 @@ class AppAvatar extends StatelessWidget {
         .map((s) => s.isNotEmpty ? s[0].toUpperCase() : '')
         .join();
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size / 2),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: imageUrl != null
-                ? AppColors.glass
-                : (bg ?? auto).withValues(alpha: 0.85),
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.15),
-              width: 0.5,
-            ),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: imageUrl != null
-              ? Image.network(imageUrl!, fit: BoxFit.cover)
-              : Center(
-                  child: Text(
-                    initials,
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: size * 0.36,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: imageUrl != null
+            ? AppColors.glass
+            : (bg ?? auto).withValues(alpha: 0.85),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.15),
+          width: 0.5,
         ),
       ),
+      clipBehavior: Clip.antiAlias,
+      child: imageUrl != null
+          ? Image.network(imageUrl!, fit: BoxFit.cover)
+          : Center(
+              child: Text(
+                initials,
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: size * 0.36,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
     );
   }
 }
