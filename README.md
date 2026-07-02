@@ -53,3 +53,7 @@ Hasil APK debug berada pada:
 ```text
 build/app/outputs/flutter-apk/app-debug.apk
 ```
+
+## Screenshot Aplikasi
+
+![Kashi Home](screenshots/kashi-home.png)
