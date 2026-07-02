@@ -8,7 +8,6 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/glass_background.dart';
 import '../../widgets/app_logo.dart';
-import '../../widgets/glass_card.dart';
 import '../../widgets/feature_icon.dart';
 
 class SplashPage extends StatefulWidget {

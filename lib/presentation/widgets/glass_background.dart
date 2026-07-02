@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -126,8 +125,8 @@ class _StaticWash extends StatelessWidget {
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            color.withOpacity(opacity),
-            color.withOpacity(0.0),
+            color.withValues(alpha: opacity),
+            color.withValues(alpha: 0.0),
           ],
           stops: const [0.0, 1.0],
         ),
