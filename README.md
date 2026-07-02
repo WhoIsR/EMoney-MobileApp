@@ -56,4 +56,6 @@ build/app/outputs/flutter-apk/app-debug.apk
 
 ## Screenshot Aplikasi
 
-![Kashi Home](screenshots/kashi-home.png)
+| Login | Home dan Fitur Wallet |
+| --- | --- |
+| ![Kashi Login](screenshots/kashi-login.png) | ![Kashi Home](screenshots/kashi-home.png) |
