@@ -4,11 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../blocs/payment/payment_bloc.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/app_top_bar.dart';
 import '../../widgets/feature_icon.dart';
-import '../../widgets/glass_background.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 class TopUpPage extends StatefulWidget {
   const TopUpPage({super.key});
@@ -67,12 +65,11 @@ class _TopUpPageState extends State<TopUpPage> {
         backgroundColor: AppColors.bg,
         appBar:
             AppTopBar(title: 'Isi Saldo', onBack: () => context.go('/home')),
-        body: GlassBackground(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -83,7 +80,7 @@ class _TopUpPageState extends State<TopUpPage> {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.slate400,
+                            color: AppColors.gray400,
                           )),
                     ),
                     GridView.count(
@@ -101,18 +98,18 @@ class _TopUpPageState extends State<TopUpPage> {
                             duration: const Duration(milliseconds: 150),
                             decoration: BoxDecoration(
                               color: selected
-                                  ? AppColors.primarySurface
-                                  : Colors.white.withValues(alpha: 0.72),
+                                  ? AppColors.orange
+                                  : AppColors.cardDark,
                               borderRadius: BorderRadius.circular(18),
                               border: Border.all(
                                 color: selected
-                                    ? AppColors.primaryBorder
-                                    : Colors.white.withValues(alpha: 0.86),
-                                width: 1.2,
+                                    ? AppColors.black
+                                    : AppColors.gray600,
+                                width: selected ? 3 : 1.2,
                               ),
                               boxShadow: selected
-                                  ? AppColors.shadowSoft
-                                  : const [],
+                                  ? [BoxShadow(color: AppColors.black, blurRadius: 0, offset: const Offset(4, 4))]
+                                  : [],
                             ),
                             child: Center(
                               child: Text(CurrencyFormatter.format(c),
@@ -121,8 +118,8 @@ class _TopUpPageState extends State<TopUpPage> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w800,
                                     color: selected
-                                        ? AppColors.primaryDark
-                                        : AppColors.ink,
+                                        ? AppColors.black
+                                        : AppColors.white,
                                   )),
                             ),
                           ),
@@ -137,11 +134,11 @@ class _TopUpPageState extends State<TopUpPage> {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.slate400,
+                            color: AppColors.gray400,
                           )),
                     ),
-                    GlassCard(
-                      radius: 18,
+                    BrutalCard(
+                      bgColor: AppColors.cardDark,
                       padding: EdgeInsets.zero,
                       child: Column(
                         children: _methods.asMap().entries.map((entry) {
@@ -154,7 +151,7 @@ class _TopUpPageState extends State<TopUpPage> {
                                 const Divider(
                                     height: 1,
                                     indent: 16,
-                                    color: AppColors.line2),
+                                    color: AppColors.gray600),
                               GestureDetector(
                                 onTap: () =>
                                     setState(() => _method = m['id'] as String),
@@ -175,7 +172,7 @@ class _TopUpPageState extends State<TopUpPage> {
                                               fontFamily: 'PlusJakartaSans',
                                               fontSize: 14.5,
                                               fontWeight: FontWeight.w700,
-                                              color: AppColors.ink,
+                                              color: AppColors.white,
                                             )),
                                       ),
                                       AnimatedContainer(
@@ -186,12 +183,12 @@ class _TopUpPageState extends State<TopUpPage> {
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: selected
-                                              ? AppColors.primary
-                                              : Colors.white,
+                                              ? AppColors.orange
+                                              : AppColors.cardDark,
                                           border: Border.all(
                                             color: selected
-                                                ? AppColors.primary
-                                                : AppColors.line,
+                                                ? AppColors.orange
+                                                : AppColors.gray500,
                                             width: 2,
                                           ),
                                         ),
@@ -223,10 +220,10 @@ class _TopUpPageState extends State<TopUpPage> {
               ),
             ),
             Container(
-              color: AppColors.bg.withValues(alpha: 0.78),
+              color: AppColors.bg,
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
               child: BlocBuilder<PaymentBloc, PaymentState>(
-                builder: (context, state) => AppButton(
+                builder: (context, state) => BrutalButton(
                   label: 'Top Up ${CurrencyFormatter.format(_amount)}',
                   isLoading: state is PaymentLoading,
                   onPressed: () {
@@ -238,7 +235,6 @@ class _TopUpPageState extends State<TopUpPage> {
               ),
             ),
           ],
-        ),
         ),
       ),
     );

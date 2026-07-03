@@ -4,11 +4,8 @@ import '../../../core/services/deeplink_callback_service.dart';
 import '../../../core/services/deeplink_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/app_logo.dart';
-import '../../widgets/feature_icon.dart';
-import '../../widgets/glass_background.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 /// Halaman konfirmasi pembayaran yang dibuka dari deeplink merchant
 /// (`kashi://pay?...` atau `https://kashi.app/pay?...`).
@@ -52,208 +49,206 @@ class PaymentDeeplinkPage extends StatelessWidget {
         },
         child: Scaffold(
           backgroundColor: AppColors.bg,
-          body: GlassBackground(
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(
-                      16, MediaQuery.of(context).padding.top + 6, 16, 14),
-                  child: Row(
+          body: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(
+                    16, MediaQuery.of(context).padding.top + 6, 16, 14),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded,
+                          color: AppColors.white),
+                      onPressed: () => _cancel(context, payload),
+                    ),
+                    const Expanded(
+                      child: Text('Konfirmasi Pembayaran',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 17,
+                          )),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: AppColors.cardDark,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.black, width: 2),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.storefront_outlined,
+                              size: 14, color: AppColors.orange),
+                          const SizedBox(width: 6),
+                          Text(payload.merchantName,
+                              style: const TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.orange,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
+                  child: Column(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.close_rounded,
-                            color: AppColors.ink),
-                        onPressed: () => _cancel(context, payload),
-                      ),
-                      const Expanded(
-                        child: Text('Konfirmasi Pembayaran',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              color: AppColors.ink,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 17,
-                            )),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: AppColors.glass,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.glassLine),
+                      SizedBox(
+                        width: double.infinity,
+                        child: BrutalCard(
+                          bgColor: AppColors.cardDark,
+                          padding: const EdgeInsets.symmetric(vertical: 24),
+                          child: Column(
+                            children: [
+                              const Text('Total Pembayaran',
+                                  style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.gray400,
+                                  )),
+                              const SizedBox(height: 6),
+                              Text(CurrencyFormatter.format(payload.amount),
+                                  style: const TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppColors.white,
+                                    letterSpacing: -0.5,
+                                  )),
+                            ],
+                          ),
                         ),
+                      ),
+                      const SizedBox(height: 14),
+                      BrutalCard(
+                        bgColor: AppColors.cardDark,
+                        borderRadius: 20,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 4),
+                        child: Column(
+                          children: [
+                            _DetailRow(
+                                label: 'Merchant',
+                                value: payload.merchantName),
+                            const Divider(height: 1, color: AppColors.gray600),
+                            _DetailRow(
+                                label: 'Keterangan',
+                                value: payload.description),
+                            if (payload.reference != null &&
+                                payload.reference!.isNotEmpty) ...[
+                              const Divider(
+                                  height: 1, color: AppColors.gray600),
+                              _DetailRow(
+                                  label: 'Referensi',
+                                  value: payload.reference!),
+                            ],
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      // Payment method
+                      const Padding(
+                        padding: EdgeInsets.only(left: 4, bottom: 8),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Metode pembayaran',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.gray400,
+                              )),
+                        ),
+                      ),
+                      BrutalCard(
+                        bgColor: AppColors.cardDark,
+                        padding: const EdgeInsets.all(14),
+                        borderRadius: 20,
                         child: Row(
                           children: [
-                            const Icon(Icons.storefront_outlined,
-                                size: 14, color: AppColors.primary),
-                            const SizedBox(width: 6),
-                            Text(payload.merchantName,
-                                style: const TextStyle(
+                            const AppLogo(size: 40),
+                            const SizedBox(width: 12),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Kashi',
+                                      style: TextStyle(
+                                        fontFamily: 'PlusJakartaSans',
+                                        fontSize: 14.5,
+                                        fontWeight: FontWeight.w800,
+                                        color: AppColors.white,
+                                      )),
+                                  Text('Saldo · pembayaran instan',
+                                      style: TextStyle(
+                                          fontSize: 12.5,
+                                          color: AppColors.gray400)),
+                                ],
+                              ),
+                            ),
+                            const Icon(Icons.check_rounded,
+                                size: 20, color: AppColors.green),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      BrutalCard(
+                        bgColor: AppColors.cardDark,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 13, vertical: 10),
+                        borderRadius: 16,
+                        child: Row(
+                          children: const [
+                            Icon(Icons.shield_rounded,
+                                size: 18, color: AppColors.orange),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Pembayaran ini akan diverifikasi dengan PIN dan kode 2FA '
+                                'sesuai pengaturan keamanan akun kamu.',
+                                style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
-                                  color: AppColors.primary,
-                                )),
+                                  fontSize: 12.5,
+                                  color: AppColors.orange,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: GlassCard(
-                            padding: const EdgeInsets.symmetric(vertical: 24),
-                            child: Column(
-                              children: [
-                                const Text('Total Pembayaran',
-                                    style: TextStyle(
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.slate400,
-                                    )),
-                                const SizedBox(height: 6),
-                                Text(CurrencyFormatter.format(payload.amount),
-                                    style: const TextStyle(
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w800,
-                                      color: AppColors.ink,
-                                      letterSpacing: -0.5,
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        GlassCard(
-                          radius: 20,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 4),
-                          child: Column(
-                            children: [
-                              _DetailRow(
-                                  label: 'Merchant',
-                                  value: payload.merchantName),
-                              const Divider(height: 1, color: AppColors.line2),
-                              _DetailRow(
-                                  label: 'Keterangan',
-                                  value: payload.description),
-                              if (payload.reference != null &&
-                                  payload.reference!.isNotEmpty) ...[
-                                const Divider(
-                                    height: 1, color: AppColors.line2),
-                                _DetailRow(
-                                    label: 'Referensi',
-                                    value: payload.reference!),
-                              ],
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        // Payment method
-                        const Padding(
-                          padding: EdgeInsets.only(left: 4, bottom: 8),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Metode pembayaran',
-                                style: TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.slate400,
-                                )),
-                          ),
-                        ),
-                        GlassCard(
-                          padding: const EdgeInsets.all(14),
-                          radius: 20,
-                          border: Border.all(
-                              color: AppColors.primaryBorder, width: 1.4),
-                          child: Row(
-                            children: [
-                              const AppLogo(size: 40),
-                              const SizedBox(width: 12),
-                              const Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Kashi',
-                                        style: TextStyle(
-                                          fontFamily: 'PlusJakartaSans',
-                                          fontSize: 14.5,
-                                          fontWeight: FontWeight.w800,
-                                          color: AppColors.ink,
-                                        )),
-                                    Text('Saldo · pembayaran instan',
-                                        style: TextStyle(
-                                            fontSize: 12.5,
-                                            color: AppColors.slate400)),
-                                  ],
-                                ),
-                              ),
-                              const Icon(Icons.check_rounded,
-                                  size: 20, color: AppColors.primary),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        GlassCard(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13, vertical: 10),
-                          radius: 16,
-                          color:
-                              AppColors.primarySurface.withValues(alpha: 0.82),
-                          child: Row(
-                            children: const [
-                              Icon(DkgIcons.shieldCheck,
-                                  size: 18, color: AppColors.primary),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  'Pembayaran ini akan diverifikasi dengan PIN dan kode 2FA '
-                                  'sesuai pengaturan keamanan akun kamu.',
-                                  style: TextStyle(
-                                    fontFamily: 'PlusJakartaSans',
-                                    fontSize: 12.5,
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.4,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+              ),
+              Container(
+                color: AppColors.cardDark,
+                padding: EdgeInsets.fromLTRB(
+                    16, 12, 16, MediaQuery.of(context).padding.bottom + 16),
+                child: BrutalButton(
+                  label: 'Bayar ${CurrencyFormatter.format(payload.amount)}',
+                  onPressed: () => context.go('/pin', extra: {
+                    'kind': 'deeplink',
+                    'amount': payload.amount,
+                    'description': payload.description,
+                    'merchantName': payload.merchantName,
+                    'merchantId': payload.merchantId,
+                    'reference': payload.reference,
+                    'callbackUrl': payload.callbackUrl,
+                  }),
                 ),
-                Container(
-                  color: Colors.white.withValues(alpha: 0.66),
-                  padding: EdgeInsets.fromLTRB(
-                      16, 12, 16, MediaQuery.of(context).padding.bottom + 16),
-                  child: AppButton(
-                    label: 'Bayar ${CurrencyFormatter.format(payload.amount)}',
-                    onPressed: () => context.go('/pin', extra: {
-                      'kind': 'deeplink',
-                      'amount': payload.amount,
-                      'description': payload.description,
-                      'merchantName': payload.merchantName,
-                      'merchantId': payload.merchantId,
-                      'reference': payload.reference,
-                      'callbackUrl': payload.callbackUrl,
-                    }),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         )); // PopScope + Scaffold
   }
@@ -276,7 +271,7 @@ class _DetailRow extends StatelessWidget {
             child: Text(label,
                 style: const TextStyle(
                     fontSize: 13.5,
-                    color: AppColors.slate500,
+                    color: AppColors.gray500,
                     fontFamily: 'PlusJakartaSans')),
           ),
           Expanded(
@@ -285,7 +280,7 @@ class _DetailRow extends StatelessWidget {
                 style: const TextStyle(
                     fontSize: 13.5,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.ink,
+                    color: AppColors.white,
                     fontFamily: 'PlusJakartaSans')),
           ),
         ],
@@ -301,20 +296,17 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: AppColors.redSurface,
-                  borderRadius: BorderRadius.circular(18),
-                ),
+              BrutalCard(
+                bgColor: AppColors.cardDark,
+                padding: const EdgeInsets.all(16),
+                borderRadius: 18,
                 child: const Center(
                   child: Icon(Icons.link_off_rounded,
                       size: 30, color: AppColors.red),
@@ -322,21 +314,21 @@ class _ErrorView extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               const Text('Link Pembayaran Tidak Valid',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 19,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.ink,
+                    color: AppColors.white,
                   )),
               const SizedBox(height: 8),
               Text(message,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 13.5, color: AppColors.slate500, height: 1.5)),
+                      fontSize: 13.5, color: AppColors.gray500, height: 1.5)),
               const SizedBox(height: 28),
-              AppButton(
+              BrutalButton(
                 label: 'Kembali ke Beranda',
-                fullWidth: false,
                 onPressed: () => context.go('/home'),
               ),
             ],

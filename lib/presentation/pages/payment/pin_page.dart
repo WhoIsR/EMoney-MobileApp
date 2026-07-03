@@ -13,8 +13,7 @@ import '../../blocs/payment/payment_bloc.dart';
 import '../../widgets/code_input.dart';
 import '../../widgets/feature_icon.dart';
 import '../../widgets/pin_pad.dart';
-import '../../widgets/glass_background.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 enum _Step { pin, otp }
 
@@ -256,60 +255,58 @@ class _PinPageState extends State<PinPage> {
       ],
       child: Scaffold(
         backgroundColor: AppColors.bg,
-        body: GlassBackground(
-          child: SafeArea(
-            child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: const Icon(Icons.close_rounded, color: AppColors.ink),
-                  onPressed: () {
-                    if (_step == _Step.otp && !_busy) {
-                      _countdown?.cancel();
-                      setState(() {
-                        _step = _Step.pin;
-                        _pin = '';
-                        _otpCode = '';
-                      });
-                    } else {
-                      // Kirim callback cancelled jika user membatalkan dari flow deeplink.
-                      final cb = _callbackUrl;
-                      if (cb != null) {
-                        DeeplinkCallbackService.notifyCancelled(
-                          callbackUrl: cb,
-                          reference: _callbackReference,
-                        );
-                      }
-                      context.go('/home');
+        body: SafeArea(
+          child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                icon: const Icon(Icons.close_rounded, color: AppColors.white),
+                onPressed: () {
+                  if (_step == _Step.otp && !_busy) {
+                    _countdown?.cancel();
+                    setState(() {
+                      _step = _Step.pin;
+                      _pin = '';
+                      _otpCode = '';
+                    });
+                  } else {
+                    // Kirim callback cancelled jika user membatalkan dari flow deeplink.
+                    final cb = _callbackUrl;
+                    if (cb != null) {
+                      DeeplinkCallbackService.notifyCancelled(
+                        callbackUrl: cb,
+                        reference: _callbackReference,
+                      );
                     }
-                  },
+                    context.go('/home');
+                  }
+                },
+              ),
+            ),
+            if (_busy) ...[
+              const Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(color: AppColors.orange),
+                    SizedBox(height: 18),
+                    Text('Memproses transaksi…',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.gray500,
+                        )),
+                  ],
                 ),
               ),
-              if (_busy) ...[
-                const Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(color: AppColors.primary),
-                      SizedBox(height: 18),
-                      Text('Memproses transaksi…',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.slate600,
-                          )),
-                    ],
-                  ),
-                ),
-              ] else if (_step == _Step.pin) ...[
-                Expanded(child: _buildPinStep()),
-              ] else ...[
-                Expanded(child: _buildOtpStep()),
-              ],
+            ] else if (_step == _Step.pin) ...[
+              Expanded(child: _buildPinStep()),
+            ] else ...[
+              Expanded(child: _buildOtpStep()),
             ],
-          ),
+          ],
         ),
         ),
       ),
@@ -325,12 +322,13 @@ class _PinPageState extends State<PinPage> {
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: AppColors.primarySurface,
+              color: AppColors.orange,
               borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.black, width: 2),
             ),
             child: const Center(
                 child: Icon(Icons.lock_outline_rounded,
-                    size: 26, color: AppColors.primary)),
+                    size: 26, color: AppColors.black)),
           ),
           const SizedBox(height: 16),
           const Text('Masukkan PIN',
@@ -338,12 +336,12 @@ class _PinPageState extends State<PinPage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 21,
                 fontWeight: FontWeight.w800,
-                color: AppColors.ink,
+                color: AppColors.white,
               )),
           const SizedBox(height: 6),
           const Text('Masukkan 6 digit PIN keamanan kamu',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13.5, color: AppColors.slate500)),
+              style: TextStyle(fontSize: 13.5, color: AppColors.gray500)),
           const Spacer(),
           PinPad(
             value: _pin,
@@ -356,12 +354,12 @@ class _PinPageState extends State<PinPage> {
             style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 12.5,
-                color: AppColors.slate400),
+                color: AppColors.gray400),
             children: [
               TextSpan(
                 text: 'Reset',
                 style: TextStyle(
-                    color: AppColors.primary, fontWeight: FontWeight.w700),
+                    color: AppColors.orange, fontWeight: FontWeight.w700),
               ),
             ],
           )),
@@ -385,14 +383,14 @@ class _PinPageState extends State<PinPage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
-                color: AppColors.ink,
+                color: AppColors.white,
                 letterSpacing: -0.3,
               )),
           const SizedBox(height: 8),
           Text(header.subtitle,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  fontSize: 14.5, color: AppColors.slate500, height: 1.55)),
+                  fontSize: 14.5, color: AppColors.gray500, height: 1.55)),
           const SizedBox(height: 28),
           AnimatedContainer(
             duration: const Duration(milliseconds: 80),
@@ -413,14 +411,15 @@ class _PinPageState extends State<PinPage> {
                 )),
           ],
           const SizedBox(height: 18),
-          GlassCard(
+          BrutalCard(
+            bgColor: AppColors.cardDark,
             padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-            radius: 12,
-            boxShadow: [],
+            borderRadius: 12,
+            shadowOffset: 0,
             child: Row(
               children: [
-                const Icon(DkgIcons.shieldCheck,
-                    size: 18, color: AppColors.primary),
+                const Icon(Icons.shield_rounded,
+                    size: 18, color: AppColors.orange),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -428,7 +427,7 @@ class _PinPageState extends State<PinPage> {
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12.5,
-                      color: AppColors.primary,
+                      color: AppColors.orange,
                       fontWeight: FontWeight.w600,
                       height: 1.4,
                     ),
@@ -443,16 +442,16 @@ class _PinPageState extends State<PinPage> {
                 ? Text(
                     'Kirim ulang dalam 00:${_resendTimer.toString().padLeft(2, '0')}',
                     style: const TextStyle(
-                        fontSize: 13.5, color: AppColors.slate400),
+                        fontSize: 13.5, color: AppColors.gray400),
                   )
                 : TextButton.icon(
                     onPressed: _resendOtp,
-                    icon: const Icon(DkgIcons.refresh,
-                        size: 16, color: AppColors.primary),
+                    icon: const Icon(Icons.refresh_rounded,
+                        size: 16, color: AppColors.orange),
                     label: const Text('Kirim ulang kode',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
-                          color: AppColors.primary,
+                          color: AppColors.orange,
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                         )),
@@ -467,7 +466,7 @@ class _PinPageState extends State<PinPage> {
     switch (_twoFaMethod) {
       case AppConstants.twoFaSmtp:
         return (
-          icon: DkgIcons.mail,
+          icon: Icons.email_outlined,
           tone: 'blue',
           title: 'Masukkan Kode OTP Email',
           subtitle:
@@ -483,7 +482,7 @@ class _PinPageState extends State<PinPage> {
         );
       default:
         return (
-          icon: DkgIcons.smartphone,
+          icon: Icons.phone_android_outlined,
           tone: 'violet',
           title: 'Masukkan Kode Authenticator',
           subtitle:

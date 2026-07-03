@@ -4,6 +4,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../widgets/app_avatar.dart';
 import '../../widgets/app_field.dart';
 import '../../widgets/app_top_bar.dart';
+import '../../widgets/brutal_widgets.dart';
 
 const _contacts = [
   {'id': '1', 'name': 'Budi Santoso', 'sub': '0812-3456-7890', 'fav': true},
@@ -37,9 +38,12 @@ class _TransferPageState extends State<TransferPage> {
       appBar: AppTopBar(title: 'Transfer', onBack: () => context.go('/home')),
       body: Column(
         children: [
-          Container(
-            color: Colors.white,
+          BrutalCard(
+            bgColor: AppColors.cardDark,
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+            borderRadius: 0,
+            borderWidth: 0,
+            shadowOffset: 0,
             child: Column(
               children: [
                 Row(
@@ -58,8 +62,9 @@ class _TransferPageState extends State<TransferPage> {
                           margin: const EdgeInsets.only(right: 4),
                           padding: const EdgeInsets.symmetric(vertical: 11),
                           decoration: BoxDecoration(
-                            color: active ? AppColors.primary : AppColors.bg,
+                            color: active ? AppColors.orange : AppColors.cardDark,
                             borderRadius: BorderRadius.circular(12),
+                            border: active ? Border.all(color: AppColors.black, width: 2) : null,
                           ),
                           child: Center(
                             child: Text(t[1],
@@ -68,8 +73,8 @@ class _TransferPageState extends State<TransferPage> {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: active
-                                      ? Colors.white
-                                      : AppColors.slate500,
+                                      ? AppColors.black
+                                      : AppColors.gray400,
                                 )),
                           ),
                         ),
@@ -86,7 +91,7 @@ class _TransferPageState extends State<TransferPage> {
                   prefixIcon: const Icon(Icons.search_rounded, size: 20),
                 ),
                 const SizedBox(height: 14),
-                const Divider(height: 1, color: AppColors.line2),
+                const Divider(height: 1, color: AppColors.gray600),
               ],
             ),
           ),
@@ -117,14 +122,11 @@ class _TransferPageState extends State<TransferPage> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.slate400)),
+                  color: AppColors.gray400)),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: AppColors.shadowSoft,
-          ),
+        BrutalCard(
+          bgColor: AppColors.cardDark,
+          padding: EdgeInsets.zero,
           child: Column(
             children: filtered.asMap().entries.map((e) {
               final i = e.key;
@@ -133,7 +135,7 @@ class _TransferPageState extends State<TransferPage> {
                 children: [
                   if (i > 0)
                     const Divider(
-                        height: 1, indent: 16, color: AppColors.line2),
+                        height: 1, indent: 16, color: AppColors.gray600),
                   GestureDetector(
                     onTap: () => context.go('/transfer/amount', extra: {
                       'recipient': c,
@@ -154,18 +156,18 @@ class _TransferPageState extends State<TransferPage> {
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 14.5,
                                       fontWeight: FontWeight.w700,
-                                      color: AppColors.ink,
+                                      color: AppColors.white,
                                     )),
                                 Text(c['sub'] as String,
                                     style: const TextStyle(
                                         fontSize: 12.5,
-                                        color: AppColors.slate400)),
+                                        color: AppColors.gray400)),
                               ],
                             ),
                           ),
                           if (c['fav'] as bool)
                             const Icon(Icons.star_rounded,
-                                size: 18, color: AppColors.amber),
+                                size: 18, color: AppColors.yellow),
                         ],
                       ),
                     ),
@@ -186,13 +188,9 @@ class _TransferPageState extends State<TransferPage> {
             (b['name'] as String).toLowerCase().contains(_q.toLowerCase()))
         .toList();
 
-    return Container(
-      margin: const EdgeInsets.only(top: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: AppColors.shadowSoft,
-      ),
+    return BrutalCard(
+      bgColor: AppColors.cardDark,
+      padding: EdgeInsets.zero,
       child: Column(
         children: filtered.asMap().entries.map((e) {
           final i = e.key;
@@ -200,7 +198,7 @@ class _TransferPageState extends State<TransferPage> {
           return Column(
             children: [
               if (i > 0)
-                const Divider(height: 1, indent: 16, color: AppColors.line2),
+                const Divider(height: 1, indent: 16, color: AppColors.gray600),
               GestureDetector(
                 onTap: () => context.go('/transfer/amount', extra: {
                   'recipient': b,
@@ -214,7 +212,7 @@ class _TransferPageState extends State<TransferPage> {
                         width: 44,
                         height: 44,
                         decoration: BoxDecoration(
-                          color: AppColors.primarySurface,
+                          color: AppColors.orange,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Center(
@@ -222,7 +220,7 @@ class _TransferPageState extends State<TransferPage> {
                               style: const TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.primary,
+                                color: AppColors.black,
                                 fontSize: 14,
                               )),
                         ),
@@ -237,16 +235,16 @@ class _TransferPageState extends State<TransferPage> {
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 14.5,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.ink,
+                                  color: AppColors.white,
                                 )),
                             const Text('Biaya Rp2.500',
                                 style: TextStyle(
-                                    fontSize: 12.5, color: AppColors.slate400)),
+                                    fontSize: 12.5, color: AppColors.gray400)),
                           ],
                         ),
                       ),
                       const Icon(Icons.chevron_right_rounded,
-                          size: 18, color: AppColors.slate400),
+                          size: 18, color: AppColors.gray400),
                     ],
                   ),
                 ),

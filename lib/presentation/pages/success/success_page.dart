@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../blocs/account/account_bloc.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/success_check.dart';
-import '../../widgets/glass_background.dart';
+import '../../widgets/brutal_widgets.dart';
 
 class SuccessPage extends StatefulWidget {
   final String title;
@@ -38,128 +37,118 @@ class _SuccessPageState extends State<SuccessPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: GlassBackground(
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
-                  child: Column(
-                    children: [
-                      const Spacer(),
-                      const SuccessCheck(),
-                      const SizedBox(height: 24),
-                      Text(widget.title,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    const SuccessCheck(),
+                    const SizedBox(height: 24),
+                    Text(widget.title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.white,
+                          letterSpacing: -0.3,
+                        )),
+                    if (widget.subtitle.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Text(widget.subtitle,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontFamily: 'PlusJakartaSans',
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink,
-                            letterSpacing: -0.3,
+                            fontSize: 14.5,
+                            color: AppColors.gray500,
                           )),
-                      if (widget.subtitle.isNotEmpty) ...[
-                        const SizedBox(height: 8),
-                        Text(widget.subtitle,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 14.5,
-                              color: AppColors.slate500,
-                            )),
-                      ],
-                      const SizedBox(height: 20),
-                      Text(CurrencyFormatter.format(widget.amount),
-                          style: const TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 36,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink,
-                            letterSpacing: -0.6,
-                          )),
-                      if (widget.lines.isNotEmpty) ...[
-                        const SizedBox(height: 24),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: AppColors.glassStrong.withValues(alpha: 0.82),
-                            borderRadius: BorderRadius.circular(22),
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.9),
-                            ),
-                            boxShadow: AppColors.shadowSoft,
-                          ),
-                          child: Column(
-                            children: widget.lines.asMap().entries.map((e) {
-                              final i = e.key;
-                              final l = e.value;
-                              return Column(
-                                children: [
-                                  if (i > 0)
-                                    const Divider(
-                                        height: 1, color: AppColors.line),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 11),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(l[0],
-                                            style: const TextStyle(
-                                              fontFamily: 'PlusJakartaSans',
-                                              fontSize: 13.5,
-                                              color: AppColors.slate500,
-                                            )),
-                                        Text(l[1],
-                                            textAlign: TextAlign.right,
-                                            style: const TextStyle(
-                                              fontFamily: 'PlusJakartaSans',
-                                              fontSize: 13.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.ink,
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ],
-                      const Spacer(),
                     ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-                child: Column(
-                  children: [
-                    AppButton(
-                      label: 'Selesai',
-                      onPressed: () => context.go('/home'),
-                    ),
-                    const SizedBox(height: 10),
-                    AppButton(
-                      label: 'Bagikan bukti transaksi',
-                      variant: AppButtonVariant.soft,
-                      icon: const Icon(Icons.copy_rounded,
-                          size: 18, color: AppColors.primary),
-                      onPressed: () {},
-                    ),
+                    const SizedBox(height: 20),
+                    Text(CurrencyFormatter.format(widget.amount),
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 36,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.white,
+                          letterSpacing: -0.6,
+                        )),
+                    if (widget.lines.isNotEmpty) ...[
+                      const SizedBox(height: 24),
+                      BrutalCard(
+                        bgColor: AppColors.cardDark,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
+                        child: Column(
+                          children: widget.lines.asMap().entries.map((e) {
+                            final i = e.key;
+                            final l = e.value;
+                            return Column(
+                              children: [
+                                if (i > 0)
+                                  const Divider(
+                                      height: 1, color: AppColors.gray600),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 11),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(l[0],
+                                          style: const TextStyle(
+                                            fontFamily: 'PlusJakartaSans',
+                                            fontSize: 13.5,
+                                            color: AppColors.gray500,
+                                          )),
+                                      Text(l[1],
+                                          textAlign: TextAlign.right,
+                                          style: const TextStyle(
+                                            fontFamily: 'PlusJakartaSans',
+                                            fontSize: 13.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.white,
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+              child: Column(
+                children: [
+                  BrutalButton(
+                    label: 'Selesai',
+                    onPressed: () => context.go('/home'),
+                  ),
+                  const SizedBox(height: 10),
+                  BrutalButton(
+                    label: 'Bagikan bukti transaksi',
+                    bgColor: AppColors.cardDark,
+                    textColor: AppColors.orange,
+                    icon: const Icon(Icons.copy_rounded,
+                        size: 18, color: AppColors.orange),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/app_logo.dart';
-import '../../widgets/glass_background.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 const _orange = Color(0xFFFF6A2B);
 
@@ -25,8 +23,7 @@ class MerchantCheckoutPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: GlassBackground(
-        child: Column(
+      body: Column(
         children: [
           // TokoBelanja header (different brand!)
           Container(
@@ -80,7 +77,8 @@ class MerchantCheckoutPage extends StatelessWidget {
               child: Column(
                 children: [
                   // Order items
-                  GlassCard(
+                  BrutalCard(
+                    bgColor: AppColors.cardDark,
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +90,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.slate400,
+                                color: AppColors.gray400,
                               )),
                         ),
                         ...items.asMap().entries.map((e) {
@@ -102,7 +100,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                             children: [
                               if (i > 0)
                                 const Divider(
-                                    height: 1, color: AppColors.line2),
+                                    height: 1, color: AppColors.gray600),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 11),
@@ -114,6 +112,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         color: const Color(0xFFFFF1E9),
                                         borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: AppColors.black, width: 1),
                                       ),
                                       child: const Center(
                                           child: Icon(
@@ -134,13 +133,13 @@ class MerchantCheckoutPage extends StatelessWidget {
                                                 fontFamily: 'PlusJakartaSans',
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
-                                                color: AppColors.ink,
+                                                color: AppColors.white,
                                               )),
                                           Text(
                                               '${item['qty']} × ${CurrencyFormatter.format(item['price'] as double)}',
                                               style: const TextStyle(
                                                   fontSize: 12.5,
-                                                  color: AppColors.slate400)),
+                                                  color: AppColors.gray400)),
                                         ],
                                       ),
                                     ),
@@ -152,7 +151,7 @@ class MerchantCheckoutPage extends StatelessWidget {
                                         fontFamily: 'PlusJakartaSans',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w800,
-                                        color: AppColors.ink,
+                                        color: AppColors.white,
                                       ),
                                     ),
                                   ],
@@ -175,14 +174,14 @@ class MerchantCheckoutPage extends StatelessWidget {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.slate400,
+                            color: AppColors.gray400,
                           )),
                     ),
                   ),
-                  GlassCard(
+                  BrutalCard(
+                    bgColor: AppColors.cardDark,
                     padding: const EdgeInsets.all(14),
-                    radius: 16,
-                    border: Border.all(color: AppColors.primaryLight, width: 1.8),
+                    borderRadius: 16,
                     child: Row(
                       children: [
                         const AppLogo(size: 40),
@@ -196,23 +195,24 @@ class MerchantCheckoutPage extends StatelessWidget {
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 14.5,
                                     fontWeight: FontWeight.w800,
-                                    color: AppColors.ink,
+                                    color: AppColors.white,
                                   )),
                               Text('Saldo · pembayaran instan',
                                   style: TextStyle(
                                       fontSize: 12.5,
-                                      color: AppColors.slate400)),
+                                      color: AppColors.gray400)),
                             ],
                           ),
                         ),
                         const Icon(Icons.check_rounded,
-                            size: 20, color: AppColors.primary),
+                            size: 20, color: AppColors.green),
                       ],
                     ),
                   ),
                   const SizedBox(height: 14),
                   // Totals
-                  GlassCard(
+                  BrutalCard(
+                    bgColor: AppColors.cardDark,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     child: Column(
@@ -220,11 +220,11 @@ class MerchantCheckoutPage extends StatelessWidget {
                         _TotalLine(
                             label: 'Subtotal',
                             value: CurrencyFormatter.format(subtotal)),
-                        const Divider(height: 1, color: AppColors.line2),
+                        const Divider(height: 1, color: AppColors.gray600),
                         _TotalLine(
                             label: 'Ongkos kirim',
                             value: CurrencyFormatter.format(ship)),
-                        const Divider(height: 1, color: AppColors.line2),
+                        const Divider(height: 1, color: AppColors.gray600),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: Row(
@@ -235,14 +235,14 @@ class MerchantCheckoutPage extends StatelessWidget {
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 15.5,
                                     fontWeight: FontWeight.w700,
-                                    color: AppColors.slate600,
+                                    color: AppColors.gray500,
                                   )),
                               Text(CurrencyFormatter.format(total),
                                   style: const TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 15.5,
                                     fontWeight: FontWeight.w800,
-                                    color: _orange,
+                                    color: AppColors.orange,
                                   )),
                             ],
                           ),
@@ -256,10 +256,10 @@ class MerchantCheckoutPage extends StatelessWidget {
           ),
           // Pay bar
           Container(
-            color: Colors.white,
+            color: AppColors.cardDark,
             padding: EdgeInsets.fromLTRB(
                 16, 12, 16, MediaQuery.of(context).padding.bottom + 16),
-            child: AppButton(
+            child: BrutalButton(
               label: 'Bayar ${CurrencyFormatter.format(total)}',
               onPressed: () => context.go('/pin', extra: {
                 'kind': 'deeplink',
@@ -269,7 +269,6 @@ class MerchantCheckoutPage extends StatelessWidget {
             ),
           ),
         ],
-      ),
       ),
     );
   }
@@ -290,13 +289,13 @@ class _TotalLine extends StatelessWidget {
           Text(label,
               style: const TextStyle(
                   fontSize: 14,
-                  color: AppColors.slate500,
+                  color: AppColors.gray500,
                   fontFamily: 'PlusJakartaSans')),
           Text(value,
               style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.ink,
+                  color: AppColors.white,
                   fontFamily: 'PlusJakartaSans')),
         ],
       ),
