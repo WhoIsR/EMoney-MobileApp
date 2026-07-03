@@ -10,28 +10,34 @@ class FeatureIcon extends StatelessWidget {
   const FeatureIcon({
     super.key,
     required this.icon,
-    this.tone = 'blue',
-    this.size = 52,
-    this.iconSize = 25,
+    this.tone = 'orange',
+    this.size = 44,
+    this.iconSize = 21,
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.tone(tone);
+    final bg = colors[0];
+    final fg = colors[1];
+
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: colors[0].withValues(alpha: 0.72),
+        color: bg,
         borderRadius: BorderRadius.circular(size * 0.34),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.72),
-          width: 1,
-        ),
-        boxShadow: AppColors.shadowSoft,
+        border: Border.all(color: AppColors.black, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black,
+            blurRadius: 0,
+            offset: Offset(2, 2),
+          ),
+        ],
       ),
       child: Center(
-        child: Icon(icon, color: colors[1], size: iconSize),
+        child: Icon(icon, color: fg, size: iconSize),
       ),
     );
   }

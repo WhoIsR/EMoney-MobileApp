@@ -1,120 +1,170 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Apple-style floating glass tab bar with an unclipped raised scan button.
-/// The scan button sits completely outside the glass pill — no clipping.
-/// This widget returns ONLY the pill + scan button, no extra spacing.
-/// Positioning is handled by the parent Stack in app_router.dart.
-class AppTabBar extends StatefulWidget {
-  final String active;
-  final ValueChanged<String> onTab;
-  final VoidCallback? onScan;
+/// Neo-brutalism bottom navbar replicating test.html floating nav.
+/// Dark bg, thick black border, hard shadow, colored active tab.
+class AppTabBar extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onTap;
 
   const AppTabBar({
     super.key,
-    required this.active,
-    required this.onTab,
-    this.onScan,
+    required this.currentIndex,
+    required this.onTap,
   });
 
   @override
-  State<AppTabBar> createState() => _AppTabBarState();
-}
-
-class _AppTabBarState extends State<AppTabBar>
-    with SingleTickerProviderStateMixin {
-  static const _pillHeight = 58.0;
-  static const _pillMarginH = 20.0; // horizontal margin on each side
-  static const _scanButtonOffset = -22.0;
-
-  int get _activeIndex {
-    switch (widget.active) {
-      case 'home':    return 0;
-      case 'history': return 1;
-      case 'promo':   return 2;
-      case 'akun':    return 3;
-      default:        return 0;
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final bottomPad = MediaQuery.of(context).padding.bottom;
-
-    return Padding(
-      padding: EdgeInsets.only(bottom: bottomPad + 10),
-      child: SizedBox(
-        height: _pillHeight,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            // ── The floating glass pill ──
-            Positioned(
-              left: _pillMarginH,
-              right: _pillMarginH,
-              top: 0,
-              bottom: 0,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-                  child: Container(
+    return Container(
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: AppColors.cardDark,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: AppColors.black, width: 4),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black,
+            blurRadius: 0,
+            offset: const Offset(6, 6),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          _navItem(
+            index: 0,
+            icon: _dashboardIcon(currentIndex == 0),
+            label: 'DASH',
+            active: currentIndex == 0,
+            color: AppColors.purple,
+          ),
+          _divider(),
+          _navItem(
+            index: 1,
+            icon: _logsIcon(currentIndex == 1),
+            label: 'LOGS',
+            active: currentIndex == 1,
+            color: AppColors.cardDark,
+          ),
+          const SizedBox(width: 8),
+          // Center SCAN button - bigger
+          GestureDetector(
+            onTap: () => onTap(4), // scan trigger (outside normal tabs)
+            child: Container(
+              margin: const EdgeInsets.only(top: -12),
+              child: Stack(
+                children: [
+                  Container(
+                    width: 56, height: 56,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.55), // Translucent glass
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.50),
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.08),
-                          blurRadius: 24,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(28),
+                      color: AppColors.black,
                     ),
-                    child: _TabRow(activeIndex: _activeIndex, onTab: widget.onTab),
                   ),
-                ),
+                  Positioned(
+                    left: 4, top: 4,
+                    child: Container(
+                      width: 52, height: 52,
+                      decoration: BoxDecoration(
+                        color: AppColors.yellow,
+                        borderRadius: BorderRadius.circular(28),
+                        border: Border.all(color: AppColors.black, width: 4),
+                      ),
+                      child: Icon(
+                        Icons.qr_code_scanner_rounded,
+                        size: 26,
+                        color: AppColors.black,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
+          const SizedBox(width: 8),
+          _divider(),
+          _navItem(
+            index: 2,
+            icon: _cardIcon(currentIndex == 2),
+            label: 'CARD',
+            active: currentIndex == 2,
+            color: AppColors.cardDark,
+          ),
+          _divider(),
+          _navItem(
+            index: 3,
+            icon: _userIcon(currentIndex == 3),
+            label: 'USER',
+            active: currentIndex == 3,
+            color: AppColors.cardDark,
+          ),
+        ],
+      ),
+    );
+  }
 
-            // ── Raised scan button ──
-            Positioned(
-              top: _scanButtonOffset,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: GestureDetector(
-                  onTap: widget.onScan,
-                  child: Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary, // iOS primary blue
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.18),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.qr_code_scanner_rounded,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                  ),
+  Widget _navItem({
+    required int index,
+    required Widget icon,
+    required String label,
+    required bool active,
+    required Color color,
+  }) {
+    if (active) {
+      return GestureDetector(
+        onTap: () => onTap(index),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.black, width: 2),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.black,
+                blurRadius: 0,
+                offset: const Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              icon,
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 9,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.black,
+                  letterSpacing: -0.3,
                 ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            icon,
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+                color: AppColors.white.withValues(alpha: 0.8),
+                letterSpacing: -0.3,
               ),
             ),
           ],
@@ -122,96 +172,46 @@ class _AppTabBarState extends State<AppTabBar>
       ),
     );
   }
-}
 
-/// The tab row inside the glass pill with a sliding indicator.
-class _TabRow extends StatelessWidget {
-  final int activeIndex;
-  final ValueChanged<String> onTab;
-
-  const _TabRow({required this.activeIndex, required this.onTab});
-
-  static const _tabs = [
-    _TabItem('home',  Icons.home_rounded,      'Home'),
-    _TabItem('history', Icons.history_rounded,  'Riwayat'),
-    _TabItem('promo',   Icons.card_giftcard_rounded, 'Promo'),
-    _TabItem('akun',    Icons.person_outline_rounded, 'Akun'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    final totalWidth = MediaQuery.of(context).size.width - 40;
-    final slotWidth = totalWidth / 4;
-    final left = activeIndex * slotWidth;
-
-    return Stack(
-      children: [
-        // ── Sliding active indicator ──
-        AnimatedPositioned(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOutCubic,
-          left: left + 8,
-          top: 7,
-          bottom: 7,
-          width: slotWidth - 16,
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.08),
-                width: 1,
-              ),
-            ),
-          ),
-        ),
-
-        // ── Tab items ──
-        Row(
-          children: List.generate(_tabs.length, (i) {
-            final tab = _tabs[i];
-            final active = i == activeIndex;
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => onTab(tab.key),
-                behavior: HitTestBehavior.opaque,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      tab.icon,
-                      size: 20,
-                      color: active
-                          ? AppColors.primary
-                          : AppColors.slate400,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      tab.label,
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 9.5,
-                        fontWeight:
-                            active ? FontWeight.w800 : FontWeight.w500,
-                        color: active
-                            ? AppColors.primary
-                            : AppColors.slate500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
+  Widget _divider() {
+    return Container(
+      width: 3,
+      height: 32,
+      color: AppColors.black.withValues(alpha: 0.3),
+      margin: const EdgeInsets.symmetric(horizontal: 2),
     );
   }
-}
 
-class _TabItem {
-  final String key;
-  final IconData icon;
-  final String label;
-  const _TabItem(this.key, this.icon, this.label);
+  // ── Icon SVGs in Flutter ──
+  Widget _dashboardIcon(bool active) {
+    return Icon(
+      Icons.view_module_rounded,
+      size: 20,
+      color: active ? AppColors.black : AppColors.white,
+    );
+  }
+
+  Widget _logsIcon(bool active) {
+    return Icon(
+      Icons.trending_up_rounded,
+      size: 20,
+      color: active ? AppColors.black : AppColors.white,
+    );
+  }
+
+  Widget _cardIcon(bool active) {
+    return Icon(
+      Icons.wallet_rounded,
+      size: 20,
+      color: active ? AppColors.black : AppColors.white,
+    );
+  }
+
+  Widget _userIcon(bool active) {
+    return Icon(
+      Icons.person_rounded,
+      size: 20,
+      color: active ? AppColors.black : AppColors.white,
+    );
+  }
 }

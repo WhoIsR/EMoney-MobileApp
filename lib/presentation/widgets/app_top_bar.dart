@@ -19,7 +19,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: AppBar(
-          backgroundColor: AppColors.glassStrong.withValues(alpha: 0.78),
+          backgroundColor: AppColors.cardDark.withValues(alpha: 0.85),
           elevation: 0,
           scrolledUnderElevation: 0,
           surfaceTintColor: Colors.transparent,

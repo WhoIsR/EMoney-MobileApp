@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import 'feature_icon.dart';
 
-/// A transaction row with clear visual hierarchy: icon → title/subtitle → amount → chevron.
-/// Designed to sit inside a parent GlassCard (no redundant glass per item).
+/// Brutalist transaction row with icon, title/subtitle, amount, and chevron.
 class TransactionRow extends StatelessWidget {
   final String icon;
   final String tone;
@@ -29,7 +28,7 @@ class TransactionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final iconData = _resolveIcon(icon);
-    final amountColor = isCredit ? AppColors.green : AppColors.ink;
+    final amountColor = isCredit ? AppColors.green : AppColors.orange;
     final sign = isCredit ? '+' : '';
 
     return GestureDetector(
@@ -38,26 +37,17 @@ class TransactionRow extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // ── Divider ──
           if (divider)
             Padding(
               padding: const EdgeInsets.only(left: 68, right: 16),
-              child: Divider(
-                height: 0.5,
-                thickness: 0.5,
-                color: AppColors.line2,
-              ),
+              child: Container(height: 1, color: AppColors.gray600),
             ),
-          // ── Row ──
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
             child: Row(
               children: [
-                // Icon
-                FeatureIcon(
-                    icon: iconData, tone: tone, size: 44, iconSize: 21),
-                const SizedBox(width: 13),
-                // Title + subtitle
+                FeatureIcon(icon: iconData, tone: tone, size: 40, iconSize: 19),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,44 +58,38 @@ class TransactionRow extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.ink,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.white,
                           height: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 2),
                       Text(
                         subtitle,
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
-                          fontSize: 12.5,
-                          color: AppColors.slate400,
+                          fontSize: 12,
+                          color: AppColors.gray400,
                           height: 1.2,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 10),
-                // Amount
+                const SizedBox(width: 8),
                 Text(
                   '$sign$amount',
                   style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
+                    fontFamily: 'SpaceGrotesk',
                     fontSize: 15,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w900,
                     color: amountColor,
-                    letterSpacing: -0.2,
+                    letterSpacing: -0.3,
                   ),
                 ),
-                const SizedBox(width: 6),
-                // Chevron
-                Icon(
-                  Icons.chevron_right_rounded,
-                  size: 18,
-                  color: AppColors.slate300,
-                ),
+                const SizedBox(width: 4),
+                Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.gray500),
               ],
             ),
           ),
@@ -116,19 +100,13 @@ class TransactionRow extends StatelessWidget {
 
   IconData _resolveIcon(String name) {
     switch (name) {
-      case 'topup':
-        return DkgIcons.topup;
-      case 'send':
-        return DkgIcons.send;
-      case 'qris':
-        return DkgIcons.qris;
-      case 'pulsa':
-        return DkgIcons.pulsa;
-      case 'store':
-        return DkgIcons.store;
+      case 'topup': return DkgIcons.topup;
+      case 'send': return DkgIcons.send;
+      case 'qris': return DkgIcons.qris;
+      case 'pulsa': return DkgIcons.pulsa;
+      case 'store': return DkgIcons.store;
       case 'wallet':
-      default:
-        return DkgIcons.wallet;
+      default: return DkgIcons.wallet;
     }
   }
 }

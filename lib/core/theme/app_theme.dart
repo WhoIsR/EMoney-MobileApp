@@ -1,96 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'app_colors.dart';
 
 class AppTheme {
+  AppTheme._();
+
   static ThemeData get light {
-    const fontFamily = 'PlusJakartaSans';
     return ThemeData(
       useMaterial3: true,
-      fontFamily: fontFamily,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary,
-        primary: AppColors.primary,
-        onPrimary: Colors.white,
-        secondary: AppColors.accent,
-        surface: AppColors.surface,
-        error: AppColors.red,
-      ),
+      brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.bg,
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.orange,
+        secondary: AppColors.purple,
+        surface: AppColors.cardDark,
+        error: AppColors.red,
+        onPrimary: AppColors.black,
+        onSecondary: AppColors.white,
+        onSurface: AppColors.white,
+      ),
+
+      fontFamily: 'PlusJakartaSans',
+
+      // ── AppBar ──
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        iconTheme: IconThemeData(color: AppColors.ink),
+        centerTitle: false,
         titleTextStyle: TextStyle(
-          fontFamily: fontFamily,
-          fontSize: 17,
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 18,
+          fontWeight: FontWeight.w900,
+          color: AppColors.white,
+          letterSpacing: -0.3,
+        ),
+        iconTheme: IconThemeData(color: AppColors.white),
+      ),
+
+      // ── Bottom sheet ──
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColors.bg,
+        modalBackgroundColor: AppColors.bg,
+      ),
+
+      // ── Text ──
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.w900,
+          fontFamily: 'PlusJakartaSans',
+          color: AppColors.white,
+          letterSpacing: -0.5,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w800,
+          fontFamily: 'PlusJakartaSans',
+          color: AppColors.white,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w900,
+          fontFamily: 'PlusJakartaSans',
+          color: AppColors.white,
+          letterSpacing: -0.3,
+        ),
+        titleMedium: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w800,
+          fontFamily: 'PlusJakartaSans',
+          color: AppColors.white,
+        ),
+        bodyLarge: TextStyle(
+          fontSize: 14,
           fontWeight: FontWeight.w700,
-          color: AppColors.ink,
+          fontFamily: 'PlusJakartaSans',
+          color: AppColors.white,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'PlusJakartaSans',
+          color: AppColors.gray400,
+        ),
+        labelSmall: TextStyle(
+          fontSize: 9,
+          fontWeight: FontWeight.w900,
+          fontFamily: 'PlusJakartaSans',
+          color: AppColors.gray400,
+          letterSpacing: 0.5,
         ),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+
+      // ── Divider ──
+      dividerTheme: const DividerThemeData(
+        color: AppColors.gray600,
+        thickness: 1,
+        space: 0,
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          minimumSize: const Size(double.infinity, 54),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          textStyle: const TextStyle(
-            fontFamily: fontFamily,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.1,
-          ),
-          elevation: 0,
-        ),
-      ),
+
+      // ── Input decoration ──
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.glass,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+        fillColor: AppColors.cardDark,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.glassLine, width: 1.0),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.black, width: 3),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.glassLine, width: 1.0),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.black, width: 3),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.2),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.yellow, width: 3),
         ),
-      ),
-      dividerColor: AppColors.line2,
-      dividerTheme: const DividerThemeData(
-        color: AppColors.line2,
-        thickness: 1,
-      ),
-      dialogTheme: DialogThemeData(
-        backgroundColor: AppColors.glass,
-        surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.red, width: 3),
         ),
-      ),
-      cardTheme: CardThemeData(
-        color: AppColors.glass,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+        hintStyle: const TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 14,
+          color: AppColors.gray500,
+          fontWeight: FontWeight.w600,
+        ),
+        labelStyle: const TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 13,
+          color: AppColors.gray400,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

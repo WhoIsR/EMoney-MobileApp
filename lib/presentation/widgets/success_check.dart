@@ -41,8 +41,8 @@ class _SuccessCheckState extends State<SuccessCheck>
   Widget build(BuildContext context) {
     final color = widget.tone == 'green' ? AppColors.green : AppColors.primary;
     final bgColor = widget.tone == 'green'
-        ? AppColors.greenSurface
-        : AppColors.primarySurface;
+        ? AppColors.green.withValues(alpha: 0.25)
+        : AppColors.primary.withValues(alpha: 0.25);
 
     return ScaleTransition(
       scale: _scale,
