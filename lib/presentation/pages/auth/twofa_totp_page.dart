@@ -5,10 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../blocs/auth/otp_bloc.dart';
-import '../../widgets/app_button.dart';
+import '../../widgets/brutal_widgets.dart';
 import '../../widgets/code_input.dart';
 import '../../widgets/feature_icon.dart';
-import '../../widgets/glass_background.dart';
 
 class TwoFATotpPage extends StatefulWidget {
   final String mode;
@@ -80,14 +79,15 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
         }
       },
       child: Scaffold(
-        body: GlassBackground(
+        body: Container(
+          color: AppColors.bg,
           child: SafeArea(
             child: Column(
               children: [
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                    icon: const Icon(DkgIcons.arrowLeft, color: AppColors.white),
                     onPressed: () {
                       if (_step == 'code' && widget.mode == 'setup') {
                         setState(() => _step = 'scan');
@@ -104,7 +104,7 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                       if (state is OtpLoading && _step == 'loading') {
                         return const Center(
                             child: CircularProgressIndicator(
-                                color: AppColors.primary));
+                                color: AppColors.orange));
                       }
                       if (_step == 'scan' && state is OtpTotpSetup) {
                         return _buildScanStep(state, context);
@@ -137,7 +137,7 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
-                color: AppColors.ink,
+                color: AppColors.white,
                 letterSpacing: -0.3,
               )),
           const SizedBox(height: 8),
@@ -145,17 +145,23 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
             'Pindai QR ini dengan Google Authenticator, Authy, atau aplikasi sejenis.',
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 14.5, color: AppColors.slate500, height: 1.55),
+                fontSize: 14.5, color: AppColors.gray500, height: 1.55),
           ),
           const SizedBox(height: 22),
           // QR code from base64
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(18),
-              boxShadow: AppColors.shadowCard,
-              border: Border.all(color: AppColors.line),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.black,
+                  blurRadius: 0,
+                  offset: const Offset(4, 4),
+                ),
+              ],
+              border: Border.all(color: AppColors.black, width: 3),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -169,7 +175,7 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                   color: AppColors.bg,
                   child: const Center(
                       child: Icon(Icons.qr_code_rounded,
-                          size: 80, color: AppColors.slate400)),
+                          size: 80, color: AppColors.gray400)),
                 ),
               ),
             ),
@@ -178,7 +184,17 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-                color: AppColors.bg, borderRadius: BorderRadius.circular(14)),
+                color: AppColors.cardDark,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.black, width: 2),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.black,
+                    blurRadius: 0,
+                    offset: const Offset(3, 3),
+                  ),
+                ],
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -187,7 +203,7 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.slate400,
+                      color: AppColors.gray400,
                       letterSpacing: 0.5,
                     )),
                 const SizedBox(height: 6),
@@ -202,7 +218,7 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                           fontFamily: 'Courier',
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.ink,
+                          color: AppColors.white,
                           letterSpacing: 1,
                         ),
                       ),
@@ -224,12 +240,12 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                       },
                       icon: Icon(_copied ? DkgIcons.check : DkgIcons.copy,
                           size: 17,
-                          color: _copied ? AppColors.green : AppColors.primary),
+                          color: _copied ? AppColors.green : AppColors.orange),
                       label: Text(_copied ? 'Tersalin' : 'Salin',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             color:
-                                _copied ? AppColors.green : AppColors.primary,
+                                _copied ? AppColors.green : AppColors.orange,
                             fontWeight: FontWeight.w700,
                             fontSize: 13,
                           )),
@@ -240,9 +256,13 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
             ),
           ),
           const SizedBox(height: 24),
-          AppButton(
+          BrutalButton(
             label: 'Saya sudah memindai',
             onPressed: () => setState(() => _step = 'code'),
+            bgColor: AppColors.orange,
+            textColor: AppColors.black,
+            height: 54,
+            borderRadius: 18,
           ),
         ],
       ),
@@ -265,7 +285,7 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
-                color: AppColors.ink,
+                color: AppColors.white,
                 letterSpacing: -0.3,
               )),
           const SizedBox(height: 8),
@@ -273,7 +293,7 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
               'Buka aplikasi authenticator kamu dan masukkan kode yang sedang aktif.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 14.5, color: AppColors.slate500, height: 1.55)),
+                  fontSize: 14.5, color: AppColors.gray500, height: 1.55)),
           const SizedBox(height: 28),
           AnimatedContainer(
             duration: const Duration(milliseconds: 80),
@@ -303,14 +323,14 @@ class _TwoFATotpPageState extends State<TwoFATotpPage> {
                 child: CircularProgressIndicator(
                   value: _ttl / 30,
                   strokeWidth: 2.4,
-                  backgroundColor: AppColors.line,
-                  valueColor: const AlwaysStoppedAnimation(AppColors.violet),
+                  backgroundColor: AppColors.gray600,
+                  valueColor: const AlwaysStoppedAnimation(AppColors.purple),
                 ),
               ),
               const SizedBox(width: 8),
               Text('Kode berganti dalam ${_ttl}s',
                   style:
-                      const TextStyle(fontSize: 13, color: AppColors.slate500)),
+                      const TextStyle(fontSize: 13, color: AppColors.gray500)),
             ],
           ),
         ],

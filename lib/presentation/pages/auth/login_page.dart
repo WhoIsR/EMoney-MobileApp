@@ -7,10 +7,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../blocs/auth/auth_bloc.dart';
-import '../../widgets/glass_background.dart';
+import '../../widgets/brutal_widgets.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/feature_icon.dart';
-import '../../widgets/glass_card.dart';
 import '../../widgets/app_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -121,8 +120,8 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: Scaffold(
-        body: GlassBackground(
-          dark: false,
+        body: Container(
+          color: AppColors.bg,
           child: SafeArea(
             child: Column(
               children: [
@@ -133,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       IconButton(
                         icon: const Icon(DkgIcons.arrowLeft,
-                            color: AppColors.ink, size: 22),
+                            color: AppColors.white, size: 22),
                         onPressed: () => context.go('/'),
                       ),
                       const Spacer(),
@@ -141,11 +140,17 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.68),
+                          color: AppColors.cardDark,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.9)),
-                          boxShadow: AppColors.shadowSoft,
+                              color: AppColors.black, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.black,
+                              blurRadius: 0,
+                              offset: const Offset(3, 3),
+                            ),
+                          ],
                         ),
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
@@ -153,12 +158,12 @@ class _LoginPageState extends State<LoginPage> {
                             AppLogo(size: 18),
                             SizedBox(width: 5),
                             Text(
-                              'Secure Wallet',
+                              'Kashi',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 10.5,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.primaryDark,
+                                color: AppColors.white,
                                 letterSpacing: 0.3,
                               ),
                             ),
@@ -172,14 +177,11 @@ class _LoginPageState extends State<LoginPage> {
                   child: Center(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: GlassCard(
-                        radius: 28,
-                        color: AppColors.glassStrong.withValues(alpha: 0.82),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          width: 1.1,
-                        ),
+                      child: BrutalCard(
+                        bgColor: AppColors.cardDark,
+                        borderRadius: 26,
                         padding: const EdgeInsets.fromLTRB(24, 28, 24, 26),
+                        shadowOffset: 6,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -190,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 26,
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.ink,
+                                color: AppColors.white,
                                 letterSpacing: -0.4,
                               ),
                             ),
@@ -199,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                               'Selamat datang kembali',
                               style: TextStyle(
                                   fontSize: 14,
-                                  color: AppColors.slate500),
+                                  color: AppColors.gray500),
                             ),
                             const SizedBox(height: 28),
 
@@ -212,16 +214,17 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Container(
                                     height: 52,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(14),
+                                      color: AppColors.white,
+                                      borderRadius: BorderRadius.circular(18),
                                       border: Border.all(
-                                        color: Colors.white.withValues(alpha: 0.9),
+                                        color: AppColors.black,
+                                        width: 3,
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppColors.primary.withValues(alpha: 0.08),
-                                          blurRadius: 24,
-                                          offset: const Offset(0, 10),
+                                          color: AppColors.black,
+                                          blurRadius: 0,
+                                          offset: const Offset(4, 4),
                                         ),
                                       ],
                                     ),
@@ -236,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   strokeWidth: 2.4,
                                                   valueColor:
                                                       AlwaysStoppedAnimation(
-                                                          AppColors.primary),
+                                                          AppColors.orange),
                                                 ),
                                               ),
                                               SizedBox(width: 10),
@@ -246,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
                                                         'PlusJakartaSans',
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600,
-                                                    color: AppColors.ink,
+                                                    color: AppColors.black,
                                                   )),
                                             ]
                                           : [
@@ -258,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   fontFamily: 'PlusJakartaSans',
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w600,
-                                                  color: AppColors.ink,
+                                                  color: AppColors.black,
                                                 ),
                                               ),
                                             ],
@@ -273,7 +276,7 @@ class _LoginPageState extends State<LoginPage> {
                             Row(children: [
                               const Expanded(
                                   child: Divider(
-                                      color: AppColors.line2, thickness: 0.5)),
+                                      color: AppColors.gray600, thickness: 0.5)),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
@@ -282,12 +285,12 @@ class _LoginPageState extends State<LoginPage> {
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
-                                      color: AppColors.slate400,
+                                      color: AppColors.gray400,
                                     )),
                               ),
                               const Expanded(
                                   child: Divider(
-                                      color: AppColors.line2, thickness: 0.5)),
+                                      color: AppColors.gray600, thickness: 0.5)),
                             ]),
                             const SizedBox(height: 24),
 
@@ -313,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
                                 icon: Icon(
                                     _showPw ? DkgIcons.eyeOff : DkgIcons.eye,
                                     size: 18,
-                                    color: AppColors.slate400),
+                                    color: AppColors.gray400),
                                 onPressed: () =>
                                     setState(() => _showPw = !_showPw),
                               ),
@@ -327,7 +330,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: const Text('Lupa kata sandi?',
                                     style: TextStyle(
                                       fontFamily: 'PlusJakartaSans',
-                                      color: AppColors.primaryDark,
+                                      color: AppColors.orange,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 13,
                                     )),
@@ -337,39 +340,14 @@ class _LoginPageState extends State<LoginPage> {
 
                             // ── Login button ──
                             BlocBuilder<AuthBloc, AuthState>(
-                              builder: (context, state) => GestureDetector(
-                                onTap: _valid ? _loginWithEmail : null,
-                                child: Container(
-                                  height: 52,
-                                  decoration: BoxDecoration(
-                                    gradient: AppColors.liquidGradient,
-                                    borderRadius: BorderRadius.circular(14),
-                                    boxShadow: AppColors.shadowPrimary,
-                                  ),
-                                  child: Center(
-                                    child: state is AuthLoading
-                                        ? const SizedBox(
-                                            width: 18,
-                                            height: 18,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2.4,
-                                              valueColor:
-                                                  AlwaysStoppedAnimation(
-                                                      Colors.white),
-                                            ),
-                                          )
-                                        : const Text(
-                                            'Masuk',
-                                            style: TextStyle(
-                                              fontFamily: 'PlusJakartaSans',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              letterSpacing: 0.2,
-                                            ),
-                                          ),
-                                  ),
-                                ),
+                              builder: (context, state) => BrutalButton(
+                                label: 'Masuk',
+                                onPressed: _valid ? _loginWithEmail : null,
+                                isLoading: state is AuthLoading,
+                                bgColor: AppColors.orange,
+                                textColor: AppColors.black,
+                                height: 52,
+                                borderRadius: 18,
                               ),
                             ),
                             const SizedBox(height: 18),
@@ -382,13 +360,13 @@ class _LoginPageState extends State<LoginPage> {
                                     style: TextStyle(
                                         fontSize: 13.5,
                                         color:
-                                            AppColors.slate400)),
+                                            AppColors.gray400)),
                                 GestureDetector(
                                   onTap: () => context.go('/register'),
                                   child: const Text('Daftar',
                                       style: TextStyle(
                                         fontFamily: 'PlusJakartaSans',
-                                        color: AppColors.primaryDark,
+                                        color: AppColors.orange,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 13.5,
                                       )),

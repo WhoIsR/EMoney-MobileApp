@@ -26,6 +26,7 @@ import '../../presentation/pages/topup/topup_page.dart';
 import '../../presentation/pages/transfer/transfer_amount_page.dart';
 import '../../presentation/pages/transfer/transfer_confirm_page.dart';
 import '../../presentation/pages/transfer/transfer_page.dart';
+import '../../core/theme/app_colors.dart';
 import '../../presentation/widgets/app_tab_bar.dart';
 
 class AppRouter {
@@ -94,7 +95,7 @@ class AppRouter {
                       : 'home';
 
           return _withAccount(Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: AppColors.bg,
             body: Stack(
               children: [
                 Positioned.fill(
@@ -105,23 +106,25 @@ class AppRouter {
                   left: 0,
                   right: 0,
                   child: AppTabBar(
-              active: tab,
-              onTab: (t) {
+              currentIndex: tab == 'history' ? 1 : tab == 'promo' ? 2 : tab == 'akun' ? 3 : 0,
+              onTap: (t) {
                 switch (t) {
-                  case 'history':
+                  case 1:
                     context.go('/history');
                     break;
-                  case 'promo':
+                  case 2:
                     context.go('/promo');
                     break;
-                  case 'akun':
+                  case 3:
                     context.go('/akun');
+                    break;
+                  case 4:
+                    context.go('/payment');
                     break;
                   default:
                     context.go('/home');
                 }
               },
-              onScan: () => context.go('/payment'),
             ),
             ),
           ],
