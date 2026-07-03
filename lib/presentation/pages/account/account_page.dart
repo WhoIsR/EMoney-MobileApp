@@ -6,8 +6,7 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
 import '../../widgets/app_badge.dart';
 import '../../widgets/feature_icon.dart';
-import '../../widgets/glass_background.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -25,214 +24,210 @@ class AccountPage extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppColors.bg,
-          body: GlassBackground(
-            child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Header
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: AppColors.walletGradient,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(32),
-                      bottomRight: Radius.circular(32),
-                    ),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.9),
-                    ),
-                    boxShadow: AppColors.shadowGlass,
-                  ),
-                  padding: EdgeInsets.fromLTRB(
-                      20, MediaQuery.of(context).padding.top + 12, 20, 24),
-                  child: Row(
-                    children: [
-                      AppAvatar(
-                          name: user?.name ?? 'User',
-                          size: 60,
-                          bg: Colors.white.withValues(alpha: 0.72)),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(user?.name ?? 'Pengguna',
-                                style: const TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w800,
-                                  color: AppColors.ink,
-                                )),
-                            Text(user?.email ?? '',
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 13,
-                                  color: AppColors.slate500,
-                                )),
-                          ],
-                        ),
+          body: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header
+              BrutalCard(
+                bgColor: AppColors.cardDark,
+                borderWidth: 3,
+                borderRadius: 0,
+                shadowOffset: 0,
+                padding: EdgeInsets.fromLTRB(
+                    20, MediaQuery.of(context).padding.top + 12, 20, 24),
+                child: Row(
+                  children: [
+                    AppAvatar(
+                        name: user?.name ?? 'User',
+                        size: 60,
+                        bg: AppColors.orange),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(user?.name ?? 'Pengguna',
+                              style: const TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 19,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.white,
+                              )),
+                          Text(user?.email ?? '',
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 13,
+                                color: AppColors.gray400,
+                              )),
+                        ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: AppColors.primarySurface.withValues(alpha: 0.84),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.primaryBorder),
-                        ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: AppColors.green,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.black, width: 2),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.verified_user_outlined,
+                              size: 14, color: AppColors.black),
+                          SizedBox(width: 5),
+                          Text('Terverifikasi',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.black,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 4, bottom: 8),
+                      child: Text('KEAMANAN',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.gray400,
+                            letterSpacing: 1.5,
+                          )),
+                    ),
+                    BrutalCard(
+                      bgColor: AppColors.cardDark,
+                      padding: EdgeInsets.zero,
+                      borderRadius: 18,
+                      shadowOffset: 4,
+                      child: Column(
+                        children: [
+                          _Row(
+                            icon: Icons.verified_user_outlined,
+                            tone: 'green',
+                            title: 'Verifikasi 2 langkah (2FA)',
+                            subtitle: 'Aktif - Authenticator',
+                            onTap: () => context.go('/setup-2fa'),
+                            right:
+                                const AppBadge(label: 'Aktif', tone: 'green'),
+                          ),
+                          const Divider(
+                              height: 1, indent: 56, color: AppColors.gray600),
+                          _Row(
+                            icon: Icons.lock_outline_rounded,
+                            tone: 'blue',
+                            title: 'Ubah PIN keamanan',
+                            subtitle: 'Terakhir diubah 2 bln lalu',
+                            onTap: () {},
+                          ),
+                          const Divider(
+                              height: 1, indent: 56, color: AppColors.gray600),
+                          _Row(
+                            icon: Icons.fingerprint_rounded,
+                            tone: 'purple',
+                            title: 'Login biometrik',
+                            subtitle: 'Sidik jari',
+                            onTap: () {},
+                            right: _Toggle(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 4, bottom: 8),
+                      child: Text('AKUN',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.gray400,
+                            letterSpacing: 1.5,
+                          )),
+                    ),
+                    BrutalCard(
+                      bgColor: AppColors.cardDark,
+                      padding: EdgeInsets.zero,
+                      borderRadius: 18,
+                      shadowOffset: 4,
+                      child: Column(
+                        children: [
+                          _Row(
+                              icon: Icons.person_outline_rounded,
+                              tone: 'blue',
+                              title: 'Data pribadi',
+                              onTap: () {}),
+                          const Divider(
+                              height: 1, indent: 56, color: AppColors.gray600),
+                          _Row(
+                              icon: Icons.account_balance_outlined,
+                              tone: 'green',
+                              title: 'Rekening & kartu tersimpan',
+                              onTap: () {}),
+                          const Divider(
+                              height: 1, indent: 56, color: AppColors.gray600),
+                          _Row(
+                              icon: Icons.settings_outlined,
+                              tone: 'orange',
+                              title: 'Pengaturan aplikasi',
+                              onTap: () {}),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    GestureDetector(
+                      onTap: () =>
+                          context.read<AuthBloc>().add(AuthLogoutRequested()),
+                      child: BrutalCard(
+                        bgColor: AppColors.red,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        borderRadius: 16,
+                        shadowOffset: 4,
                         child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.verified_user_outlined,
-                                size: 14, color: AppColors.primaryDark),
-                            SizedBox(width: 5),
-                            Text('Terverifikasi',
+                            Icon(Icons.logout_rounded,
+                                size: 20, color: AppColors.black),
+                            SizedBox(width: 9),
+                            Text('Keluar',
                                 style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
-                                  fontSize: 11.5,
+                                  color: AppColors.black,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.primaryDark,
+                                  fontSize: 15,
                                 )),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Center(
+                      child: Text('Kashi · v1.0.0',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 12,
+                            color: AppColors.gray400,
+                          )),
+                    ),
+                    const SizedBox(height: 110),
+                  ],
                 ),
-
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4, bottom: 8),
-                        child: Text('Keamanan',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.slate400,
-                            )),
-                      ),
-                      GlassCard(
-                        padding: EdgeInsets.zero,
-                        radius: 18,
-                        blur: 0,
-                        child: Column(
-                          children: [
-                            _Row(
-                              icon: Icons.verified_user_outlined,
-                              tone: 'green',
-                              title: 'Verifikasi 2 langkah (2FA)',
-                              subtitle: 'Aktif - Authenticator',
-                              onTap: () => context.go('/setup-2fa'),
-                              right:
-                                  const AppBadge(label: 'Aktif', tone: 'green'),
-                            ),
-                            const Divider(
-                                height: 1, indent: 56, color: AppColors.line2),
-                            _Row(
-                              icon: Icons.lock_outline_rounded,
-                              tone: 'blue',
-                              title: 'Ubah PIN keamanan',
-                              subtitle: 'Terakhir diubah 2 bln lalu',
-                              onTap: () {},
-                            ),
-                            const Divider(
-                                height: 1, indent: 56, color: AppColors.line2),
-                            _Row(
-                              icon: Icons.fingerprint_rounded,
-                              tone: 'violet',
-                              title: 'Login biometrik',
-                              subtitle: 'Sidik jari',
-                              onTap: () {},
-                              right: _Toggle(),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4, bottom: 8),
-                        child: Text('Akun',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.slate400,
-                            )),
-                      ),
-                      GlassCard(
-                        padding: EdgeInsets.zero,
-                        radius: 18,
-                        blur: 0,
-                        child: Column(
-                          children: [
-                            _Row(
-                                icon: Icons.person_outline_rounded,
-                                tone: 'blue',
-                                title: 'Data pribadi',
-                                onTap: () {}),
-                            const Divider(
-                                height: 1, indent: 56, color: AppColors.line2),
-                            _Row(
-                                icon: Icons.account_balance_outlined,
-                                tone: 'green',
-                                title: 'Rekening & kartu tersimpan',
-                                onTap: () {}),
-                            const Divider(
-                                height: 1, indent: 56, color: AppColors.line2),
-                            _Row(
-                                icon: Icons.settings_outlined,
-                                tone: 'slate',
-                                title: 'Pengaturan aplikasi',
-                                onTap: () {}),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      GestureDetector(
-                        onTap: () =>
-                            context.read<AuthBloc>().add(AuthLogoutRequested()),
-                        child: GlassCard(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          radius: 16,
-                          blur: 0,
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.logout_rounded,
-                                  size: 20, color: AppColors.red),
-                              SizedBox(width: 9),
-                              Text('Keluar',
-                                  style: TextStyle(
-                                    fontFamily: 'PlusJakartaSans',
-                                    color: AppColors.red,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                  )),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      const Center(
-                        child: Text('Kashi · v1.0.0',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 12,
-                              color: AppColors.slate400,
-                            )),
-                      ),
-                      const SizedBox(height: 110),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          ),
+        ),
         );
       },
     );
@@ -276,7 +271,7 @@ class _Row extends StatelessWidget {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 14.5,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.ink,
+                        color: AppColors.white,
                       )),
                   if (subtitle != null) ...[
                     const SizedBox(height: 2),
@@ -284,7 +279,7 @@ class _Row extends StatelessWidget {
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 12.5,
-                          color: AppColors.slate400,
+                          color: AppColors.gray400,
                         )),
                   ],
                 ],
@@ -292,7 +287,7 @@ class _Row extends StatelessWidget {
             ),
             right ??
                 const Icon(Icons.chevron_right_rounded,
-                    size: 18, color: AppColors.slate400),
+                    size: 18, color: AppColors.gray400),
           ],
         ),
       ),
@@ -316,8 +311,9 @@ class _ToggleState extends State<_Toggle> {
         width: 44,
         height: 26,
         decoration: BoxDecoration(
-          color: _on ? AppColors.green : AppColors.line,
+          color: _on ? AppColors.green : AppColors.gray600,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.black, width: 2),
         ),
         child: AnimatedAlign(
           duration: const Duration(milliseconds: 180),
@@ -326,13 +322,10 @@ class _ToggleState extends State<_Toggle> {
             margin: const EdgeInsets.all(3),
             width: 20,
             height: 20,
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: AppColors.white,
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black12, blurRadius: 3, offset: Offset(0, 1))
-              ],
+              border: Border.all(color: AppColors.black, width: 2),
             ),
           ),
         ),
