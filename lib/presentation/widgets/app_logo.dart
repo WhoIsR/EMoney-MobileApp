@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -8,41 +6,36 @@ class AppLogo extends StatelessWidget {
   final bool light;
   final bool withText;
 
-  const AppLogo(
-      {super.key, this.size = 56, this.light = false, this.withText = false});
+  const AppLogo({
+    super.key,
+    this.size = 56,
+    this.light = false,
+    this.withText = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    const fontFamily = 'PlusJakartaSans';
+    final fontFamily = 'PlusJakartaSans';
+    final bg = light ? AppColors.white : AppColors.orange;
+    final fg = AppColors.black;
 
-    // Wrap icon in glass effect
-    Widget icon = ClipRRect(
-      borderRadius: BorderRadius.circular(size * 0.28),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: light
-                ? Colors.white.withValues(alpha: 0.12)
-                : AppColors.glass.withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(size * 0.28),
-            border: Border.all(
-              color: light
-                  ? Colors.white.withValues(alpha: 0.20)
-                  : AppColors.glassLine,
-              width: 0.5,
-            ),
+    Widget icon = Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(size * 0.28),
+        border: Border.all(color: AppColors.black, width: 2.5),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black,
+            blurRadius: 0,
+            offset: const Offset(3, 3),
           ),
-          child: Image.asset(
-            'assets/images/logo-dompet.png',
-            width: size * 0.7,
-            height: size * 0.7,
-            fit: BoxFit.contain,
-          ),
-        ),
+        ],
       ),
+      child: Icon(Icons.account_balance_wallet_rounded,
+        size: size * 0.45, color: fg),
     );
 
     if (!withText) return icon;
@@ -57,25 +50,23 @@ class AppLogo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Dompet Kampus',
+              'Kashi',
               style: TextStyle(
                 fontFamily: fontFamily,
                 fontSize: size * 0.3,
-                fontWeight: FontWeight.w800,
-                color: light ? Colors.white : AppColors.ink,
+                fontWeight: FontWeight.w900,
+                color: fg,
                 letterSpacing: -0.3,
                 height: 1.05,
               ),
             ),
             Text(
-              'GLOBAL',
+              'e-money',
               style: TextStyle(
                 fontFamily: fontFamily,
                 fontSize: size * 0.205,
-                fontWeight: FontWeight.w700,
-                color: light
-                    ? Colors.white.withValues(alpha: 0.85)
-                    : AppColors.primary,
+                fontWeight: FontWeight.w800,
+                color: AppColors.orange,
                 letterSpacing: 1.5,
                 height: 1.05,
               ),

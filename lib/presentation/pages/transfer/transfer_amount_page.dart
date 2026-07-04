@@ -5,9 +5,9 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../blocs/account/account_bloc.dart';
 import '../../widgets/app_avatar.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/app_field.dart';
 import '../../widgets/app_top_bar.dart';
+import '../../widgets/brutal_widgets.dart';
 import '../../widgets/num_pad.dart';
 
 class TransferAmountPage extends StatefulWidget {
@@ -51,7 +51,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
     final valid = _amount >= 1000 && enough;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       appBar: AppTopBar(
           title: 'Nominal Transfer', onBack: () => context.go('/transfer')),
       body: Column(
@@ -61,13 +61,9 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
             child: Column(
               children: [
                 // Recipient card
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: AppColors.bg,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+                BrutalCard(
+                  bgColor: AppColors.orange,
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   child: Row(
                     children: [
                       widget.channel == 'bank'
@@ -75,15 +71,16 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                               width: 42,
                               height: 42,
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(11),
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: AppColors.black, width: 2),
                               ),
                               child: Center(
                                 child: Text(widget.recipient['name'] as String,
                                     style: const TextStyle(
                                       fontFamily: 'PlusJakartaSans',
                                       fontWeight: FontWeight.w800,
-                                      color: AppColors.primary,
+                                      color: AppColors.black,
                                       fontSize: 13,
                                     )),
                               ),
@@ -104,17 +101,17 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 14.5,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.ink,
+                                color: AppColors.black,
                               ),
                             ),
                             Text(widget.recipient['sub'] as String,
                                 style: const TextStyle(
-                                    fontSize: 12.5, color: AppColors.slate400)),
+                                    fontSize: 12.5, color: AppColors.black)),
                           ],
                         ),
                       ),
                       const Icon(Icons.verified_user_outlined,
-                          size: 20, color: AppColors.green),
+                          size: 20, color: AppColors.black),
                     ],
                   ),
                 ),
@@ -124,12 +121,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Column(
                     children: [
-                      const Text('Nominal',
-                          style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 13,
-                              color: AppColors.slate400,
-                              fontWeight: FontWeight.w600)),
+                      const BrutalLabel('NOMINAL'),
                       const SizedBox(height: 6),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -142,8 +134,8 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
                                 color: _amount > 0
-                                    ? AppColors.ink
-                                    : AppColors.slate300,
+                                    ? AppColors.white
+                                    : AppColors.gray400,
                               )),
                           Text(
                             _amount > 0 ? _amount.toLocaleString() : '0',
@@ -152,8 +144,8 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                               fontSize: 42,
                               fontWeight: FontWeight.w800,
                               color: _amount > 0
-                                  ? AppColors.ink
-                                  : AppColors.slate300,
+                                  ? AppColors.white
+                                  : AppColors.gray400,
                               letterSpacing: -1,
                             ),
                           ),
@@ -168,7 +160,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
-                          color: enough ? AppColors.slate400 : AppColors.red,
+                          color: enough ? AppColors.gray400 : AppColors.red,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -181,17 +173,24 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 14, vertical: 8),
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppColors.purple,
+                                      borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                          color: AppColors.line, width: 1.4),
+                                          color: AppColors.black, width: 2),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: AppColors.black,
+                                          blurRadius: 0,
+                                          offset: Offset(3, 3),
+                                        ),
+                                      ],
                                     ),
                                     child: Text(CurrencyFormatter.formatInt(c),
                                         style: const TextStyle(
                                           fontFamily: 'PlusJakartaSans',
                                           fontSize: 13,
                                           fontWeight: FontWeight.w700,
-                                          color: AppColors.slate600,
+                                          color: AppColors.white,
                                         )),
                                   ),
                                 ))
@@ -215,8 +214,10 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(22, 14, 22, 18),
-            child: AppButton(
-              label: 'Lanjut',
+            child: BrutalButton(
+              label: 'LANJUT',
+              bgColor: valid ? AppColors.orange : AppColors.gray500,
+              textColor: AppColors.black,
               onPressed: valid
                   ? () => context.go('/transfer/confirm', extra: {
                         'recipient': widget.recipient,

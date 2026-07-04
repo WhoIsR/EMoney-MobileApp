@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/payment_result_entity.dart';
 import '../../../domain/usecases/payment/payment_usecases.dart';
+import '../../../core/services/notification_service.dart';
 
 // Events
 abstract class PaymentEvent extends Equatable {
@@ -99,6 +100,10 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     emit(PaymentLoading());
     try {
       final result = await _topup(event.amount);
+      NotificationService.instance.showLocalNotification(
+        title: 'Top Up Berhasil',
+        body: 'Top up sebesar Rp ${event.amount.toInt()} telah berhasil ditambahkan.',
+      );
       emit(PaymentTopupSuccess(balance: result.balance, amount: result.amount));
     } on ServerFailure catch (e) {
       emit(PaymentError(e.message));
@@ -116,6 +121,10 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         description: event.description,
         otpCode: event.otpCode,
         otpType: event.otpType,
+      );
+      NotificationService.instance.showLocalNotification(
+        title: 'Transfer Berhasil',
+        body: 'Transfer sebesar Rp ${event.amount.toInt()} ke penerima berhasil.',
       );
       emit(PaymentTransferSuccess(result));
     } on InvalidOtpFailure catch (e) {

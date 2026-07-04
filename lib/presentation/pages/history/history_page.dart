@@ -5,8 +5,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/transaction_entity.dart';
 import '../../blocs/account/account_bloc.dart';
 import '../../widgets/transaction_row.dart';
-import '../../widgets/glass_background.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -27,23 +26,20 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: GlassBackground(
-        child: Column(
-          children: [
-            GlassCard(
-              radius: 0,
-              color: AppColors.glass,
-              padding: EdgeInsets.fromLTRB(
-                  20, MediaQuery.of(context).padding.top + 12, 20, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Riwayat',
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                20, MediaQuery.of(context).padding.top + 12, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Riwayat',
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 22,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.ink,
+                      color: AppColors.white,
                       letterSpacing: -0.3,
                     )),
                 const SizedBox(height: 16),
@@ -57,15 +53,27 @@ class _HistoryPageState extends State<HistoryPage> {
                             padding: const EdgeInsets.only(right: 8),
                             child: GestureDetector(
                               onTap: () => setState(() => _tab = t[0]),
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 150),
+                              child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: _tab == t[0]
-                                      ? AppColors.primary
-                                      : AppColors.bg,
+                                      ? AppColors.orange
+                                      : AppColors.cardDark,
                                   borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: AppColors.black,
+                                    width: 3,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.black,
+                                      blurRadius: 0,
+                                      offset: _tab == t[0]
+                                          ? const Offset(3, 3)
+                                          : const Offset(0, 0),
+                                    ),
+                                  ],
                                 ),
                                 child: Text(t[1],
                                     style: TextStyle(
@@ -73,8 +81,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                       fontSize: 13,
                                       fontWeight: FontWeight.w700,
                                       color: _tab == t[0]
-                                          ? Colors.white
-                                          : AppColors.slate500,
+                                          ? AppColors.black
+                                          : AppColors.gray400,
                                     )),
                               ),
                             ),
@@ -82,7 +90,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       .toList(),
                 ),
                 const SizedBox(height: 14),
-                const Divider(height: 1, color: AppColors.line2),
+                const Divider(height: 1, color: AppColors.gray600),
               ],
             ),
           ),
@@ -92,12 +100,12 @@ class _HistoryPageState extends State<HistoryPage> {
                 if (state is AccountLoading) {
                   return const Center(
                       child:
-                          CircularProgressIndicator(color: AppColors.primary));
+                          CircularProgressIndicator(color: AppColors.orange));
                 }
                 if (state is AccountError) {
                   return Center(
                       child: Text(state.message,
-                          style: const TextStyle(color: AppColors.slate400)));
+                          style: const TextStyle(color: AppColors.gray400)));
                 }
                 if (state is AccountLoaded) {
                   List<TransactionEntity> txns = state.transactions;
@@ -113,60 +121,46 @@ class _HistoryPageState extends State<HistoryPage> {
                       child: Text('Tidak ada transaksi',
                           style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
-                              color: AppColors.slate400)),
+                              color: AppColors.gray400)),
                     );
                   }
-                  return ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: txns.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 0),
-                    itemBuilder: (_, i) {
-                      return i == 0
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 4, bottom: 10),
-                                  child: Text('Hari ini',
-                                      style: TextStyle(
-                                        fontFamily: 'PlusJakartaSans',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.slate400,
-                                      )),
-                                ),
-                                GlassCard(
-                                  padding: EdgeInsets.zero,
-                                  radius: 20,
-                                  child: Column(
-                                    children: txns
-                                        .asMap()
-                                        .entries
-                                        .map((e) => TransactionRow(
-                                              icon: e.value.isCredit
-                                                  ? 'topup'
-                                                  : 'send',
-                                              tone: e.value.isCredit
-                                                  ? 'green'
-                                                  : 'blue',
-                                              title: e.value.description.isEmpty
-                                                  ? (e.value.isCredit
-                                                      ? 'Top Up'
-                                                      : 'Transaksi')
-                                                  : e.value.description,
-                                              subtitle:
-                                                  '${e.value.createdAt.day}/${e.value.createdAt.month}/${e.value.createdAt.year}',
-                                              amount: CurrencyFormatter.format(
-                                                  e.value.amount),
-                                              isCredit: e.value.isCredit,
-                                              divider: e.key > 0,
-                                            ))
-                                        .toList(),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const SizedBox.shrink();
+                  return ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 110),
+                    itemCount: 1,
+                    itemBuilder: (_, __) {
+                      return BrutalCard(
+                        bgColor: AppColors.cardDark,
+                        padding: EdgeInsets.zero,
+                        borderRadius: 20,
+                        shadowOffset: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 16, top: 14, bottom: 4),
+                              child: Text('Hari ini',
+                                  style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.gray400,
+                                  )),
+                            ),
+                            ...txns.map((txn) => TransactionRow(
+                                  icon: txn.isCredit ? 'topup' : 'send',
+                                  tone: txn.isCredit ? 'green' : 'blue',
+                                  title: txn.description.isEmpty
+                                      ? (txn.isCredit ? 'Top Up' : 'Transaksi')
+                                      : txn.description,
+                                  subtitle:
+                                      '${txn.createdAt.day}/${txn.createdAt.month}/${txn.createdAt.year}',
+                                  amount: CurrencyFormatter.format(txn.amount),
+                                  isCredit: txn.isCredit,
+                                )),
+                            const SizedBox(height: 6),
+                          ],
+                        ),
+                      );
                     },
                   );
                 }
@@ -175,7 +169,6 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
           ),
         ],
-        ),
       ),
     );
   }

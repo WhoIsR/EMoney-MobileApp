@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../blocs/account/account_bloc.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/success_check.dart';
-import '../../widgets/glass_background.dart';
+import '../../widgets/brutal_widgets.dart';
 
 class SuccessPage extends StatefulWidget {
   final String title;
@@ -39,8 +38,7 @@ class _SuccessPageState extends State<SuccessPage> {
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
-        child: GlassBackground(
-          child: Column(
+        child: Column(
           children: [
             Expanded(
               child: Padding(
@@ -56,7 +54,7 @@ class _SuccessPageState extends State<SuccessPage> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 24,
                           fontWeight: FontWeight.w800,
-                          color: AppColors.ink,
+                          color: AppColors.white,
                           letterSpacing: -0.3,
                         )),
                     if (widget.subtitle.isNotEmpty) ...[
@@ -66,7 +64,7 @@ class _SuccessPageState extends State<SuccessPage> {
                           style: const TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 14.5,
-                            color: AppColors.slate500,
+                            color: AppColors.gray500,
                           )),
                     ],
                     const SizedBox(height: 20),
@@ -75,19 +73,15 @@ class _SuccessPageState extends State<SuccessPage> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 36,
                           fontWeight: FontWeight.w800,
-                          color: AppColors.ink,
+                          color: AppColors.white,
                           letterSpacing: -0.6,
                         )),
                     if (widget.lines.isNotEmpty) ...[
                       const SizedBox(height: 24),
-                      Container(
-                        width: double.infinity,
+                      BrutalCard(
+                        bgColor: AppColors.cardDark,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.bg,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
                         child: Column(
                           children: widget.lines.asMap().entries.map((e) {
                             final i = e.key;
@@ -96,7 +90,7 @@ class _SuccessPageState extends State<SuccessPage> {
                               children: [
                                 if (i > 0)
                                   const Divider(
-                                      height: 1, color: AppColors.line),
+                                      height: 1, color: AppColors.gray600),
                                 Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 11),
@@ -108,7 +102,7 @@ class _SuccessPageState extends State<SuccessPage> {
                                           style: const TextStyle(
                                             fontFamily: 'PlusJakartaSans',
                                             fontSize: 13.5,
-                                            color: AppColors.slate500,
+                                            color: AppColors.gray500,
                                           )),
                                       Text(l[1],
                                           textAlign: TextAlign.right,
@@ -116,7 +110,7 @@ class _SuccessPageState extends State<SuccessPage> {
                                             fontFamily: 'PlusJakartaSans',
                                             fontSize: 13.5,
                                             fontWeight: FontWeight.w700,
-                                            color: AppColors.ink,
+                                            color: AppColors.white,
                                           )),
                                     ],
                                   ),
@@ -136,23 +130,23 @@ class _SuccessPageState extends State<SuccessPage> {
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
               child: Column(
                 children: [
-                  AppButton(
+                  BrutalButton(
                     label: 'Selesai',
                     onPressed: () => context.go('/home'),
                   ),
                   const SizedBox(height: 10),
-                  AppButton(
+                  BrutalButton(
                     label: 'Bagikan bukti transaksi',
-                    variant: AppButtonVariant.soft,
+                    bgColor: AppColors.cardDark,
+                    textColor: AppColors.orange,
                     icon: const Icon(Icons.copy_rounded,
-                        size: 18, color: AppColors.primary),
+                        size: 18, color: AppColors.orange),
                     onPressed: () {},
                   ),
                 ],
               ),
             ),
           ],
-        ),
         ),
       ),
     );

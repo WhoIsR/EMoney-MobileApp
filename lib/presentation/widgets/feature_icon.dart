@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -12,33 +10,34 @@ class FeatureIcon extends StatelessWidget {
   const FeatureIcon({
     super.key,
     required this.icon,
-    this.tone = 'blue',
-    this.size = 52,
-    this.iconSize = 25,
+    this.tone = 'orange',
+    this.size = 44,
+    this.iconSize = 21,
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.tone(tone);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size * 0.34),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: colors[0].withValues(alpha: 0.80),
-            borderRadius: BorderRadius.circular(size * 0.34),
-            border: Border.all(
-              color: colors[1].withValues(alpha: 0.10),
-              width: 0.5,
-            ),
+    final bg = colors[0];
+    final fg = colors[1];
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(size * 0.34),
+        border: Border.all(color: AppColors.black, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black,
+            blurRadius: 0,
+            offset: Offset(2, 2),
           ),
-          child: Center(
-            child: Icon(icon, color: colors[1], size: iconSize),
-          ),
-        ),
+        ],
+      ),
+      child: Center(
+        child: Icon(icon, color: fg, size: iconSize),
       ),
     );
   }

@@ -1,11 +1,11 @@
 class AppConstants {
-  static const String appName = 'Dompet Kampus Global';
+  static const String appName = 'Kashi';
   static const String appVersion = '1.0.0';
 
   // API
   static const String baseUrl = String.fromEnvironment(
     'WALLET_API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:8083',
+    defaultValue: 'http://167.172.71.213:8083',
   );
   static const String apiVersion = '/v1';
   static const int connectTimeout = 30;

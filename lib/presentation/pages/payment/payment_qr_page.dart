@@ -4,9 +4,8 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../widgets/app_badge.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/feature_icon.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 class PaymentQrPage extends StatefulWidget {
   const PaymentQrPage({super.key});
@@ -42,7 +41,7 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0D12),
+      backgroundColor: AppColors.bg,
       body: SafeArea(
         child: Stack(
           children: [
@@ -226,8 +225,9 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
       right: 0,
       child: GestureDetector(
         onTap: () {},
-        child: GlassCard(
-          radius: 26,
+        child: BrutalCard(
+          bgColor: AppColors.cardDark,
+          borderRadius: 26,
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 26),
           child: Column(
             children: [
@@ -235,7 +235,7 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                   width: 42,
                   height: 5,
                   decoration: BoxDecoration(
-                      color: AppColors.line,
+                      color: AppColors.gray600,
                       borderRadius: BorderRadius.circular(3))),
               const SizedBox(height: 16),
               Row(
@@ -255,11 +255,11 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 16.5,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.ink,
+                              color: AppColors.white,
                             )),
                         Text(_merchant['sub'] as String,
                             style: const TextStyle(
-                                fontSize: 12.5, color: AppColors.slate400)),
+                                fontSize: 12.5, color: AppColors.gray400)),
                       ],
                     ),
                   ),
@@ -268,21 +268,21 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
               ),
               const SizedBox(height: 18),
               const Text('Total tagihan',
-                  style: TextStyle(fontSize: 13, color: AppColors.slate400)),
+                  style: TextStyle(fontSize: 13, color: AppColors.gray400)),
               const SizedBox(height: 4),
               Text(CurrencyFormatter.format(amount),
                   style: const TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 38,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.ink,
+                    color: AppColors.white,
                     letterSpacing: -0.6,
                   )),
               const SizedBox(height: 18),
-              AppButton(
+              BrutalButton(
                 label: 'Bayar Sekarang',
                 icon: const Icon(Icons.lock_outline_rounded,
-                    size: 19, color: Colors.white),
+                    size: 19, color: AppColors.black),
                 onPressed: () {
                   setState(() => _sheetShown = true);
                   context.go('/pin', extra: {

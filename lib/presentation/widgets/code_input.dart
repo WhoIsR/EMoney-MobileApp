@@ -124,7 +124,7 @@ class _CodeInputState extends State<CodeInput> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: widget.hasError
-                                ? AppColors.redSurface.withValues(alpha: 0.6)
+                                ? AppColors.red.withValues(alpha: 0.25)
                                 : AppColors.glass,
                             borderRadius: BorderRadius.circular(13),
                             border: Border.all(
@@ -133,8 +133,8 @@ class _CodeInputState extends State<CodeInput> {
                                   : active
                                       ? AppColors.primary
                                       : filled
-                                          ? AppColors.primaryBorder
-                                          : AppColors.line,
+                                          ? AppColors.black
+                                          : AppColors.gray500,
                               width: 1.2,
                             ),
                             boxShadow: active

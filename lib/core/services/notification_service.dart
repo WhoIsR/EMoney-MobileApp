@@ -43,6 +43,11 @@ class NotificationService {
   final StreamController<TransactionNotificationData> _messageController =
       StreamController<TransactionNotificationData>.broadcast();
 
+  final List<TransactionNotificationData> _history = [];
+  List<TransactionNotificationData> get history => List.unmodifiable(_history);
+
+  final ValueNotifier<int> unreadCount = ValueNotifier<int>(0);
+
   StreamSubscription<RemoteMessage>? _messageSubscription;
   StreamSubscription<String>? _tokenSubscription;
   AuthRepository? _authRepository;
@@ -55,6 +60,10 @@ class NotificationService {
 
   Stream<TransactionNotificationData> get messages => _messageController.stream;
 
+  void clearUnread() {
+    unreadCount.value = 0;
+  }
+
   Future<void> init() async {
     if (_initialized) return;
     _initialized = true;
@@ -66,9 +75,10 @@ class NotificationService {
     );
 
     _messageSubscription = FirebaseMessaging.onMessage.listen((message) {
-      _messageController.add(
-        TransactionNotificationData.fromMessage(message),
-      );
+      final notif = TransactionNotificationData.fromMessage(message);
+      _history.insert(0, notif);
+      unreadCount.value++;
+      _messageController.add(notif);
     });
 
     _tokenSubscription = _messaging.onTokenRefresh.listen((token) {
@@ -86,6 +96,13 @@ class NotificationService {
     } catch (e) {
       debugPrint('[NotificationService] Gagal sinkron token FCM: $e');
     }
+  }
+
+  void showLocalNotification({required String title, required String body}) {
+    final notif = TransactionNotificationData(title: title, body: body);
+    _history.insert(0, notif);
+    unreadCount.value++;
+    _messageController.add(notif);
   }
 
   Future<void> dispose() async {

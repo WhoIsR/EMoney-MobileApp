@@ -2,96 +2,127 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 class AppTextStyles {
-  static const String _font = 'PlusJakartaSans';
+  AppTextStyles._();
 
-  static const TextStyle h1 = TextStyle(
-    fontFamily: _font,
-    fontSize: 30,
+  // ── Brutalism labels (small uppercase) ──
+  static const TextStyle label = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 9,
+    fontWeight: FontWeight.w900,
+    color: AppColors.gray400,
+    letterSpacing: 1.0,
+  );
+
+  static const TextStyle labelWhite = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 9,
+    fontWeight: FontWeight.w900,
+    color: AppColors.white,
+    letterSpacing: 1.0,
+  );
+
+  static const TextStyle labelBlack = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 9,
+    fontWeight: FontWeight.w900,
+    color: AppColors.black,
+    letterSpacing: 1.0,
+  );
+
+  // ── Balance / amount ──
+  static const TextStyle balance = TextStyle(
+    fontFamily: 'SpaceGrotesk',
+    fontSize: 28,
+    fontWeight: FontWeight.w900,
+    color: AppColors.white,
+    letterSpacing: -1.0,
+  );
+
+  static const TextStyle amount = TextStyle(
+    fontFamily: 'SpaceGrotesk',
+    fontSize: 18,
     fontWeight: FontWeight.w800,
-    color: AppColors.ink,
+    color: AppColors.white,
     letterSpacing: -0.5,
   );
-  static const TextStyle h2 = TextStyle(
-    fontFamily: _font,
-    fontSize: 25,
-    fontWeight: FontWeight.w800,
-    color: AppColors.ink,
-    letterSpacing: -0.4,
-  );
-  static const TextStyle h3 = TextStyle(
-    fontFamily: _font,
+
+  // ── Headings ──
+  static const TextStyle h1 = TextStyle(
+    fontFamily: 'PlusJakartaSans',
     fontSize: 22,
-    fontWeight: FontWeight.w800,
-    color: AppColors.ink,
+    fontWeight: FontWeight.w900,
+    color: AppColors.white,
+    letterSpacing: -0.5,
+  );
+
+  static const TextStyle h2 = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 18,
+    fontWeight: FontWeight.w900,
+    color: AppColors.white,
     letterSpacing: -0.3,
   );
-  static const TextStyle h4 = TextStyle(
-    fontFamily: _font,
-    fontSize: 19,
-    fontWeight: FontWeight.w800,
-    color: AppColors.ink,
-  );
-  static const TextStyle titleLg = TextStyle(
-    fontFamily: _font,
-    fontSize: 17,
-    fontWeight: FontWeight.w800,
-    color: AppColors.ink,
-    letterSpacing: -0.2,
-  );
-  static const TextStyle titleMd = TextStyle(
-    fontFamily: _font,
-    fontSize: 16,
-    fontWeight: FontWeight.w700,
-    color: AppColors.ink,
-  );
-  static const TextStyle titleSm = TextStyle(
-    fontFamily: _font,
+
+  static const TextStyle h3 = TextStyle(
+    fontFamily: 'PlusJakartaSans',
     fontSize: 15,
+    fontWeight: FontWeight.w800,
+    color: AppColors.white,
+  );
+
+  // ── Body ──
+  static const TextStyle body = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 13,
     fontWeight: FontWeight.w700,
-    color: AppColors.ink,
+    color: AppColors.white,
   );
-  static const TextStyle bodyLg = TextStyle(
-    fontFamily: _font,
-    fontSize: 15.5,
-    fontWeight: FontWeight.w500,
-    color: AppColors.ink,
-  );
-  static const TextStyle bodyMd = TextStyle(
-    fontFamily: _font,
-    fontSize: 14.5,
-    fontWeight: FontWeight.w500,
-    color: AppColors.ink,
-  );
-  static const TextStyle bodySm = TextStyle(
-    fontFamily: _font,
-    fontSize: 13.5,
-    fontWeight: FontWeight.w500,
-    color: AppColors.slate500,
-  );
-  static const TextStyle caption = TextStyle(
-    fontFamily: _font,
-    fontSize: 12.5,
-    fontWeight: FontWeight.w500,
-    color: AppColors.slate400,
-  );
-  static const TextStyle label = TextStyle(
-    fontFamily: _font,
-    fontSize: 13.5,
+
+  static const TextStyle bodyMuted = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 13,
     fontWeight: FontWeight.w600,
-    color: AppColors.slate600,
+    color: AppColors.gray400,
   );
-  static const TextStyle balanceLg = TextStyle(
-    fontFamily: _font,
-    fontSize: 30,
-    fontWeight: FontWeight.w800,
-    color: AppColors.ink,
-    letterSpacing: -0.5,
+
+  static const TextStyle caption = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 10,
+    fontWeight: FontWeight.w700,
+    color: AppColors.gray400,
   );
-  static const TextStyle amountXL = TextStyle(
-    fontFamily: _font,
-    fontSize: 42,
+
+  // ── Badge / tag ──
+  static const TextStyle tag = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 8,
+    fontWeight: FontWeight.w900,
+    color: AppColors.black,
+    letterSpacing: 0.5,
+  );
+
+  static const TextStyle tagWhite = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 8,
+    fontWeight: FontWeight.w900,
+    color: AppColors.white,
+    letterSpacing: 0.5,
+  );
+
+  // ── Button ──
+  static const TextStyle button = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 14,
     fontWeight: FontWeight.w800,
-    color: AppColors.ink,
-    letterSpacing: -1,
+    color: AppColors.black,
+    letterSpacing: 0.3,
+  );
+
+  static const TextStyle buttonSmall = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 9,
+    fontWeight: FontWeight.w900,
+    color: AppColors.black,
+    letterSpacing: 0.3,
   );
 }

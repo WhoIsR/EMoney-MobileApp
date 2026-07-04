@@ -5,10 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/services/deeplink_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../blocs/auth/auth_bloc.dart';
-import '../../widgets/app_button.dart';
-import '../../widgets/glass_background.dart';
-import '../../widgets/app_logo.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/brutal_widgets.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -42,69 +39,250 @@ class _SplashPageState extends State<SplashPage> {
         }
       },
       child: Scaffold(
-        body: GlassBackground(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26),
-              child: Column(
-                children: [
-                  const Spacer(),
-                  GlassCard(
-                    radius: 34,
-                    padding: const EdgeInsets.fromLTRB(24, 34, 24, 28),
-                    child: const Column(
-                      children: [
-                        AppLogo(size: 86),
-                        SizedBox(height: 24),
-                        Text(
-                          'Dompet Kampus',
+        backgroundColor: AppColors.bg,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 36),
+                // Logo
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: AppColors.orange,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.black, width: 3),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.black,
+                            blurRadius: 0,
+                            offset: const Offset(4, 4),
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'K',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
-                            fontSize: 30,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink,
-                            letterSpacing: -0.5,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.black,
                           ),
                         ),
-                        SizedBox(height: 2),
-                        Text(
-                          'GLOBAL',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                            letterSpacing: 3,
-                          ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    const Text(
+                      'KASHI\nE MONEY',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 36,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.white,
+                        letterSpacing: -0.5,
+                        height: 1.05,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 44),
+
+                // Benefits cards
+                BrutalCard(
+                  bgColor: AppColors.orange,
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.black,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        SizedBox(height: 16),
-                        Text(
-                          'Bayar, transfer, dan kelola uang kuliah\ndalam satu aplikasi yang aman.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 15,
-                            color: AppColors.slate600,
-                            height: 1.5,
-                          ),
+                        child: const Icon(Icons.bolt_rounded,
+                            color: AppColors.yellow, size: 26),
+                      ),
+                      const SizedBox(width: 14),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'TRANSAKSI INSTAN',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.black,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Kirim uang dan bayar tagihan\ndalam hitungan detik.',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.black,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                BrutalCard(
+                  bgColor: AppColors.green,
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.black,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(Icons.qr_code_scanner_rounded,
+                            color: AppColors.white, size: 26),
+                      ),
+                      const SizedBox(width: 14),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'QRIS UNIVERSAL',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.black,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Pindai kode QR merchant mana\npun untuk transaksi cepat.',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.black,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                BrutalCard(
+                  bgColor: AppColors.purple,
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.black,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(Icons.security_rounded,
+                            color: AppColors.white, size: 26),
+                      ),
+                      const SizedBox(width: 14),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'KEAMANAN KUAT',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.black,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Proteksi keamanan berlapis\ndengan 2FA dan notifikasi.',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.black,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const Spacer(),
+
+                // Action buttons
+                BrutalButton(
+                  label: 'BUAT AKUN BARU',
+                  bgColor: AppColors.orange,
+                  textColor: AppColors.black,
+                  fontSize: 15,
+                  onPressed: () => context.push('/register'),
+                ),
+                const SizedBox(height: 12),
+                GestureDetector(
+                  onTap: () => context.push('/login'),
+                  child: Container(
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: AppColors.orange.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: AppColors.orange, width: 3),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: AppColors.black,
+                          blurRadius: 0,
+                          offset: Offset(4, 4),
                         ),
                       ],
                     ),
+                    child: const Center(
+                      child: Text(
+                        'MASUK KE AKUN',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.orange,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
                   ),
-                  const Spacer(),
-                  AppButton(
-                    label: 'Buat Akun Baru',
-                    onPressed: () => context.push('/register'),
-                  ),
-                  const SizedBox(height: 11),
-                  AppButton(
-                    label: 'Masuk ke Akun',
-                    variant: AppButtonVariant.outline,
-                    onPressed: () => context.push('/login'),
-                  ),
-                  const SizedBox(height: 30),
-                ],
-              ),
+                ),
+                const SizedBox(height: 32),
+              ],
             ),
           ),
         ),

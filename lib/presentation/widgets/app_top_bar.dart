@@ -19,7 +19,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: AppBar(
-          backgroundColor: AppColors.glass,
+          backgroundColor: AppColors.cardDark.withValues(alpha: 0.85),
           elevation: 0,
           scrolledUnderElevation: 0,
           surfaceTintColor: Colors.transparent,
@@ -45,7 +45,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
             preferredSize: const Size.fromHeight(1),
             child: Container(
               height: 0.5,
-              color: AppColors.glassLine,
+              color: Colors.white.withValues(alpha: 0.82),
             ),
           ),
         ),
