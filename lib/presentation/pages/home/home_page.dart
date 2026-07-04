@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../widgets/app_tab_bar.dart';
 import '../../widgets/brutal_widgets.dart';
 import '../../widgets/feature_icon.dart';
 
@@ -66,21 +65,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            // ── Floating Bottom Nav ──
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-              child: AppTabBar(
-                currentIndex: 0,
-                onTap: (i) {
-                  switch (i) {
-                    case 0: // dashboard — already here
-                    case 1: context.go('/history');
-                    case 2: context.go('/card');
-                    case 3: context.go('/account');
-                  }
-                },
-              ),
-            ),
           ],
         ),
       ),
