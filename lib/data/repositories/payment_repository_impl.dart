@@ -16,6 +16,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
       throw ServerFailure(e.message);
     } on NetworkException catch (e) {
       throw NetworkFailure(e.message);
+    } on UnauthorizedException {
+      throw const ServerFailure('Sesi login habis. Silakan masuk ulang.');
     }
   }
 
@@ -45,6 +47,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
       throw ServerFailure(e.message);
     } on NetworkException catch (e) {
       throw NetworkFailure(e.message);
+    } on UnauthorizedException {
+      throw const ServerFailure('Sesi login habis. Silakan masuk ulang.');
     }
   }
 }
