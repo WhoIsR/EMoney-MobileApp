@@ -96,40 +96,44 @@ class AppRouter {
 
           return _withAccount(Scaffold(
             backgroundColor: AppColors.bg,
-            body: Stack(
-              children: [
-                Positioned.fill(
-                  child: child,
+            body: Padding(
+              padding: const EdgeInsets.only(bottom: 84),
+              child: child,
+            ),
+            bottomNavigationBar: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                child: AppTabBar(
+                  currentIndex: tab == 'history'
+                      ? 1
+                      : tab == 'promo'
+                          ? 2
+                          : tab == 'akun'
+                              ? 3
+                              : 0,
+                  onTap: (t) {
+                    switch (t) {
+                      case 1:
+                        context.go('/history');
+                        break;
+                      case 2:
+                        context.go('/promo');
+                        break;
+                      case 3:
+                        context.go('/akun');
+                        break;
+                      case 4:
+                        context.go('/payment');
+                        break;
+                      default:
+                        context.go('/home');
+                    }
+                  },
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: AppTabBar(
-              currentIndex: tab == 'history' ? 1 : tab == 'promo' ? 2 : tab == 'akun' ? 3 : 0,
-              onTap: (t) {
-                switch (t) {
-                  case 1:
-                    context.go('/history');
-                    break;
-                  case 2:
-                    context.go('/promo');
-                    break;
-                  case 3:
-                    context.go('/akun');
-                    break;
-                  case 4:
-                    context.go('/payment');
-                    break;
-                  default:
-                    context.go('/home');
-                }
-              },
+              ),
             ),
-            ),
-          ],
-        ),
-      ));
+          ));
         },
         routes: [
           GoRoute(path: '/home', builder: (_, __) => const HomePage()),

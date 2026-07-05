@@ -6,7 +6,6 @@ Kashi E Money adalah aplikasi dompet digital berbasis Flutter untuk transaksi pe
 
 - Aplikasi merchant: [WhoIsR/FashionApp_FindYourFit](https://github.com/WhoIsR/FashionApp_FindYourFit.git)
 - Backend Kashi E Money: [WhoIsR/EMoney-Backend](https://github.com/WhoIsR/EMoney-Backend.git)
-- Backend FindYourFit: [WhoIsR/bhaa_firebase_backend](https://github.com/WhoIsR/bhaa_firebase_backend.git)
 
 ## Backend API
 
@@ -137,13 +136,53 @@ Perintah `flutter analyze` digunakan untuk mengecek kualitas kode Dart. Perintah
   </tr>
   <tr>
     <td align="center"><strong>Dashboard</strong></td>
-    <td align="center"><strong>Payment Deep Link</strong></td>
-    <td align="center"><strong>PIN Transaksi</strong></td>
+    <td align="center"><strong>Riwayat</strong></td>
+    <td align="center"><strong>Promo</strong></td>
   </tr>
   <tr>
-    <td><img src="screenshots/kashi-home.png" width="220" alt="Kashi Dashboard"></td>
+    <td><img src="screenshots/kashi-dashboard.png" width="220" alt="Kashi Dashboard"></td>
+    <td><img src="screenshots/kashi-history.png" width="220" alt="Kashi Riwayat"></td>
+    <td><img src="screenshots/kashi-promo.png" width="220" alt="Kashi Promo"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Akun</strong></td>
+    <td align="center"><strong>Top Up</strong></td>
+    <td align="center"><strong>Transfer Bank</strong></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/kashi-account.png" width="220" alt="Kashi Akun"></td>
+    <td><img src="screenshots/kashi-topup.png" width="220" alt="Kashi Top Up"></td>
+    <td><img src="screenshots/kashi-transfer-bank.png" width="220" alt="Kashi Transfer Bank"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Transfer E-Wallet</strong></td>
+    <td align="center"><strong>Scan QR</strong></td>
+    <td align="center"><strong>Izin Kamera</strong></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/kashi-transfer-ewallet.png" width="220" alt="Kashi Transfer E-Wallet"></td>
+    <td><img src="screenshots/kashi-scan-qr.png" width="220" alt="Kashi Scan QR"></td>
+    <td><img src="screenshots/kashi-camera-permission.png" width="220" alt="Kashi Izin Kamera"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Payment Deep Link</strong></td>
+    <td align="center"><strong>PIN Transaksi</strong></td>
+    <td align="center"><strong>2FA TOTP</strong></td>
+  </tr>
+  <tr>
     <td><img src="screenshots/kashi-deeplink-pay.png" width="220" alt="Kashi Payment Deep Link"></td>
     <td><img src="screenshots/kashi-pin.png" width="220" alt="Kashi PIN"></td>
+    <td><img src="screenshots/kashi-totp-code.png" width="220" alt="Kashi 2FA TOTP"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Payment Success</strong></td>
+    <td align="center"><strong>Dashboard Lama</strong></td>
+    <td align="center"><strong></strong></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/kashi-payment-success.png" width="220" alt="Kashi Payment Success"></td>
+    <td><img src="screenshots/kashi-home.png" width="220" alt="Kashi Dashboard Lama"></td>
+    <td></td>
   </tr>
 </table>
 

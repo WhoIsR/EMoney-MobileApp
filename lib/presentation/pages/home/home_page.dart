@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../widgets/app_tab_bar.dart';
 import '../../widgets/brutal_widgets.dart';
 import '../../widgets/feature_icon.dart';
 
@@ -31,9 +30,6 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
                 child: Column(
                   children: [
-                    const BrutalStatusBar(),
-                    const SizedBox(height: 12),
-
                     // ── Profile Header (like test.html) ──
                     _buildProfileHeader(),
                     const SizedBox(height: 12),
@@ -66,21 +62,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            // ── Floating Bottom Nav ──
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-              child: AppTabBar(
-                currentIndex: 0,
-                onTap: (i) {
-                  switch (i) {
-                    case 0: // dashboard — already here
-                    case 1: context.go('/history');
-                    case 2: context.go('/card');
-                    case 3: context.go('/account');
-                  }
-                },
-              ),
-            ),
           ],
         ),
       ),
@@ -139,24 +120,107 @@ class _HomePageState extends State<HomePage> {
           ),
           const Spacer(),
           // Search + Bell icons
-          _iconBox(AppColors.white, Icons.search, AppColors.yellow),
+          _iconBox(
+            AppColors.white,
+            Icons.search,
+            AppColors.yellow,
+            () => _showSearchHint(context),
+          ),
           const SizedBox(width: 8),
-          _iconBox(AppColors.orange, Icons.notifications, AppColors.black),
+          _iconBox(
+            AppColors.orange,
+            Icons.notifications,
+            AppColors.black,
+            () => _showNotifications(context),
+          ),
         ],
       ),
     );
   }
 
-  Widget _iconBox(Color bg, IconData icon, Color iconColor) {
-    return Container(
-      width: 32, height: 32,
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.black, width: 2),
-        boxShadow: [BoxShadow(color: AppColors.black, blurRadius: 0, offset: const Offset(2, 2))],
+  Widget _iconBox(
+    Color bg,
+    IconData icon,
+    Color iconColor,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 32, height: 32,
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.black, width: 2),
+          boxShadow: [BoxShadow(color: AppColors.black, blurRadius: 0, offset: const Offset(2, 2))],
+        ),
+        child: Icon(icon, size: 16, color: iconColor),
       ),
-      child: Icon(icon, size: 16, color: iconColor),
+    );
+  }
+
+  void _showSearchHint(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Pencarian transaksi segera hadir')),
+    );
+  }
+
+  void _showNotifications(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.bg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (_) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const BrutalLabel('NOTIFIKASI'),
+              const SizedBox(height: 14),
+              _notificationTile(
+                Icons.verified_user_rounded,
+                'Limit transaksi aman',
+                'Batas harian masih tersedia untuk pembayaran dan transfer.',
+              ),
+              const SizedBox(height: 10),
+              _notificationTile(
+                Icons.receipt_long_rounded,
+                'Cek riwayat terbaru',
+                'Pantau transaksi terakhir sebelum melakukan pembayaran.',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _notificationTile(IconData icon, String title, String subtitle) {
+    return BrutalCard(
+      bgColor: AppColors.white,
+      borderRadius: 16,
+      padding: const EdgeInsets.all(12),
+      shadowOffset: 3,
+      child: Row(
+        children: [
+          Icon(icon, size: 22, color: AppColors.black),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.black)),
+                const SizedBox(height: 2),
+                Text(subtitle, style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.gray600)),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -209,7 +273,7 @@ class _HomePageState extends State<HomePage> {
   // ── Balance Card (ORANGE like test.html) ──
   Widget _buildBalanceCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppColors.orange,
         borderRadius: BorderRadius.circular(28),
@@ -219,7 +283,6 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top row: label + growth badge
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -227,7 +290,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BrutalLabel('TOTAL BALANCE', color: AppColors.black),
-                  SizedBox(height: 4),
+                  SizedBox(height: 6),
                   Text(
                     'Rp156.900.67',
                     style: TextStyle(
@@ -242,7 +305,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   color: AppColors.black,
                   borderRadius: BorderRadius.circular(20),
@@ -252,9 +315,10 @@ class _HomePageState extends State<HomePage> {
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.arrow_drop_up, size: 12, color: AppColors.green),
+                    Icon(Icons.check_circle_rounded, size: 12, color: AppColors.green),
+                    SizedBox(width: 4),
                     Text(
-                      '+3.4%',
+                      'AKTIF',
                       style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 9, fontWeight: FontWeight.w900, color: AppColors.white),
                     ),
                   ],
@@ -262,13 +326,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          // AVG Transaction badge
+          const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: AppColors.bg,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(10),
               border: Border.all(color: AppColors.black, width: 2),
               boxShadow: [BoxShadow(color: AppColors.black, blurRadius: 0, offset: const Offset(2, 2))],
             ),
@@ -276,64 +339,61 @@ class _HomePageState extends State<HomePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.account_balance_wallet_rounded, size: 12, color: AppColors.orange),
-                SizedBox(width: 4),
+                SizedBox(width: 6),
                 Text(
-                  'AVG. TRANSACTION VALUE:',
+                  'KASHI WALLET',
                   style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 8, fontWeight: FontWeight.w900, color: AppColors.white),
-                ),
-                Text(
-                  ' \$18.50',
-                  style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 8, fontWeight: FontWeight.w900, color: AppColors.yellow),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          // Bar chart (like test.html)
+          const SizedBox(height: 18),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _bar(0.35), _bar(0.65), _bar(0.50),
-              Container(
-                width: double.infinity, height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.black,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                  border: Border.all(color: AppColors.black, width: 2),
-                ),
-              ),
-              _bar(0.40), _bar(0.95), _bar(0.55),
-            ].map((w) => Expanded(child: w)).toList(),
-          ),
-          const SizedBox(height: 4),
-          // Days label
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                .map((d) => Text(
-                      d,
-                      style: const TextStyle(
-                        fontFamily: 'SpaceGrotesk',
-                        fontSize: 8,
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.black,
-                      ),
-                    ))
-                .toList(),
+              _balanceAction(Icons.add_rounded, 'Top Up', AppColors.yellow, () => context.go('/topup')),
+              _balanceAction(Icons.send_rounded, 'Transfer', AppColors.green, () => context.go('/transfer')),
+              _balanceAction(Icons.qr_code_scanner_rounded, 'Scan', AppColors.purple, () => context.go('/payment')),
+              _balanceAction(Icons.receipt_long_rounded, 'Bayar', AppColors.white, () => context.go('/payment')),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _bar(double heightFraction) {
-    return Container(
-      height: (100 * heightFraction).clamp(20, 100),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-        border: Border.all(color: AppColors.black, width: 2),
-        boxShadow: [BoxShadow(color: AppColors.black, blurRadius: 0, offset: const Offset(1, 1))],
+  Widget _balanceAction(
+    IconData icon,
+    String label,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Column(
+          children: [
+            Container(
+              width: 46, height: 46,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.black, width: 2),
+                boxShadow: [BoxShadow(color: AppColors.black, blurRadius: 0, offset: const Offset(2, 2))],
+              ),
+              child: Icon(icon, size: 22, color: AppColors.black),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              style: const TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+                color: AppColors.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -621,8 +681,8 @@ class _HomePageState extends State<HomePage> {
                 switch (a.$2) {
                   case 'Top Up': context.go('/topup');
                   case 'Transfer': context.go('/transfer');
-                  case 'Scan QR': context.go('/scan');
-                  case 'Bayar': context.go('/payment/qr');
+                  case 'Scan QR': context.go('/payment');
+                  case 'Bayar': context.go('/payment');
                   case 'Pulsa': ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fitur Pulsa segera hadir')));
                   case 'Lainnya': _showMoreSheet(context);
                 }
